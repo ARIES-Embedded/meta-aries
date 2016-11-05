@@ -1,0 +1,27 @@
+From 2c1e49ea3512c10519fd411f1992085bbf34adf2 Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marex@denx.de>
+Date: Mon, 5 Dec 2016 18:17:52 +0100
+Subject: [PATCH 15/15] ARM: socfpga: Disable OC on MCVEVK
+
+Disable the OC test on MCVEVK as the old PHY version does not provide
+this information. This fixes the USB OTG operation.
+
+Signed-off-by: Marek Vasut <marex@denx.de>
+---
+ arch/arm/dts/socfpga_cyclone5_mcvevk.dts | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/arm/dts/socfpga_cyclone5_mcvevk.dts b/arch/arm/dts/socfpga_cyclone5_mcvevk.dts
+index 7d3f989..ace7ee9 100644
+--- a/arch/arm/dts/socfpga_cyclone5_mcvevk.dts
++++ b/arch/arm/dts/socfpga_cyclone5_mcvevk.dts
+@@ -54,5 +54,6 @@
+ };
+ 
+ &usb1 {
++	disable-over-current;
+ 	status = "okay";
+ };
+-- 
+2.10.2
+

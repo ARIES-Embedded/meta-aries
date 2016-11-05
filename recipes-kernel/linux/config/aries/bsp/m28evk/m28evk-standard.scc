@@ -1,0 +1,12 @@
+define KMACHINE m28evk
+define KTYPE standard
+define KARCH arm
+
+include ktypes/standard/standard.scc
+branch m28evk
+
+include m28evk.scc
+
+# default policy for standard kernels
+include features/latencytop/latencytop.scc
+include features/profiling/profiling.scc

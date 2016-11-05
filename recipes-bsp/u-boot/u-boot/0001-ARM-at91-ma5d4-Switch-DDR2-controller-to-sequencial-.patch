@@ -1,0 +1,36 @@
+From dbe5d85ddda8ba60459fc383ac0be3981f968ff2 Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marex@denx.de>
+Date: Sat, 14 May 2016 18:17:35 +0200
+Subject: [PATCH 01/15] ARM: at91: ma5d4: Switch DDR2 controller to sequencial
+ address decoding
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+According to the datasheet, sequential mapping is used for DDR
+SDRAM, while interleaved mapping is used for regular SDRAM.
+Incorrect configuration of this bit does indeed cause sporadic
+memory instability.
+
+Signed-off-by: Marek Vasut <marex@denx.de>
+Cc: Andreas Bießmann <andreas.devel@googlemail.com>
+Cc: Wenyou Yang <wenyou.yang@atmel.com>
+---
+ board/denx/ma5d4evk/ma5d4evk.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/board/denx/ma5d4evk/ma5d4evk.c b/board/denx/ma5d4evk/ma5d4evk.c
+index ec0fa28..1941364 100644
+--- a/board/denx/ma5d4evk/ma5d4evk.c
++++ b/board/denx/ma5d4evk/ma5d4evk.c
+@@ -349,7 +349,6 @@ static void ddr2_conf(struct atmel_mpddrc_config *ddr2)
+ 		    ATMEL_MPDDRC_CR_CAS_DDR_CAS3 |
+ 		    ATMEL_MPDDRC_CR_NB_8BANKS |
+ 		    ATMEL_MPDDRC_CR_NDQS_DISABLED |
+-		    ATMEL_MPDDRC_CR_DECOD_INTERLEAVED |
+ 		    ATMEL_MPDDRC_CR_UNAL_SUPPORTED);
+ 
+ 	ddr2->rtr = 0x2b0;
+-- 
+2.10.2
+

@@ -1,0 +1,71 @@
+From 7a66601d99e2b4dc0690c31363207daea53ae996 Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marex@denx.de>
+Date: Thu, 12 May 2016 19:52:31 +0200
+Subject: [PATCH 05/15] ARM: at91: ma5d4: Swap SD/MMC controller order
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The SDHCI1 is the primary boot controller on rev. 2.1 SoM, which
+is the version available on the market. Swap the controller order
+to match this and future versions of the SoM.
+
+Signed-off-by: Marek Vasut <marex@denx.de>
+Cc: Andreas Bießmann <andreas.devel@googlemail.com>
+---
+ board/denx/ma5d4evk/ma5d4evk.c |  5 ++---
+ include/configs/ma5d4evk.h     | 10 +++++-----
+ 2 files changed, 7 insertions(+), 8 deletions(-)
+
+diff --git a/board/denx/ma5d4evk/ma5d4evk.c b/board/denx/ma5d4evk/ma5d4evk.c
+index 07859fa..7eac11f 100644
+--- a/board/denx/ma5d4evk/ma5d4evk.c
++++ b/board/denx/ma5d4evk/ma5d4evk.c
+@@ -205,14 +205,13 @@ int board_mmc_init(bd_t *bis)
+ 	at91_set_pio_output(AT91_PIO_PORTE, 15, 1);
+ 	at91_set_pio_pulldown(AT91_PIO_PORTE, 15, 0);
+ 
+-	ret = atmel_mci_init((void *)ATMEL_BASE_MCI0);
++	ret = atmel_mci_init((void *)ATMEL_BASE_MCI1);
+ 	if (ret)	/* eMMC init failed, skip it. */
+ 		at91_set_pio_output(AT91_PIO_PORTE, 15, 0);
+ 
+ 	/* Enable the power supply to On-board MicroSD */
+ 	at91_set_pio_output(AT91_PIO_PORTE, 17, 0);
+-
+-	ret = atmel_mci_init((void *)ATMEL_BASE_MCI1);
++	ret = atmel_mci_init((void *)ATMEL_BASE_MCI0);
+ 	if (ret)	/* uSD init failed, power it down. */
+ 		at91_set_pio_output(AT91_PIO_PORTE, 17, 1);
+ 
+diff --git a/include/configs/ma5d4evk.h b/include/configs/ma5d4evk.h
+index 0843230..0754a81 100644
+--- a/include/configs/ma5d4evk.h
++++ b/include/configs/ma5d4evk.h
+@@ -152,9 +152,9 @@
+ 	"consdev=ttyS3\0"						\
+ 	"baudrate=115200\0"						\
+ 	"bootscript=boot.scr\0"						\
+-	"bootdev=/dev/mmcblk1p1\0"					\
+-	"bootpart=1:1\0"						\
+-	"rootdev=/dev/mmcblk1p2\0"					\
++	"bootdev=/dev/mmcblk0p1\0"					\
++	"bootpart=0:1\0"						\
++	"rootdev=/dev/mmcblk0p2\0"					\
+ 	"netdev=eth0\0"							\
+ 	"dfu_alt_info=mmc raw 0 3867148288\0"				\
+ 	"kernel_addr_r=0x22000000\0"					\
+@@ -211,8 +211,8 @@
+ 		"bootm ${kernel_addr_r}\0"				\
+ 	"try_bootscript="						\
+ 		"mmc rescan;"						\
+-		"if test -e mmc ${bootpart} ${bootscript} ; then "	\
+-		"if load mmc ${bootpart} ${kernel_addr_r} ${bootscript};"\
++		"if test -e mmc 1:1 ${bootscript} ; then "		\
++		"if load mmc 1:1 ${kernel_addr_r} ${bootscript};"	\
+ 		"then ; "						\
+ 			"echo Running bootscript... ; "			\
+ 			"source ${kernel_addr_r} ; "			\
+-- 
+2.10.2
+

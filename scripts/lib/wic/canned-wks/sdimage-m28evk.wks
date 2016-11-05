@@ -1,0 +1,7 @@
+# short-description: Create M28EVK SD card image with a boot partition
+# long-description: Creates a partitioned SD card image. Boot files
+# are located in the first ext4 partition.
+
+part --source rawcopy --sourceparams="file=u-boot.sd" --ondisk mmcblk --system-id 0x53 --align 1024 --size 2M
+part /boot --source bootimg-partition --ondisk mmcblk --fstype=ext4 --label boot --active --align 4096 --size 16M --extra-space 0 --overhead-factor 1
+part / --source rootfs --ondisk mmcblk --fstype=ext4 --label root --align 4096

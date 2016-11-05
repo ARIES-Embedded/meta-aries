@@ -1,0 +1,59 @@
+From 36e3336a5c80d88cb6875b5f6fff397d6ab69977 Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marex@denx.de>
+Date: Sun, 15 May 2016 01:19:29 +0200
+Subject: [PATCH 07/15] ARM: at91: ma5d4: Boot from MMC2 when using SAM-BA
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Continue loading U-Boot from MMC2 when the SPL was loaded using SAM-BA
+loader. This allows the board to boot system from the removable media
+instead of the eMMC, which is useful for commissioning purposes. When
+booting from the eMMC, always boot from it as it is not possible to
+boot from the SD interface directly.
+
+Signed-off-by: Marek Vasut <marex@denx.de>
+Cc: Andreas Bießmann <andreas.devel@googlemail.com>
+---
+ board/denx/ma5d4evk/ma5d4evk.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+
+diff --git a/board/denx/ma5d4evk/ma5d4evk.c b/board/denx/ma5d4evk/ma5d4evk.c
+index 7eac11f..9f34634 100644
+--- a/board/denx/ma5d4evk/ma5d4evk.c
++++ b/board/denx/ma5d4evk/ma5d4evk.c
+@@ -22,6 +22,7 @@
+ #include <net.h>
+ #include <netdev.h>
+ #include <spi.h>
++#include <spl.h>
+ #include <version.h>
+ 
+ DECLARE_GLOBAL_DATA_PTR;
+@@ -345,6 +346,23 @@ void spl_board_init(void)
+ #endif
+ }
+ 
++void board_boot_order(u32 *spl_boot_list)
++{
++	spl_boot_list[0] = spl_boot_device();
++
++	switch (spl_boot_list[0]) {
++	case BOOT_DEVICE_MMC1:
++	case BOOT_DEVICE_MMC2:
++		spl_boot_list[0] = BOOT_DEVICE_MMC1;
++		break;
++	case BOOT_DEVICE_SPI:
++		break;
++	case BOOT_DEVICE_USB:
++		spl_boot_list[0] = BOOT_DEVICE_MMC2;
++		break;
++	}
++}
++
+ static void ddr2_conf(struct atmel_mpddrc_config *ddr2)
+ {
+ 	ddr2->md = (ATMEL_MPDDRC_MD_DBW_32_BITS | ATMEL_MPDDRC_MD_DDR2_SDRAM);
+-- 
+2.10.2
+

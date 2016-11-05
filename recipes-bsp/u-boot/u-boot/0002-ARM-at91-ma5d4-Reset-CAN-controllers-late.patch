@@ -1,0 +1,51 @@
+From 2bba09383c56604a8c8d00427f2a9323467eb104 Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marex@denx.de>
+Date: Thu, 12 May 2016 19:35:29 +0200
+Subject: [PATCH 02/15] ARM: at91: ma5d4: Reset CAN controllers late
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The CAN controllers need slight delay between toggling of their reset
+line. Move this action into board_init(), otherwise timer will not be
+initialized and the board might hang.
+
+Signed-off-by: Marek Vasut <marex@denx.de>
+Cc: Andreas Bießmann <andreas.devel@googlemail.com>
+---
+ board/denx/ma5d4evk/ma5d4evk.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/board/denx/ma5d4evk/ma5d4evk.c b/board/denx/ma5d4evk/ma5d4evk.c
+index 1941364..978fb1e 100644
+--- a/board/denx/ma5d4evk/ma5d4evk.c
++++ b/board/denx/ma5d4evk/ma5d4evk.c
+@@ -269,12 +269,6 @@ int board_early_init_f(void)
+ 	at91_set_pio_output(AT91_PIO_PORTD, 29, 0);
+ 	at91_set_pio_output(AT91_PIO_PORTD, 30, 0);
+ 
+-	/* Reset CAN controllers */
+-	at91_set_pio_output(AT91_PIO_PORTB, 21, 0);
+-	udelay(100);
+-	at91_set_pio_output(AT91_PIO_PORTB, 21, 1);
+-	at91_set_pio_pulldown(AT91_PIO_PORTB, 21, 0);
+-
+ 	ma5d4evk_serial_hw_init();
+ 
+ 	return 0;
+@@ -305,6 +299,12 @@ int board_init(void)
+ 	at91_udp_hw_init();
+ #endif
+ 
++	/* Reset CAN controllers */
++	at91_set_pio_output(AT91_PIO_PORTB, 21, 0);
++	udelay(100);
++	at91_set_pio_output(AT91_PIO_PORTB, 21, 1);
++	at91_set_pio_pulldown(AT91_PIO_PORTB, 21, 0);
++
+ 	return 0;
+ }
+ 
+-- 
+2.10.2
+

@@ -1,0 +1,100 @@
+From e186e277a0901ee67aba28bd75cb1ecd57a35f4b Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marex@denx.de>
+Date: Wed, 16 Nov 2016 17:20:23 +0100
+Subject: [PATCH 14/15] ARM: socfpga: Add boot0 hook to prevent SPL corruption
+
+Valid Altera SoCFPGA preloader image must contain special data at
+offsets 0x40, 0x44, 0x48 and valid instructions at address 0x4c or
+0x50. These addresses are by default used by U-Boot's vector table
+and a piece of reset handler, thus a valid preloader corrupts those
+addresses slightly. While this works most of the time, this can and
+does prevent the board from rebooting sometimes and triggering this
+issue may even depend on compiler.
+
+The problem is that when SoCFPGA performs warm reset, it checks the
+addresses 0x40..0x4b in SRAM for a valid preloader signature and
+header checksum. If those are found, it jumps to address 0x4c or
+0x50 (this is unclear). These addresses are populated by the first
+few instructions of arch/arm/cpu/armv7/start.S:
+
+ffff0040 <data_abort>:
+ffff0040:       ebfffffe        bl      ffff0040 <data_abort>
+
+ffff0044 <reset>:
+ffff0044:       ea000012        b       ffff0094 <save_boot_params>
+
+ffff0048 <save_boot_params_ret>:
+ffff0048:       e10f0000        mrs     r0, CPSR
+ffff004c:       e200101f        and     r1, r0, #31
+ffff0050:       e331001a        teq     r1, #26
+
+Without this patch, the CPU will enter the code at 0xffff004c or
+0xffff0050 , at which point the value of r0 and r1 registers is
+undefined. Moreover, jumping directly to the preloader entry point
+at address 0xffff0000 will also fail, because address 0xffff004.
+is invalid and contains the preloader magic.
+
+Add BOOT0 hook which reserves the area at offset 0x40..0x5f and
+populates offset 0x50 with jump to the entry point. This way, the
+preloader signature is stored in reserved space and can not corrupt
+the SPL code.
+
+Signed-off-by: Marek Vasut <marex@denx.de>
+Cc: Chin Liang See <clsee@altera.com>
+Cc: Dinh Nguyen <dinguyen@opensource.altera.com>
+Cc: Stefan Roese <sr@denx.de>
+---
+ arch/arm/Kconfig                           |  1 +
+ arch/arm/mach-socfpga/include/mach/boot0.h | 28 ++++++++++++++++++++++++++++
+ 2 files changed, 29 insertions(+)
+ create mode 100644 arch/arm/mach-socfpga/include/mach/boot0.h
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index d7a9b11..25bda14 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -551,6 +551,7 @@ config ARCH_SOCFPGA
+ 	select DM
+ 	select DM_SPI_FLASH
+ 	select DM_SPI
++	select ENABLE_ARM_SOC_BOOT0_HOOK
+ 
+ config TARGET_CM_T43
+ 	bool "Support cm_t43"
+diff --git a/arch/arm/mach-socfpga/include/mach/boot0.h b/arch/arm/mach-socfpga/include/mach/boot0.h
+new file mode 100644
+index 0000000..aaada31
+--- /dev/null
++++ b/arch/arm/mach-socfpga/include/mach/boot0.h
+@@ -0,0 +1,28 @@
++/*
++ * Specialty padding for the Altera SoCFPGA preloader image
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ */
++
++#ifndef __BOOT0_H
++#define __BOOT0_H
++
++#ifdef CONFIG_SPL_BUILD
++#define ARM_SOC_BOOT0_HOOK						\
++	.balignl 64,0xf33db33f;						\
++									\
++	.word	0x1337c0d3;	/* SoCFPGA preloader validation word */	\
++	.word	0xc01df00d;	/* Version, flags, length */		\
++	.word	0xcafec0d3;	/* Checksum, zero-pad */		\
++	nop;								\
++									\
++	b reset;		/* SoCFPGA jumps here */		\
++	nop;								\
++	nop;								\
++	nop;
++#else
++#define ARM_SOC_BOOT0_HOOK
++#endif
++
++
++#endif /* __BOOT0_H */
+-- 
+2.10.2
+

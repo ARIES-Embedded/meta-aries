@@ -1,0 +1,11 @@
+define KMACHINE m53evk
+define KTYPE preempt-rt
+define KARCH arm
+
+# no new branch required, re-use the ktypes/preempt-rt/preempt-rt.scc branch
+include ktypes/preempt-rt/preempt-rt.scc
+include m53evk.scc
+
+# default policy for preempt-rt kernels
+include features/latencytop/latencytop.scc
+include features/profiling/profiling.scc

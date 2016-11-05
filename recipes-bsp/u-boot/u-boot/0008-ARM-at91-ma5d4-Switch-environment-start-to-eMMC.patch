@@ -1,0 +1,44 @@
+From d348c10a0433cc62b84ac2d1410e3bfd84d3fb6c Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marex@denx.de>
+Date: Sat, 14 May 2016 19:39:45 +0200
+Subject: [PATCH 08/15] ARM: at91: ma5d4: Switch environment start to eMMC
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The redesigned version of the SoM which was released onto the market
+does no longer contain SPI flash, but boots from the eMMC. Move the
+environment storage to the eMMC.
+
+Signed-off-by: Marek Vasut <marex@denx.de>
+Cc: Andreas Bießmann <andreas.devel@googlemail.com>
+---
+ include/configs/ma5d4evk.h | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/include/configs/ma5d4evk.h b/include/configs/ma5d4evk.h
+index 0a49bb7..6b1f04f 100644
+--- a/include/configs/ma5d4evk.h
++++ b/include/configs/ma5d4evk.h
+@@ -39,13 +39,12 @@
+ /*
+  * Environment
+  */
+-#define CONFIG_ENV_IS_IN_SPI_FLASH
+-#define CONFIG_SYS_REDUNDAND_ENVIRONMENT
+-#define CONFIG_ENV_OFFSET		0x8000
++#define CONFIG_ENV_IS_IN_MMC
++#define CONFIG_SYS_CONSOLE_OVERWRITE_ROUTINE
++#define CONFIG_SYS_CONSOLE_ENV_OVERWRITE
+ #define CONFIG_ENV_SIZE			0x4000
+-#define CONFIG_ENV_OFFSET_REDUND	(CONFIG_ENV_OFFSET + CONFIG_ENV_SIZE)
+-#define CONFIG_ENV_SIZE_REDUND		CONFIG_ENV_SIZE
+-#define CONFIG_ENV_SECT_SIZE		0x1000
++#define CONFIG_SYS_MMC_ENV_DEV		0	/* eMMC */
++#define CONFIG_ENV_OFFSET		512	/* just after the MBR */
+ 
+ /*
+  * U-Boot general configurations
+-- 
+2.10.2
+

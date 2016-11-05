@@ -1,0 +1,26 @@
+From efa998b3992262c883f360e8b55cf78bf8d9a7be Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marex@denx.de>
+Date: Mon, 4 Jan 2016 13:20:51 +0100
+Subject: [PATCH 12/29] ARM: dts: Compile the DTS with symbols enabled
+
+Add the -@ option to DTC to generate the symbols section in the DTs.
+This is required for using DT overlays.
+
+Signed-off-by: Marek Vasut <marex@denx.de>
+---
+ arch/arm/boot/dts/Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
+index 30bbc37..01b9072 100644
+--- a/arch/arm/boot/dts/Makefile
++++ b/arch/arm/boot/dts/Makefile
+@@ -784,3 +784,5 @@ dtb-$(CONFIG_OF_ALL_DTBS) := $(patsubst $(dtstree)/%.dts,%.dtb, $(wildcard $(dts
+ 
+ always		:= $(dtb-y)
+ clean-files	:= *.dtb
++
++DTC_FLAGS	:= -@
+-- 
+2.10.2
+

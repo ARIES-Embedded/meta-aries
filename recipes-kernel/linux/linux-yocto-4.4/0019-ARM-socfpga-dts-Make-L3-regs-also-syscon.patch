@@ -1,0 +1,29 @@
+From 41a429f18b889e13e5899de20ab013e712a8285a Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marex@denx.de>
+Date: Mon, 4 Jan 2016 13:20:51 +0100
+Subject: [PATCH 19/29] ARM: socfpga: dts: Make L3 regs also syscon
+
+The L3 regs must also be syscon, otherwise the FPGA bridge driver cannot
+use it through the syscon interface.
+
+Signed-off-by: Marek Vasut <marex@denx.de>
+---
+ arch/arm/boot/dts/socfpga.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm/boot/dts/socfpga.dtsi b/arch/arm/boot/dts/socfpga.dtsi
+index e863ed9..bd50303 100644
+--- a/arch/arm/boot/dts/socfpga.dtsi
++++ b/arch/arm/boot/dts/socfpga.dtsi
+@@ -669,7 +669,7 @@
+ 		};
+ 
+ 		l3regs: gpv@ff800000 {
+-			compatible = "altr,l3-nic";
++			compatible = "altr,l3-nic", "syscon";
+ 			reg = <0xff800000 0x100000>;
+ 		};
+ 
+-- 
+2.10.2
+

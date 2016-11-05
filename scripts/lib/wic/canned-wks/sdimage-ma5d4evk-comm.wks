@@ -1,0 +1,6 @@
+# short-description: Create MA5D4EVK commissioning SD card image with a boot partition
+# long-description: Creates a partitioned SD card image. Boot files
+# are located in the first ext4 partition.
+
+# AT91 needs VFAT boot partition
+part /boot --source bootimg-partition --ondisk mmcblk --fstype=vfat --label boot --active --align 4096 --size 8M --extra-space 0 --overhead-factor 1

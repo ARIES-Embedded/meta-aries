@@ -1,0 +1,29 @@
+From 07bff503cb59bb31baf95b473c8095552073ca27 Mon Sep 17 00:00:00 2001
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Sat, 29 Nov 2014 21:14:12 +0100
+Subject: [PATCH 18/29] ARM: socfpga: dts: Add l3nic node
+
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ arch/arm/boot/dts/socfpga.dtsi | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/arch/arm/boot/dts/socfpga.dtsi b/arch/arm/boot/dts/socfpga.dtsi
+index 8fcf5d2..e863ed9 100644
+--- a/arch/arm/boot/dts/socfpga.dtsi
++++ b/arch/arm/boot/dts/socfpga.dtsi
+@@ -668,6 +668,11 @@
+ 			prefetch-instr = <1>;
+ 		};
+ 
++		l3regs: gpv@ff800000 {
++			compatible = "altr,l3-nic";
++			reg = <0xff800000 0x100000>;
++		};
++
+ 		mmc: dwmmc0@ff704000 {
+ 			compatible = "altr,socfpga-dw-mshc";
+ 			reg = <0xff704000 0x1000>;
+-- 
+2.10.2
+

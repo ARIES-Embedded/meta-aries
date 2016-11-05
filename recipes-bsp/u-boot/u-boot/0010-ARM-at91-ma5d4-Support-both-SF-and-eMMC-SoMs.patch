@@ -1,0 +1,145 @@
+From f74012dda5b38571978a0710425f8d44b715f452 Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marex@denx.de>
+Date: Thu, 17 Nov 2016 15:25:06 +0100
+Subject: [PATCH 10/15] ARM: at91: ma5d4: Support both SF and eMMC SoMs
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Discern the SoMs based on the presence of SPI flash to support both
+variants of the SoM, one booting from SPI NOR and one booting from
+eMMC.
+
+Signed-off-by: Marek Vasut <marex@denx.de>
+Cc: Andreas Bießmann <andreas.devel@googlemail.com>
+---
+ board/denx/ma5d4evk/ma5d4evk.c | 25 +++++++++++++++++++++++--
+ include/configs/ma5d4evk.h     | 22 ++++++++++++++--------
+ 2 files changed, 37 insertions(+), 10 deletions(-)
+
+diff --git a/board/denx/ma5d4evk/ma5d4evk.c b/board/denx/ma5d4evk/ma5d4evk.c
+index 9f34634..7583d34 100644
+--- a/board/denx/ma5d4evk/ma5d4evk.c
++++ b/board/denx/ma5d4evk/ma5d4evk.c
+@@ -22,11 +22,14 @@
+ #include <net.h>
+ #include <netdev.h>
+ #include <spi.h>
++#include <spi_flash.h>
+ #include <spl.h>
+ #include <version.h>
+ 
+ DECLARE_GLOBAL_DATA_PTR;
+ 
++static u8 boot_mode_sf;
++
+ #ifdef CONFIG_ATMEL_SPI
+ int spi_cs_is_valid(unsigned int bus, unsigned int cs)
+ {
+@@ -201,18 +204,20 @@ void ma5d4evk_mci1_hw_init(void)
+ int board_mmc_init(bd_t *bis)
+ {
+ 	int ret;
++	void *mci0 = (void *)ATMEL_BASE_MCI0;
++	void *mci1 = (void *)ATMEL_BASE_MCI1;
+ 
+ 	/* De-assert reset on On-SoM eMMC */
+ 	at91_set_pio_output(AT91_PIO_PORTE, 15, 1);
+ 	at91_set_pio_pulldown(AT91_PIO_PORTE, 15, 0);
+ 
+-	ret = atmel_mci_init((void *)ATMEL_BASE_MCI1);
++	ret = atmel_mci_init(boot_mode_sf ? mci0 : mci1);
+ 	if (ret)	/* eMMC init failed, skip it. */
+ 		at91_set_pio_output(AT91_PIO_PORTE, 15, 0);
+ 
+ 	/* Enable the power supply to On-board MicroSD */
+ 	at91_set_pio_output(AT91_PIO_PORTE, 17, 0);
+-	ret = atmel_mci_init((void *)ATMEL_BASE_MCI0);
++	ret = atmel_mci_init(boot_mode_sf ? mci1 : mci0);
+ 	if (ret)	/* uSD init failed, power it down. */
+ 		at91_set_pio_output(AT91_PIO_PORTE, 17, 1);
+ 
+@@ -274,6 +279,14 @@ int board_early_init_f(void)
+ 	return 0;
+ }
+ 
++static void board_identify(void)
++{
++	struct spi_flash *sf;
++	sf = spi_flash_probe(CONFIG_SF_DEFAULT_BUS, CONFIG_SF_DEFAULT_CS,
++			     CONFIG_SF_DEFAULT_SPEED, CONFIG_SF_DEFAULT_MODE);
++	boot_mode_sf = (sf != NULL);
++}
++
+ int board_init(void)
+ {
+ 	/* adress of boot parameters */
+@@ -299,6 +312,8 @@ int board_init(void)
+ 	at91_udp_hw_init();
+ #endif
+ 
++	board_identify();
++
+ 	/* Reset CAN controllers */
+ 	at91_set_pio_output(AT91_PIO_PORTB, 21, 0);
+ 	udelay(100);
+@@ -308,6 +323,12 @@ int board_init(void)
+ 	return 0;
+ }
+ 
++int board_late_init(void)
++{
++	setenv("bootmode", boot_mode_sf ? "sf" : "emmc");
++	return 0;
++}
++
+ int dram_init(void)
+ {
+ 	gd->ram_size = get_ram_size((void *)CONFIG_SYS_SDRAM_BASE,
+diff --git a/include/configs/ma5d4evk.h b/include/configs/ma5d4evk.h
+index 6b1f04f..62f4bc9 100644
+--- a/include/configs/ma5d4evk.h
++++ b/include/configs/ma5d4evk.h
+@@ -15,6 +15,7 @@
+ #include "at91-sama5_common.h"
+ #undef CONFIG_BOOTARGS
+ #define CONFIG_SYS_USE_SERIALFLASH	1
++#define CONFIG_BOARD_LATE_INIT
+ 
+ /*
+  * U-Boot Commands
+@@ -196,18 +197,23 @@
+ 	"nfsargs="							\
+ 		"setenv bootargs root=/dev/nfs rw "			\
+ 			"nfsroot=${serverip}:${rootpath},v3,tcp\0"	\
++	"fdtimg=if test ${bootmode} = \"sf\" ; then "			\
++			"setenv kernel_fdt 1 ; "			\
++		"else ; "						\
++			"setenv kernel_fdt 2 ; "			\
++		"fi\0"							\
+ 	"mmc_mmc="							\
+-		"run mmcload mmcargs addargs ; "			\
+-		"bootm ${kernel_addr_r}\0"				\
++		"run fdtimg mmcload mmcargs addargs ; "			\
++		"bootm ${kernel_addr_r}:kernel@1 - ${kernel_addr_r}:fdt@${kernel_fdt}\0" \
+ 	"mmc_nfs="							\
+-		"run mmcload nfsargs addip addargs ; "			\
+-		"bootm ${kernel_addr_r}\0"				\
++		"run fdtimg mmcload nfsargs addip addargs ; "			\
++		"bootm ${kernel_addr_r}:kernel@1 - ${kernel_addr_r}:fdt@${kernel_fdt}\0" \
+ 	"net_mmc="							\
+-		"run netload mmcargs addargs ; "			\
+-		"bootm ${kernel_addr_r}\0"				\
++		"run fdtimg netload mmcargs addargs ; "			\
++		"bootm ${kernel_addr_r}:kernel@1 - ${kernel_addr_r}:fdt@${kernel_fdt}\0" \
+ 	"net_nfs="							\
+-		"run netload nfsargs addip addargs ; "			\
+-		"bootm ${kernel_addr_r}\0"				\
++		"run fdtimg netload nfsargs addip addargs ; "			\
++		"bootm ${kernel_addr_r}:kernel@1 - ${kernel_addr_r}:fdt@${kernel_fdt}\0" \
+ 	"try_bootscript="						\
+ 		"mmc rescan;"						\
+ 		"if test -e mmc 1:1 ${bootscript} ; then "		\
+-- 
+2.10.2
+
