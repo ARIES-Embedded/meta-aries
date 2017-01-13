@@ -13,12 +13,12 @@ eMMC.
 Signed-off-by: Marek Vasut <marex@denx.de>
 Cc: Andreas Bießmann <andreas.devel@googlemail.com>
 ---
- board/denx/ma5d4evk/ma5d4evk.c | 25 +++++++++++++++++++++++--
+ board/denx/ma5d4evk/ma5d4evk.c | 26 ++++++++++++++++++++++++--
  include/configs/ma5d4evk.h     | 22 ++++++++++++++--------
- 2 files changed, 37 insertions(+), 10 deletions(-)
+ 2 files changed, 38 insertions(+), 10 deletions(-)
 
 diff --git a/board/denx/ma5d4evk/ma5d4evk.c b/board/denx/ma5d4evk/ma5d4evk.c
-index 9f34634..7583d34 100644
+index 9f34634c55..35fddc297e 100644
 --- a/board/denx/ma5d4evk/ma5d4evk.c
 +++ b/board/denx/ma5d4evk/ma5d4evk.c
 @@ -22,11 +22,14 @@
@@ -96,8 +96,16 @@ index 9f34634..7583d34 100644
  int dram_init(void)
  {
  	gd->ram_size = get_ram_size((void *)CONFIG_SYS_SDRAM_BASE,
+@@ -344,6 +365,7 @@ void spl_board_init(void)
+ 	ma5d4evk_mci0_hw_init();
+ 	ma5d4evk_mci1_hw_init();
+ #endif
++	board_identify();
+ }
+ 
+ void board_boot_order(u32 *spl_boot_list)
 diff --git a/include/configs/ma5d4evk.h b/include/configs/ma5d4evk.h
-index 6b1f04f..62f4bc9 100644
+index 6b1f04f61c..62f4bc9605 100644
 --- a/include/configs/ma5d4evk.h
 +++ b/include/configs/ma5d4evk.h
 @@ -15,6 +15,7 @@
