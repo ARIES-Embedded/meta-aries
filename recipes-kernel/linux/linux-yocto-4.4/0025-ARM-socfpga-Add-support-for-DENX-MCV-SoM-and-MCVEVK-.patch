@@ -18,9 +18,9 @@ Cc: Olof Johansson <olof@lixom.net>
 Signed-off-by: Dinh Nguyen <dinguyen@opensource.altera.com>
 ---
  arch/arm/boot/dts/Makefile                    |  1 +
- arch/arm/boot/dts/socfpga_cyclone5_mcv.dtsi   | 34 ++++++++++
+ arch/arm/boot/dts/socfpga_cyclone5_mcv.dtsi   | 74 +++++++++++++++++++++
  arch/arm/boot/dts/socfpga_cyclone5_mcvevk.dts | 94 +++++++++++++++++++++++++++
- 3 files changed, 129 insertions(+)
+ 3 files changed, 169 insertions(+)
  create mode 100644 arch/arm/boot/dts/socfpga_cyclone5_mcv.dtsi
  create mode 100644 arch/arm/boot/dts/socfpga_cyclone5_mcvevk.dts
 
@@ -41,7 +41,7 @@ new file mode 100644
 index 0000000..f86f9c0
 --- /dev/null
 +++ b/arch/arm/boot/dts/socfpga_cyclone5_mcv.dtsi
-@@ -0,0 +1,34 @@
+@@ -0,0 +1,74 @@
 +/*
 + * Copyright (C) 2015 Marek Vasut <marex@denx.de>
 + *
@@ -75,6 +75,46 @@ index 0000000..f86f9c0
 +&mmc0 {	/* On-SoM eMMC */
 +	bus-width = <8>;
 +	status = "okay";
++};
++
++&fpgamgr0 {
++	compatible = "altr,socfpga-fpga-mgr", "simple-bus";
++	#address-cells = <0x1>;
++	#size-cells = <0x1>;
++	ranges;
++
++	bridge@0 {
++		compatible = "altr,socfpga-lwhps2fpga-bridge", "simple-bus";
++		resets = <&rst LWHPS2FPGA_RESET>;
++		label = "lwhps2fpga";
++		reset-names = "lwhps2fpga";
++		clocks = <&l4_main_clk>;
++		#address-cells = <0x1>;
++		#size-cells = <0x1>;
++		ranges;
++	};
++
++	bridge@1 {
++		compatible = "altr,socfpga-hps2fpga-bridge", "simple-bus";
++		resets = <&rst HPS2FPGA_RESET>;
++		label = "hps2fpga";
++		reset-names = "hps2fpga";
++		clocks = <&l4_main_clk>;
++		#address-cells = <0x1>;
++		#size-cells = <0x1>;
++		ranges;
++	};
++
++	bridge@2 {
++		compatible = "altr,socfpga-fpga2hps-bridge", "simple-bus";
++		resets = <&rst FPGA2HPS_RESET>;
++		label = "fpga2hps";
++		reset-names = "fpga2hps";
++		clocks = <&l4_main_clk>;
++		#address-cells = <0x1>;
++		#size-cells = <0x1>;
++		ranges;
++	};
 +};
 diff --git a/arch/arm/boot/dts/socfpga_cyclone5_mcvevk.dts b/arch/arm/boot/dts/socfpga_cyclone5_mcvevk.dts
 new file mode 100644
