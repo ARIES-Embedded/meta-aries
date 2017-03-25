@@ -1,0 +1,26 @@
+From ea4e1ff74bcf798d748180ca45e4f7bd1fa6b35f Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marex@denx.de>
+Date: Sat, 25 Mar 2017 07:46:30 +0100
+Subject: [PATCH 16/16] ARM: socfpga: Increase allowed kernel size to 64 MiB
+
+Increase the size of the kernel supported by boot* commands to 64 MiB.
+
+Signed-off-by: Marek Vasut <marex@denx.de>
+---
+ include/configs/socfpga_mcvevk.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/include/configs/socfpga_mcvevk.h b/include/configs/socfpga_mcvevk.h
+index 73ec7db..b598edb 100644
+--- a/include/configs/socfpga_mcvevk.h
++++ b/include/configs/socfpga_mcvevk.h
+@@ -108,4 +108,6 @@
+ /* The rest of the configuration is shared */
+ #include <configs/socfpga_common.h>
+ 
++#define CONFIG_SYS_BOOTM_LEN  (64 << 20)
++
+ #endif	/* __CONFIG_DENX_MCVEVK_H__ */
+-- 
+2.10.2
+
