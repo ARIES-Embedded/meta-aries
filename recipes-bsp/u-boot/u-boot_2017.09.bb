@@ -3,7 +3,7 @@ FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
 require u-boot-common_${PV}.inc
 require u-boot.inc
 
-DEPENDS += "dtc-native"
+DEPENDS += "dtc-native bc-native"
 
 # Build u-boot.sd and u-boot.nand for M28EVK
 do_compile_append_m28evk () {
@@ -65,16 +65,7 @@ do_deploy_append_m53evk () {
 
 # Build boot.bin for the MA5D4EVK, which is the SPL in Atmel format
 SRC_URI_append_ma5d4evk = " \
-	file://0001-ARM-at91-ma5d4-Switch-DDR2-controller-to-sequencial-.patch \
-	file://0002-ARM-at91-ma5d4-Reset-CAN-controllers-late.patch \
-	file://0003-ARM-at91-ma5d4-Enable-DFU-and-UMS.patch \
-	file://0004-ARM-at91-ma5d4-Init-SD-MMC-controller-in-SPL.patch \
-	file://0005-ARM-at91-ma5d4-Swap-SD-MMC-controller-order.patch \
-	file://0006-ARM-at91-ma5d4-Enable-support-for-booting-from-eMMC.patch \
-	file://0007-ARM-at91-ma5d4-Boot-from-MMC2-when-using-SAM-BA.patch \
-	file://0008-ARM-at91-ma5d4-Switch-environment-start-to-eMMC.patch \
-	file://0009-ARM-at91-ma5d4-Enable-random-ethaddr.patch \
-	file://0010-ARM-at91-ma5d4-Support-both-SF-and-eMMC-SoMs.patch \
+	file://0001-ARM-at91-ma5d4-select-FDT-blob-in-FIT-image-by-file-.patch \
 	"
 
 do_compile_append_ma5d4evk () {
@@ -95,10 +86,4 @@ do_deploy_append_ma5d4evk () {
 
 # MCVEVK
 SRC_URI_append_mcvevk = " \
-	file://0011-ARM-socfpga-ddr-Replace-__FILE__-with-__func__.patch \
-	file://0012-ARM-socfpga-Reduce-the-DFU-buffer-size.patch \
-	file://0013-ARM-socfpga-mcvevk-Add-default-dfu_alt_info.patch \
-	file://0014-ARM-socfpga-Add-boot0-hook-to-prevent-SPL-corruption.patch \
-	file://0015-ARM-socfpga-Disable-OC-on-MCVEVK.patch \
-	file://0016-ARM-socfpga-Increase-allowed-kernel-size-to-64-MiB.patch \
 	"

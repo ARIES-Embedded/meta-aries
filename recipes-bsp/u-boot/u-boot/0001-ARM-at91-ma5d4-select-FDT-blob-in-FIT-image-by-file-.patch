@@ -1,0 +1,41 @@
+From 3531cd8cec259ca8f319fe77fe2c465e7463fc5e Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Thu, 16 Nov 2017 12:30:56 +0100
+Subject: [PATCH] ARM: at91: ma5d4: select FDT blob in FIT image by file name
+
+Since Yocto 2.4, the FDT blobs in a FIT image are labeled by
+file name instead of sequence number.
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ include/configs/ma5d4evk.h | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/include/configs/ma5d4evk.h b/include/configs/ma5d4evk.h
+index 50b21c9..50e02ad 100644
+--- a/include/configs/ma5d4evk.h
++++ b/include/configs/ma5d4evk.h
+@@ -131,6 +131,8 @@
+ 	"rootdev=/dev/mmcblk0p2\0"					\
+ 	"netdev=eth0\0"							\
+ 	"dfu_alt_info=mmc raw 0 3867148288\0"				\
++	"fdt_sf_file=at91-sama5d4_ma5d4sfevk.dtb\0"			\
++	"fdt_mmc_file=at91-sama5d4_ma5d4emmcevk.dtb\0"			\
+ 	"kernel_addr_r=0x22000000\0"					\
+ 	"update_spi_firmware_spl_addr=0x21000000\0"			\
+ 	"update_spi_firmware_spl_filename=boot.bin\0"			\
+@@ -172,9 +174,9 @@
+ 		"setenv bootargs root=/dev/nfs rw "			\
+ 			"nfsroot=${serverip}:${rootpath},v3,tcp\0"	\
+ 	"fdtimg=if test ${bootmode} = \"sf\" ; then "			\
+-			"setenv kernel_fdt 1 ; "			\
++			"setenv kernel_fdt ${fdt_sf_file} ; "		\
+ 		"else ; "						\
+-			"setenv kernel_fdt 2 ; "			\
++			"setenv kernel_fdt ${fdt_mmc_file} ; "		\
+ 		"fi\0"							\
+ 	"mmc_mmc="							\
+ 		"run fdtimg mmcload mmcargs addargs ; "			\
+-- 
+2.7.4
+
