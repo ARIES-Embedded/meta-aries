@@ -1,13 +1,16 @@
-From 343fe4fd1fb0a6a73595306d0cd41ea8d7f293f5 Mon Sep 17 00:00:00 2001
+From b90198e5fa8d1deab5e05c6b42562cffc32d3dd9 Mon Sep 17 00:00:00 2001
 From: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
 Date: Wed, 4 Dec 2013 19:32:00 +0200
-Subject: [PATCH 15/29] OF: DT-Overlay configfs interface (v6)
+Subject: [PATCH 2/4] OF: DT-Overlay configfs interface (v7)
 
 Add a runtime interface to using configfs for generic device tree overlay
 usage. With it its possible to use device tree overlays without having
 to use a per-platform overlay manager.
 
 Please see Documentation/devicetree/configfs-overlays.txt for more info.
+
+Changes since v6:
+- Default groups properties API changed.
 
 Changes since v5:
 - New style configfs.
@@ -26,16 +29,12 @@ Changes since v2:
 
 Changes since v1:
 - of_resolve() -> of_resolve_phandles().
-
-Signed-off-by: Pantelis Antoniou <pantelis.antoniou@konsulko.com>
-
-cfs-of
 ---
  Documentation/devicetree/configfs-overlays.txt |  31 +++
  drivers/of/Kconfig                             |   7 +
  drivers/of/Makefile                            |   1 +
- drivers/of/configfs.c                          | 311 +++++++++++++++++++++++++
- 4 files changed, 350 insertions(+)
+ drivers/of/configfs.c                          | 307 +++++++++++++++++++++++++
+ 4 files changed, 346 insertions(+)
  create mode 100644 Documentation/devicetree/configfs-overlays.txt
  create mode 100644 drivers/of/configfs.c
 
@@ -77,12 +76,12 @@ index 0000000..5fa43e0
 +intended to be used by hardware managers in the kernel, while the copy interface
 +make sense for developers (since it avoids problems with namespaces).
 diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
-index e2a4841..59efeda 100644
+index ba7b034..7d4169e 100644
 --- a/drivers/of/Kconfig
 +++ b/drivers/of/Kconfig
 @@ -112,4 +112,11 @@ config OF_OVERLAY
- 	  While this option is selected automatically when needed, you can
- 	  enable it manually to improve device tree unit test coverage.
+ config OF_NUMA
+ 	bool
  
 +config OF_CONFIGFS
 +	bool "Device Tree Overlay ConfigFS interface"
@@ -93,7 +92,7 @@ index e2a4841..59efeda 100644
 +
  endif # OF
 diff --git a/drivers/of/Makefile b/drivers/of/Makefile
-index 156c072..46c8f57 100644
+index d7efd9d..aa5ef9d 100644
 --- a/drivers/of/Makefile
 +++ b/drivers/of/Makefile
 @@ -1,4 +1,5 @@
@@ -104,10 +103,10 @@ index 156c072..46c8f57 100644
  obj-$(CONFIG_OF_EARLY_FLATTREE) += fdt_address.o
 diff --git a/drivers/of/configfs.c b/drivers/of/configfs.c
 new file mode 100644
-index 0000000..b68dea8
+index 0000000..c7e999c
 --- /dev/null
 +++ b/drivers/of/configfs.c
-@@ -0,0 +1,311 @@
+@@ -0,0 +1,307 @@
 +/*
 + * Configfs entries for device-tree
 + *
@@ -155,7 +154,7 @@ index 0000000..b68dea8
 +	int err;
 +
 +	/* unflatten the tree */
-+	of_fdt_unflatten_tree(blob, &overlay->overlay);
++	of_fdt_unflatten_tree(blob, NULL, &overlay->overlay);
 +	if (overlay->overlay == NULL) {
 +		pr_err("%s: failed to unflatten tree\n", __func__);
 +		err = -EINVAL;
@@ -383,18 +382,12 @@ index 0000000..b68dea8
 +
 +struct config_group of_cfs_overlay_group;
 +
-+struct config_group *of_cfs_def_groups[] = {
-+	&of_cfs_overlay_group,
-+	NULL
-+};
-+
 +static struct configfs_subsystem of_cfs_subsys = {
 +	.su_group = {
 +		.cg_item = {
 +			.ci_namebuf = "device-tree",
 +			.ci_type = &of_cfs_type,
 +		},
-+		.default_groups = of_cfs_def_groups,
 +	},
 +	.su_mutex = __MUTEX_INITIALIZER(of_cfs_subsys.su_mutex),
 +};
@@ -408,6 +401,8 @@ index 0000000..b68dea8
 +	config_group_init(&of_cfs_subsys.su_group);
 +	config_group_init_type_name(&of_cfs_overlay_group, "overlays",
 +			&overlays_type);
++	configfs_add_default_group(&of_cfs_overlay_group,
++			&of_cfs_subsys.su_group);
 +
 +	ret = configfs_register_subsystem(&of_cfs_subsys);
 +	if (ret != 0) {
@@ -420,5 +415,5 @@ index 0000000..b68dea8
 +}
 +late_initcall(of_cfs_init);
 -- 
-2.10.2
+1.9.1
 
