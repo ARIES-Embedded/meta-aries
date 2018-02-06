@@ -86,4 +86,5 @@ do_deploy_append_ma5d4evk () {
 
 # MCVEVK
 SRC_URI_append_mcvevk = " \
+	file://0002-ddr-altera-replace-in-printf-ugly-__FILE__-messages-.patch \
 	"
