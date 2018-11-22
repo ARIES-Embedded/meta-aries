@@ -1,7 +1,7 @@
-From 3531cd8cec259ca8f319fe77fe2c465e7463fc5e Mon Sep 17 00:00:00 2001
+From 889067928a8266ab58fdfefd58e0967dd82aa575 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Thu, 16 Nov 2017 12:30:56 +0100
-Subject: [PATCH] ARM: at91: ma5d4: select FDT blob in FIT image by file name
+Subject: [PATCH 10/11] ma5d4evk: select FDT blob in FIT image by file name
 
 Since Yocto 2.4, the FDT blobs in a FIT image are labeled by
 file name instead of sequence number.
@@ -12,10 +12,10 @@ Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/include/configs/ma5d4evk.h b/include/configs/ma5d4evk.h
-index 50b21c9..50e02ad 100644
+index 7926294..4eca95b 100644
 --- a/include/configs/ma5d4evk.h
 +++ b/include/configs/ma5d4evk.h
-@@ -131,6 +131,8 @@
+@@ -130,6 +130,8 @@
  	"rootdev=/dev/mmcblk0p2\0"					\
  	"netdev=eth0\0"							\
  	"dfu_alt_info=mmc raw 0 3867148288\0"				\
@@ -24,7 +24,7 @@ index 50b21c9..50e02ad 100644
  	"kernel_addr_r=0x22000000\0"					\
  	"update_spi_firmware_spl_addr=0x21000000\0"			\
  	"update_spi_firmware_spl_filename=boot.bin\0"			\
-@@ -172,9 +174,9 @@
+@@ -171,9 +173,9 @@
  		"setenv bootargs root=/dev/nfs rw "			\
  			"nfsroot=${serverip}:${rootpath},v3,tcp\0"	\
  	"fdtimg=if test ${bootmode} = \"sf\" ; then "			\
@@ -37,5 +37,5 @@ index 50b21c9..50e02ad 100644
  	"mmc_mmc="							\
  		"run fdtimg mmcload mmcargs addargs ; "			\
 -- 
-2.7.4
+1.9.1
 

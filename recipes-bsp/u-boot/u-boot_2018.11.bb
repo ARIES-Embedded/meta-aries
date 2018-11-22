@@ -1,11 +1,14 @@
-FILESEXTRAPATHS_prepend := "${THISDIR}/${PN}:"
-
 require u-boot-common_${PV}.inc
 require u-boot.inc
 
 DEPENDS += "dtc-native bc-native"
 
 # Build u-boot.sd and u-boot.nand for M28EVK
+SRC_URI_append_m28evk = " \
+	file://0003-m28evk-fix-issues-with-options-defined-in-header-and.patch \
+	file://0004-m28evk-add-CONFIG_CMD_MTDPARTS-to-m28evk_defconfig.patch \
+	"
+
 do_compile_append_m28evk () {
 	./tools/mxsboot sd u-boot.sb u-boot.sd
 	./tools/mxsboot nand u-boot.sb u-boot.nand
@@ -42,6 +45,10 @@ do_deploy_append_m28evk () {
 }
 
 # Build u-boot-with-nand-spl.imx for M53EVK
+SRC_URI_append_m53evk = " \
+	file://0005-m53evk-add-CONFIG_CMD_MTDPARTS-to-m53evk_defconfig.patch \
+	"
+
 do_compile_append_m53evk () {
 	oe_runmake u-boot-with-nand-spl.imx
 }
@@ -65,7 +72,11 @@ do_deploy_append_m53evk () {
 
 # Build boot.bin for the MA5D4EVK, which is the SPL in Atmel format
 SRC_URI_append_ma5d4evk = " \
-	file://0001-ARM-at91-ma5d4-select-FDT-blob-in-FIT-image-by-file-.patch \
+	file://0006-ma5d4evk-use-CONFIG_SPI_BOOT-instead-of-CONFIG_SYS_U.patch \
+	file://0007-ma5d4evk-undef-a-few-options-before-redefining-them.patch \
+	file://0008-ma5d4evk-remove-CONFIG_NR_DRAM_BANKS-fron-board-s-he.patch \
+	file://0009-ma5d4evk-temporarily-revert-the-DM-support.patch \
+	file://0010-ma5d4evk-select-FDT-blob-in-FIT-image-by-file-name.patch \
 	"
 
 do_compile_append_ma5d4evk () {
@@ -86,5 +97,6 @@ do_deploy_append_ma5d4evk () {
 
 # MCVEVK
 SRC_URI_append_mcvevk = " \
-	file://0002-ddr-altera-replace-in-printf-ugly-__FILE__-messages-.patch \
+	file://0011-mcvevk-fix-device-tree-to-work-with-DM-serial.patch \
 	"
+

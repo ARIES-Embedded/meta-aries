@@ -1,0 +1,68 @@
+From abbdec1e4305313d672003c8af0ed29cadbd3a1e Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Fri, 23 Nov 2018 22:13:16 +0100
+Subject: [PATCH 02/11] board/aries: add MAINTAINERS file for the Aries files
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.com>
+---
+ board/aries/m28evk/MAINTAINERS   | 4 ++--
+ board/aries/m53evk/MAINTAINERS   | 4 ++--
+ board/aries/ma5d4evk/MAINTAINERS | 4 ++--
+ board/aries/mcvevk/MAINTAINERS   | 5 +++--
+ 4 files changed, 9 insertions(+), 8 deletions(-)
+
+diff --git a/board/aries/m28evk/MAINTAINERS b/board/aries/m28evk/MAINTAINERS
+index aad6313..c740742 100644
+--- a/board/aries/m28evk/MAINTAINERS
++++ b/board/aries/m28evk/MAINTAINERS
+@@ -1,6 +1,6 @@
+ M28EVK BOARD
+-#M:	Marek Vasut <marek.vasut@gmail.com>
+-S:	Orphan (since 2017-07)
++M:	Wolfgang Grandegger <wg@aries-embedded.de>
++S:	Maintained
+ F:	board/aries/m28evk/
+ F:	include/configs/m28evk.h
+ F:	configs/m28evk_defconfig
+diff --git a/board/aries/m53evk/MAINTAINERS b/board/aries/m53evk/MAINTAINERS
+index 73a68cf..57535b0 100644
+--- a/board/aries/m53evk/MAINTAINERS
++++ b/board/aries/m53evk/MAINTAINERS
+@@ -1,6 +1,6 @@
+ M53EVK BOARD
+-#M:	Marek Vasut <marek.vasut@gmail.com>
+-S:	Orphan (since 2017-07)
++M:	Wolfgang Grandegger <wg@aries-embedded.de>
++S:	Maintained
+ F:	board/aries/m53evk/
+ F:	include/configs/m53evk.h
+ F:	configs/m53evk_defconfig
+diff --git a/board/aries/ma5d4evk/MAINTAINERS b/board/aries/ma5d4evk/MAINTAINERS
+index a2fab52..b6edb75 100644
+--- a/board/aries/ma5d4evk/MAINTAINERS
++++ b/board/aries/ma5d4evk/MAINTAINERS
+@@ -1,6 +1,6 @@
+ Aries MA5D4EVK BOARD
+-#M:	Marek Vasut <marek.vasut@gmail.com>
+-S:	Orphan (since 2017-07)
++M:	Wolfgang Grandegger <wg@aries-embedded.de>
++S:	Maintained
+ F:	board/aries/ma5d4evk/
+ F:	include/configs/ma5d4evk.h
+ F:	configs/ma5d4evk_defconfig
+diff --git a/board/aries/mcvevk/MAINTAINERS b/board/aries/mcvevk/MAINTAINERS
+index 0b719a1..0e97941 100644
+--- a/board/aries/mcvevk/MAINTAINERS
++++ b/board/aries/mcvevk/MAINTAINERS
+@@ -1,5 +1,6 @@
+ Aries MCVEVK BOARD
+-#M:	Marek Vasut <marek.vasut@gmail.com>
+-S:	Orphan (since 2017-07)
++M:	Wolfgang Grandegger <wg@aries-embedded.de>
++S:	Maintained
++F:	board/aries/mcvevk/
+ F:	include/configs/socfpga_mcvevk.h
+ F:	configs/socfpga_mcvevk_defconfig
+-- 
+1.9.1
+

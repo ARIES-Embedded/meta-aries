@@ -1,0 +1,66 @@
+From 68dbfa1d93b123be5b1db2702a1bcb76a4586ca1 Mon Sep 17 00:00:00 2001
+From: Marek Vasut <marex@denx.de>
+Date: Sat, 11 Jun 2016 15:51:46 +0200
+Subject: [PATCH 1/2] drm/panel: Add support for Ampire AM-800480R2 800x480 7"
+ panel
+
+This adds support for the AM-800480R2 7" 800x480 panel to the
+DRM simple panel driver. This panel is slightly different from
+the R3 variant in the timing department to make things more fun.
+
+Signed-off-by: Marek Vasut <marex@denx.de>
+Cc: Boris Brezillon <boris.brezillon@free-electrons.com>
+Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
+---
+ drivers/gpu/drm/panel/panel-simple.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index cbf1ab4..69a8cca 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -412,6 +412,31 @@ static const struct panel_desc ampire_am_480272h3tmqw_t01h = {
+ 	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+ };
+ 
++static const struct drm_display_mode ampire_am800480r2_mode = {
++	.clock = 33333,
++	.hdisplay = 800,
++	.hsync_start = 800 + 168,
++	.hsync_end = 800 + 168 + 64,
++	.htotal = 800 + 168 + 64 + 88,
++	.vdisplay = 480,
++	.vsync_start = 480 + 37,
++	.vsync_end = 480 + 37 + 2,
++	.vtotal = 480 + 37 + 2 + 8,
++	.vrefresh = 60,
++	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
++};
++
++static const struct panel_desc ampire_am800480r2 = {
++	.modes = &ampire_am800480r2_mode,
++	.num_modes = 1,
++	.bpc = 6,
++	.size = {
++		.width = 152,
++		.height = 91,
++	},
++	.bus_format = MEDIA_BUS_FMT_RGB666_1X18,
++};
++
+ static const struct drm_display_mode ampire_am800480r3tmqwa1h_mode = {
+ 	.clock = 33333,
+ 	.hdisplay = 800,
+@@ -2071,6 +2096,9 @@ static const struct panel_desc winstar_wf35ltiacd = {
+ 
+ static const struct of_device_id platform_of_match[] = {
+ 	{
++		.compatible = "ampire,am800480r2",
++		.data = &ampire_am800480r2,
++	}, {
+ 		.compatible = "ampire,am-480272h3tmqw-t01h",
+ 		.data = &ampire_am_480272h3tmqw_t01h,
+ 	}, {
+-- 
+2.7.4
+

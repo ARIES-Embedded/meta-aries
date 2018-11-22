@@ -1,7 +1,7 @@
-From ab89cbd309f49a7e28381867640be6397c356ba4 Mon Sep 17 00:00:00 2001
+From 4ccf9f20c458eb3d3dd6641acca6c5223f5c3039 Mon Sep 17 00:00:00 2001
 From: Marek Vasut <marex@denx.de>
 Date: Sat, 14 May 2016 21:25:03 +0200
-Subject: [PATCH 4/4] ARM: at91/dt: sama5d4: Adjust DTS for released board
+Subject: [PATCH 2/2] ARM: at91/dt: sama5d4: Adjust DTS for released board
  versions
 
 There are two SoMs released on the market, with and without eMMC NAND
@@ -183,7 +183,7 @@ index 0000000..d44d0f3
 +};
 diff --git a/arch/arm/boot/dts/at91-sama5d4_ma5d4emmcevk.dts b/arch/arm/boot/dts/at91-sama5d4_ma5d4emmcevk.dts
 new file mode 100644
-index 0000000..01b65b0
+index 0000000..e0b075a
 --- /dev/null
 +++ b/arch/arm/boot/dts/at91-sama5d4_ma5d4emmcevk.dts
 @@ -0,0 +1,175 @@
@@ -281,14 +281,14 @@ index 0000000..01b65b0
 +			};
 +		};
 +
-+		usb0: gadget@00400000 {
++		usb0: gadget@400000 {
 +			atmel,vbus-gpio = <&pioE 31 GPIO_ACTIVE_HIGH>;
 +			pinctrl-names = "default";
 +			pinctrl-0 = <&pinctrl_usba_vbus>;
 +			status = "okay";
 +		};
 +
-+		usb1: ohci@00500000 {
++		usb1: ohci@500000 {
 +			num-ports = <3>;
 +			atmel,vbus-gpio = <0
 +					   &pioE 11 GPIO_ACTIVE_LOW
@@ -297,7 +297,7 @@ index 0000000..01b65b0
 +			status = "okay";
 +		};
 +
-+		usb2: ehci@00600000 {
++		usb2: ehci@600000 {
 +			status = "okay";
 +		};
 +	};
@@ -511,7 +511,7 @@ index 0000000..e3b992a
 +};
 diff --git a/arch/arm/boot/dts/at91-sama5d4_ma5d4sfevk.dts b/arch/arm/boot/dts/at91-sama5d4_ma5d4sfevk.dts
 new file mode 100644
-index 0000000..3236be8
+index 0000000..5b00cf8
 --- /dev/null
 +++ b/arch/arm/boot/dts/at91-sama5d4_ma5d4sfevk.dts
 @@ -0,0 +1,171 @@
@@ -606,14 +606,14 @@ index 0000000..3236be8
 +			};
 +		};
 +
-+		usb0: gadget@00400000 {
++		usb0: gadget@400000 {
 +			atmel,vbus-gpio = <&pioE 31 GPIO_ACTIVE_HIGH>;
 +			pinctrl-names = "default";
 +			pinctrl-0 = <&pinctrl_usba_vbus>;
 +			status = "okay";
 +		};
 +
-+		usb1: ohci@00500000 {
++		usb1: ohci@500000 {
 +			num-ports = <3>;
 +			atmel,vbus-gpio = <0
 +					   &pioE 11 GPIO_ACTIVE_LOW
@@ -622,7 +622,7 @@ index 0000000..3236be8
 +			status = "okay";
 +		};
 +
-+		usb2: ehci@00600000 {
++		usb2: ehci@600000 {
 +			status = "okay";
 +		};
 +	};
@@ -687,5 +687,5 @@ index 0000000..3236be8
 +	};
 +};
 -- 
-1.9.1
+2.7.4
 

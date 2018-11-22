@@ -1,0 +1,25 @@
+From 143dda45abb044b08addc2688b3b364d969dcb19 Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Mon, 4 Feb 2019 13:50:35 +0100
+Subject: [PATCH 05/11] m53evk: add CONFIG_CMD_MTDPARTS to m53evk_defconfig
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ configs/m53evk_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/configs/m53evk_defconfig b/configs/m53evk_defconfig
+index 71f1d9f..f6e0376 100644
+--- a/configs/m53evk_defconfig
++++ b/configs/m53evk_defconfig
+@@ -36,6 +36,7 @@ CONFIG_CMD_EXT4=y
+ CONFIG_CMD_EXT4_WRITE=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_FS_GENERIC=y
++CONFIG_CMD_MTDPARTS=y
+ CONFIG_MTDIDS_DEFAULT="nand0=mxc_nand"
+ CONFIG_MTDPARTS_DEFAULT="mtdparts=mxc_nand:1024k(u-boot),512k(env1),512k(env2),14m(boot),240m(data),-@2048k(UBI)"
+ CONFIG_CMD_UBI=y
+-- 
+1.9.1
+

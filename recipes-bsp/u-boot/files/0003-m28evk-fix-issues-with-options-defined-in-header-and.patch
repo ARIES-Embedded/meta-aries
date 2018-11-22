@@ -1,0 +1,53 @@
+From ac324abd6d1ac850798739e1c5b84b3913f35eb6 Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Thu, 3 Jan 2019 19:29:05 +0100
+Subject: [PATCH 03/11] m28evk: fix issues with options defined in header and
+ defconfig file
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ configs/m28evk_defconfig | 2 ++
+ include/configs/m28evk.h | 5 +----
+ 2 files changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/configs/m28evk_defconfig b/configs/m28evk_defconfig
+index e26d49a..bb85a8e 100644
+--- a/configs/m28evk_defconfig
++++ b/configs/m28evk_defconfig
+@@ -56,3 +56,5 @@ CONFIG_USB_STORAGE=y
+ CONFIG_VIDEO=y
+ CONFIG_FAT_WRITE=y
+ CONFIG_OF_LIBFDT=y
++CONFIG_NR_DRAM_BANKS=1
++CONFIG_MTD_DEVICE=y
+\ No newline at end of file
+diff --git a/include/configs/m28evk.h b/include/configs/m28evk.h
+index bb1d6b4..7b482ce 100644
+--- a/include/configs/m28evk.h
++++ b/include/configs/m28evk.h
+@@ -12,7 +12,6 @@
+ #define CONFIG_TIMESTAMP		/* Print image info with timestamp */
+ 
+ /* Memory configuration */
+-#define CONFIG_NR_DRAM_BANKS		1		/* 1 bank of DRAM */
+ #define PHYS_SDRAM_1			0x40000000	/* Base address */
+ #define PHYS_SDRAM_1_SIZE		0x20000000	/* Max 512 MB RAM */
+ #define CONFIG_SYS_SDRAM_BASE		PHYS_SDRAM_1
+@@ -28,13 +27,11 @@
+ #define CONFIG_ENV_OFFSET		(24 * CONFIG_ENV_SECT_SIZE) /* 3 MiB */
+ #define CONFIG_ENV_OFFSET_REDUND	\
+ 		(CONFIG_ENV_OFFSET + CONFIG_ENV_RANGE)
+-
+-#define CONFIG_MTD_DEVICE
+-#define CONFIG_MTD_PARTITIONS
+ #endif
+ 
+ /* FEC Ethernet on SoC */
+ #ifdef CONFIG_CMD_NET
++#define CONFIG_MII
+ #define CONFIG_FEC_MXC
+ #endif
+ 
+-- 
+1.9.1
+

@@ -1,0 +1,428 @@
+From 10964565b7a92df6c3bc341ff1c34d2b8ffde2ab Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Wed, 23 Jan 2019 10:57:45 +0100
+Subject: [PATCH 09/11] ma5d4evk: temporarily revert the DM support
+
+Ths patch reverts the following patches to temporarily get rid of
+the DM support:
+
+  5a6eab8 at91: ma5d4evk: Enable SPL_DM and SPL_OF_CONTROL
+  4dc04eb at91: ma5d4evk: Enable DM_SPI
+  ca57bd6 at91: ma5d4evk: Add FDT support
+  4d42f16 at91: ma5d4evk: Enable DM
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ arch/arm/dts/at91-sama5d4_ma5d4.dtsi   | 142 -------------------------------
+ arch/arm/dts/at91-sama5d4_ma5d4evk.dts | 149 ---------------------------------
+ arch/arm/mach-at91/Kconfig             |   2 -
+ board/aries/ma5d4evk/ma5d4evk.c        |   6 +-
+ configs/ma5d4evk_defconfig             |   7 +-
+ include/configs/ma5d4evk.h             |   1 +
+ 6 files changed, 6 insertions(+), 301 deletions(-)
+ delete mode 100644 arch/arm/dts/at91-sama5d4_ma5d4.dtsi
+ delete mode 100644 arch/arm/dts/at91-sama5d4_ma5d4evk.dts
+
+diff --git a/arch/arm/dts/at91-sama5d4_ma5d4.dtsi b/arch/arm/dts/at91-sama5d4_ma5d4.dtsi
+deleted file mode 100644
+index d3e79fb..0000000
+--- a/arch/arm/dts/at91-sama5d4_ma5d4.dtsi
++++ /dev/null
+@@ -1,142 +0,0 @@
+-/*
+- * Copyright (C) 2015 Marek Vasut <marex@denx.de>
+- *
+- * The code contained herein is licensed under the GNU General Public
+- * License. You may obtain a copy of the GNU General Public License
+- * Version 2 or later at the following locations:
+- *
+- * http://www.opensource.org/licenses/gpl-license.html
+- * http://www.gnu.org/copyleft/gpl.html
+- */
+-
+-#include "sama5d4.dtsi"
+-
+-/ {
+-	model = "Aries/DENX MA5D4";
+-	compatible = "aries,ma5d4", "denx,ma5d4", "atmel,sama5d4", "atmel,sama5";
+-
+-	memory {
+-		reg = <0x20000000 0x10000000>;
+-	};
+-
+-	clocks {
+-		slow_xtal {
+-			clock-frequency = <32768>;
+-		};
+-
+-		main_xtal {
+-			clock-frequency = <12000000>;
+-		};
+-
+-		clk20m: clk20m {
+-			compatible = "fixed-clock";
+-			#clock-cells = <0>;
+-			clock-frequency = <20000000>;
+-			clock-output-names = "clk20m";
+-		};
+-	};
+-
+-	ahb {
+-		apb {
+-			mmc0: mmc@f8000000 {
+-				pinctrl-names = "default";
+-				pinctrl-0 = <&pinctrl_mmc0_clk_cmd_dat0 &pinctrl_mmc0_dat1_3 &pinctrl_mmc0_dat4_7>;
+-				vmmc-supply = <&vcc_mmc0_reg>;
+-				vqmmc-supply = <&vcc_3v3_reg>;
+-				status = "okay";
+-				slot@0 {
+-					reg = <0>;
+-					bus-width = <8>;
+-					broken-cd;
+-				};
+-			};
+-
+-			spi0: spi@f8010000 {
+-				cs-gpios = <&pioC 3 0>, <0>, <0>, <0>;
+-				status = "okay";
+-
+-				m25p80@0 {
+-					compatible = "atmel,at25df321a";
+-					spi-max-frequency = <50000000>;
+-					reg = <0>;
+-				};
+-			};
+-
+-			i2c0: i2c@f8014000 {
+-				status = "okay";
+-			};
+-
+-			spi1: spi@fc018000 {
+-				cs-gpios = <&pioB 22 0>, <&pioB 23 0>, <0>, <0>;
+-				status = "okay";
+-
+-				can0: can@0 {
+-					compatible = "microchip,mcp2515";
+-					reg = <0>;
+-					clocks = <&clk20m>;
+-					interrupt-parent = <&pioE>;
+-					interrupts = <6 IRQ_TYPE_EDGE_RISING>;
+-					spi-max-frequency = <10000000>;
+-				};
+-
+-				can1: can@1 {
+-					compatible = "microchip,mcp2515";
+-					reg = <1>;
+-					clocks = <&clk20m>;
+-					interrupt-parent = <&pioE>;
+-					interrupts = <7 IRQ_TYPE_EDGE_RISING>;
+-					spi-max-frequency = <10000000>;
+-				};
+-			};
+-
+-			tcb2: timer@fc024000 {
+-				timer@0 {
+-					compatible = "atmel,tcb-timer";
+-					reg = <0>;
+-				};
+-
+-				timer@1 {
+-					compatible = "atmel,tcb-timer";
+-					reg = <1>;
+-				};
+-			};
+-
+-			adc0: adc@fc034000 {
+-				pinctrl-names = "default";
+-				pinctrl-0 = <
+-					/* external trigger conflicts with USBA_VBUS */
+-					&pinctrl_adc0_ad0
+-					&pinctrl_adc0_ad1
+-					&pinctrl_adc0_ad2
+-					&pinctrl_adc0_ad3
+-					&pinctrl_adc0_ad4
+-					>;
+-				atmel,adc-vref = <3300>;
+-				status = "okay";
+-			};
+-
+-			watchdog@fc068640 {
+-				status = "okay";
+-			};
+-		};
+-	};
+-
+-	vcc_3v3_reg: fixedregulator_3v3 {
+-		compatible = "regulator-fixed";
+-		regulator-name = "VCC 3V3";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+-		regulator-boot-on;
+-		regulator-always-on;
+-	};
+-
+-	vcc_mmc0_reg: fixedregulator_mmc0 {
+-		compatible = "regulator-fixed";
+-		gpio = <&pioE 15 GPIO_ACTIVE_HIGH>;
+-		regulator-name = "RST_n MCI0";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+-		vin-supply = <&vcc_3v3_reg>;
+-		regulator-boot-on;
+-	};
+-};
+diff --git a/arch/arm/dts/at91-sama5d4_ma5d4evk.dts b/arch/arm/dts/at91-sama5d4_ma5d4evk.dts
+deleted file mode 100644
+index f65a67b..0000000
+--- a/arch/arm/dts/at91-sama5d4_ma5d4evk.dts
++++ /dev/null
+@@ -1,149 +0,0 @@
+-/*
+- * Copyright (C) 2015 Marek Vasut <marex@denx.de>
+- *
+- * The code contained herein is licensed under the GNU General Public
+- * License. You may obtain a copy of the GNU General Public License
+- * Version 2 or later at the following locations:
+- *
+- * http://www.opensource.org/licenses/gpl-license.html
+- * http://www.gnu.org/copyleft/gpl.html
+- */
+-
+-/dts-v1/;
+-#include "at91-sama5d4_ma5d4.dtsi"
+-
+-/ {
+-	model = "Aries/DENX MA5D4EVK";
+-	compatible = "aries,ma5d4evk", "denx,ma5d4evk", "atmel,sama5d4", "atmel,sama5";
+-
+-	chosen {
+-		stdout-path = "serial3:115200n8";
+-	};
+-
+-	ahb {
+-		apb {
+-			hlcdc: hlcdc@f0000000 {
+-				status = "okay";
+-
+-				hlcdc-display-controller {
+-					pinctrl-names = "default";
+-					pinctrl-0 = <&pinctrl_lcd_base &pinctrl_lcd_rgb888>;
+-
+-					port@0 {
+-						hlcdc_panel_output: endpoint@0 {
+-							reg = <0>;
+-							remote-endpoint = <&panel_input>;
+-						};
+-					};
+-				};
+-
+-			};
+-
+-			macb0: ethernet@f8020000 {
+-				phy-mode = "rmii";
+-				status = "okay";
+-
+-				phy0: ethernet-phy@0 {
+-					reg = <0>;
+-				};
+-			};
+-
+-			usart0: serial@f802c000 {
+-				status = "okay";
+-			};
+-
+-			usart1: serial@f8030000 {
+-				status = "okay";
+-			};
+-
+-			mmc1: mmc@fc000000 {
+-				pinctrl-names = "default";
+-				pinctrl-0 = <&pinctrl_mmc1_clk_cmd_dat0 &pinctrl_mmc1_dat1_3 &pinctrl_mmc1_cd>;
+-				vmmc-supply = <&vcc_mmc1_reg>;
+-				vqmmc-supply = <&vcc_3v3_reg>;
+-				status = "okay";
+-				slot@0 {
+-					reg = <0>;
+-					bus-width = <4>;
+-					cd-gpios = <&pioE 5 0>;
+-				};
+-			};
+-
+-			adc0: adc@fc034000 {
+-				atmel,adc-ts-wires = <4>;
+-				atmel,adc-ts-pressure-threshold = <10000>;
+-			};
+-
+-
+-			pinctrl@fc06a000 {
+-				board {
+-					pinctrl_mmc1_cd: mmc1_cd {
+-						atmel,pins = <AT91_PIOE 5 AT91_PERIPH_GPIO AT91_PINCTRL_PULL_UP_DEGLITCH>;
+-					};
+-					pinctrl_usba_vbus: usba_vbus {
+-						atmel,pins =
+-							<AT91_PIOE 31 AT91_PERIPH_GPIO AT91_PINCTRL_DEGLITCH>;
+-					};
+-				};
+-			};
+-		};
+-	};
+-
+-	backlight: backlight {
+-		compatible = "pwm-backlight";
+-		brightness-levels = <0 4 8 16 32 64 128 255>;
+-		default-brightness-level = <6>;
+-		status = "okay";
+-	};
+-
+-	leds {
+-		compatible = "gpio-leds";
+-		status = "okay";
+-
+-		user1 {
+-			label = "user1";
+-			gpios = <&pioD 28 GPIO_ACTIVE_HIGH>;
+-			linux,default-trigger = "heartbeat";
+-		};
+-
+-		user2 {
+-			label = "user2";
+-			gpios = <&pioD 29 GPIO_ACTIVE_HIGH>;
+-			linux,default-trigger = "heartbeat";
+-		};
+-
+-		user3 {
+-			label = "user3";
+-			gpios = <&pioD 30 GPIO_ACTIVE_HIGH>;
+-			linux,default-trigger = "heartbeat";
+-		};
+-	};
+-
+-	panel: panel {
+-		/* Actually Ampire 800480R2 */
+-		compatible = "foxlink,fl500wvr00-a0t", "simple-panel";
+-		backlight = <&backlight>;
+-		#address-cells = <1>;
+-		#size-cells = <0>;
+-		status = "okay";
+-
+-		port@0 {
+-			#address-cells = <1>;
+-			#size-cells = <0>;
+-
+-			panel_input: endpoint@0 {
+-				reg = <0>;
+-				remote-endpoint = <&hlcdc_panel_output>;
+-			};
+-		};
+-	};
+-
+-	vcc_mmc1_reg: fixedregulator_mmc1 {
+-		compatible = "regulator-fixed";
+-		gpio = <&pioE 17 GPIO_ACTIVE_LOW>;
+-		regulator-name = "VDD MCI1";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+-		vin-supply = <&vcc_3v3_reg>;
+-	};
+-};
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 5ca317a..7b49e3c 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -205,8 +205,6 @@ config TARGET_MA5D4EVK
+ 	bool "Aries MA5D4EVK Evaluation Kit"
+ 	select SAMA5D4
+ 	select SUPPORT_SPL
+-	select DM
+-	select DM_SPI
+ 	select SPI
+ 
+ config TARGET_MEESC
+diff --git a/board/aries/ma5d4evk/ma5d4evk.c b/board/aries/ma5d4evk/ma5d4evk.c
+index c2b6845..b7264bc 100644
+--- a/board/aries/ma5d4evk/ma5d4evk.c
++++ b/board/aries/ma5d4evk/ma5d4evk.c
+@@ -30,7 +30,7 @@ DECLARE_GLOBAL_DATA_PTR;
+ static u8 boot_mode_sf;
+ 
+ /* FIXME gpio code here need to handle through DM_GPIO */
+-#ifndef CONFIG_DM_SPI
++#ifdef CONFIG_ATMEL_SPI
+ int spi_cs_is_valid(unsigned int bus, unsigned int cs)
+ {
+ 	return bus == 0 && cs == 0;
+@@ -57,7 +57,7 @@ static void ma5d4evk_spi0_hw_init(void)
+ 	/* Enable clock */
+ 	at91_periph_clk_enable(ATMEL_ID_SPI0);
+ }
+-#endif /* CONFIG_DM_SPI */
++#endif /* CONFIG_ATMEL_SPI */
+ 
+ #ifdef CONFIG_CMD_USB
+ static void ma5d4evk_usb_hw_init(void)
+@@ -292,7 +292,7 @@ int board_init(void)
+ 	/* adress of boot parameters */
+ 	gd->bd->bi_boot_params = CONFIG_SYS_SDRAM_BASE + 0x100;
+ 
+-#ifndef CONFIG_DM_SPI
++#ifdef CONFIG_ATMEL_SPI
+ 	ma5d4evk_spi0_hw_init();
+ #endif
+ #ifdef CONFIG_GENERIC_ATMEL_MCI
+diff --git a/configs/ma5d4evk_defconfig b/configs/ma5d4evk_defconfig
+index 9450f77..ee8b32c 100644
+--- a/configs/ma5d4evk_defconfig
++++ b/configs/ma5d4evk_defconfig
+@@ -6,10 +6,8 @@ CONFIG_SPL_GPIO_SUPPORT=y
+ CONFIG_SPL_LIBCOMMON_SUPPORT=y
+ CONFIG_SPL_LIBGENERIC_SUPPORT=y
+ CONFIG_SPL_SERIAL_SUPPORT=y
+-CONFIG_SPL=y
+ CONFIG_SPL_SPI_FLASH_SUPPORT=y
+ CONFIG_SPL_SPI_SUPPORT=y
+-CONFIG_DEFAULT_DEVICE_TREE="at91-sama5d4_ma5d4evk"
+ CONFIG_ENV_VARS_UBOOT_CONFIG=y
+ CONFIG_NR_DRAM_BANKS=1
+ CONFIG_FIT=y
+@@ -21,6 +19,7 @@ CONFIG_VERSION_VARIABLE=y
+ # CONFIG_DISPLAY_BOARDINFO is not set
+ CONFIG_BOARD_EARLY_INIT_F=y
+ CONFIG_SPL_SPI_LOAD=y
++CONFIG_SPL=y
+ CONFIG_HUSH_PARSER=y
+ CONFIG_CMD_BOOTZ=y
+ # CONFIG_CMD_IMI is not set
+@@ -41,11 +40,8 @@ CONFIG_CMD_EXT4=y
+ CONFIG_CMD_EXT4_WRITE=y
+ CONFIG_CMD_FAT=y
+ CONFIG_CMD_FS_GENERIC=y
+-CONFIG_OF_CONTROL=y
+-CONFIG_SPL_OF_CONTROL=y
+ CONFIG_ENV_IS_IN_MMC=y
+ CONFIG_NET_RANDOM_ETHADDR=y
+-CONFIG_SPL_DM=y
+ CONFIG_DFU_MMC=y
+ CONFIG_DFU_SF=y
+ CONFIG_SPI_FLASH=y
+@@ -60,4 +56,5 @@ CONFIG_USB_GADGET_ATMEL_USBA=y
+ CONFIG_USB_GADGET_DOWNLOAD=y
+ CONFIG_USB_ETHER=y
+ CONFIG_FAT_WRITE=y
++CONFIG_OF_LIBFDT=y
+ # CONFIG_EFI_LOADER is not set
+diff --git a/include/configs/ma5d4evk.h b/include/configs/ma5d4evk.h
+index 31f01b5..7926294 100644
+--- a/include/configs/ma5d4evk.h
++++ b/include/configs/ma5d4evk.h
+@@ -85,6 +85,7 @@
+  * SPI NOR (boot memory)
+  */
+ #ifdef CONFIG_CMD_SF
++#define CONFIG_ATMEL_SPI
+ #define CONFIG_ATMEL_SPI0
+ #define CONFIG_SPI_FLASH_ATMEL
+ #define CONFIG_SF_DEFAULT_BUS		0
+-- 
+1.9.1
+

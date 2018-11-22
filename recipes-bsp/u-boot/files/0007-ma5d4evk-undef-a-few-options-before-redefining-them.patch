@@ -1,0 +1,39 @@
+From ae3399ea29706718a37efd2627eadf475b9f031c Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Mon, 26 Nov 2018 21:15:49 +0100
+Subject: [PATCH 07/11] ma5d4evk: #undef a few options before redefining them
+
+The options are already pre-defined in the common header file. To avoid
+compiler warnings, we #undef them before redefining.
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ include/configs/ma5d4evk.h | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/include/configs/ma5d4evk.h b/include/configs/ma5d4evk.h
+index b9d70a0..ebe38f7 100644
+--- a/include/configs/ma5d4evk.h
++++ b/include/configs/ma5d4evk.h
+@@ -34,8 +34,10 @@
+  */
+ #define CONFIG_SYS_CONSOLE_OVERWRITE_ROUTINE
+ #define CONFIG_SYS_CONSOLE_ENV_OVERWRITE
++#undef CONFIG_ENV_SIZE
+ #define CONFIG_ENV_SIZE			0x4000
+ #define CONFIG_SYS_MMC_ENV_DEV		0	/* eMMC */
++#undef CONFIG_ENV_OFFSET
+ #define CONFIG_ENV_OFFSET		512	/* just after the MBR */
+ 
+ /*
+@@ -109,6 +111,7 @@
+ #define CONFIG_SETUP_MEMORY_TAGS
+ #define CONFIG_BOOTFILE		"fitImage"
+ #define CONFIG_LOADADDR		0x20800000
++#undef CONFIG_BOOTCOMMAND
+ #define CONFIG_BOOTCOMMAND	"run mmc_mmc"
+ #define CONFIG_SYS_LOAD_ADDR	CONFIG_LOADADDR
+ 
+-- 
+1.9.1
+

@@ -2,7 +2,7 @@ meta-aries
 ==========
 
 This layer provides support for ARIES Embedded Mxx SoM and Mxx EVK for
-OE-core/Yocto 2.4 (rocko).
+OE-core/Yocto 2.6 (thud).
 
 The following boards are supported:
 
@@ -23,7 +23,7 @@ substitue the machine name "mcvevk" with the name of your EVK:
 
         $ cd <work_dir>
         $ git clone https://github.com/ARIES-Embedded/meta-aries.git
-        $ git clone -b rocko git://git.yoctoproject.org/poky.git
+        $ git clone -b thud git://git.yoctoproject.org/poky.git
 
   * Setup the build environment for the MCVEVP:
 
@@ -66,7 +66,7 @@ substitue the machine name "mcvevk" with the name of your EVK:
 
 Other useful resources:
 
-  * [Yocto 'BSP Layer'](http://www.yoctoproject.org/docs/2.4/mega-manual/mega-manual.html#bsp-layers)
-  * [Yocto 'Getting Setup'](http://www.yoctoproject.org/docs/2.4/mega-manual/mega-manual.html#getting-setup)
-  * [Yocto 'Project Quickstart'](http://www.yoctoproject.org/docs/2.4/yocto-project-qs/yocto-project-qs.html)
+  * [Yocto 'BSP Layer'](http://www.yoctoproject.org/docs/2.6/mega-manual/mega-manual.html#bsp-layers)
+  * [Yocto 'Getting Setup'](http://www.yoctoproject.org/docs/2.6/mega-manual/mega-manual.html#getting-setup)
+  * [Yocto 'Project Quickstart'](http://www.yoctoproject.org/docs/2.6/yocto-project-qs/yocto-project-qs.html)
   * Hardware Manuals and Quick Start Guide from the [ARIES Embedded WEB site](http://www.aries-embedded.de)

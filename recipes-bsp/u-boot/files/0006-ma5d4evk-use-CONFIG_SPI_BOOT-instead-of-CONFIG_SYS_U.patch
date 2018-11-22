@@ -1,0 +1,43 @@
+From 7814ddf48f0a66d81b18dc481cc3a1d7c61b214a Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Mon, 26 Nov 2018 20:55:39 +0100
+Subject: [PATCH 06/11] ma5d4evk: use CONFIG_SPI_BOOT instead of
+ CONFIG_SYS_USE_SERIALFLASH
+
+Defining the option CONFIG_SYS_USE_SERIALFLASH in the board's header
+file is no longer allowed. We use the Kconfig option CONFIG_SPI_BOOT
+instead, which does the same thing.
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.com>
+---
+ configs/ma5d4evk_defconfig | 1 +
+ include/configs/ma5d4evk.h | 1 -
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configs/ma5d4evk_defconfig b/configs/ma5d4evk_defconfig
+index 312191b..05e57c4 100644
+--- a/configs/ma5d4evk_defconfig
++++ b/configs/ma5d4evk_defconfig
+@@ -12,6 +12,7 @@ CONFIG_SPL_SPI_SUPPORT=y
+ CONFIG_DEFAULT_DEVICE_TREE="at91-sama5d4_ma5d4evk"
+ CONFIG_ENV_VARS_UBOOT_CONFIG=y
+ CONFIG_FIT=y
++CONFIG_SPI_BOOT=y
+ CONFIG_BOOTDELAY=3
+ CONFIG_USE_BOOTARGS=y
+ CONFIG_BOOTARGS="console=ttyS3,115200"
+diff --git a/include/configs/ma5d4evk.h b/include/configs/ma5d4evk.h
+index 5e3d6e8..b9d70a0 100644
+--- a/include/configs/ma5d4evk.h
++++ b/include/configs/ma5d4evk.h
+@@ -10,7 +10,6 @@
+ #define CONFIG_TIMESTAMP		/* Print image info with timestamp */
+ 
+ #include "at91-sama5_common.h"
+-#define CONFIG_SYS_USE_SERIALFLASH	1
+ #define CONFIG_BOARD_LATE_INIT
+ 
+ /* Timer */
+-- 
+1.9.1
+
