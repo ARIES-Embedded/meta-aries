@@ -24,6 +24,7 @@ substitue the machine name "mcvevk" with the name of your EVK:
         $ cd <work_dir>
         $ git clone https://github.com/ARIES-Embedded/meta-aries.git
         $ git clone -b thud git://git.yoctoproject.org/poky.git
+        $ git clone -b thud https://github.com/openembedded/meta-openembedded.git
 
   * Setup the build environment for the MCVEVP:
 
@@ -40,7 +41,7 @@ substitue the machine name "mcvevk" with the name of your EVK:
 
         INHERIT += "rm_work"
 
-  * Add the line `<work-dir>/meta-aries` to `conf/bblayers.conf`:
+  * Add the last two lines to `conf/bblayers.conf`:
 
         $ vi conf/bblayers.conf
         ...
@@ -48,21 +49,26 @@ substitue the machine name "mcvevk" with the name of your EVK:
           /work/aries/poky/meta \
           /work/aries/poky/meta-poky \
           /work/aries/poky/meta-yocto-bsp \
+          /work/aries/training/meta-openembedded/meta-oe \
           /work/aries/meta-aries \
         "
 
-  * Build the image `core-image-full-cmdline` for the MCVEVK:
+  * Build the image `core-image-full-cmdline-aries` for the MCVEVK:
 
-        $ bitbake core-image-full-cmdline
+        $ bitbake core-image-full-cmdline-aries
+
+    Note: If you prefer a really small image (half the size), please
+    build `core-image-minimal-aries` instead.
 
   * Finally list the build results (images):
 
         $ ls -1 tmp/deploy/image/mcvevk
         ...
-        core-image-full-cmdline-mcvevk.wic.xz  # Compressed full image for the eMMC
+        core-image-full-cmdline-aries-mcvevk.wic.xz  # Compressed full image for the eMMC
         u-boot-with-spl.sfp                    # Content of the "magic" partition
         fitImage                               # FIT image with zImage + DTB file
         zImage-socfpga_cyclone5_mcvevk.dtb     # DTB file
+
 
 Other useful resources:
 
