@@ -49,7 +49,7 @@ substitue the machine name "mcvevk" with the name of your EVK:
           /work/aries/poky/meta \
           /work/aries/poky/meta-poky \
           /work/aries/poky/meta-yocto-bsp \
-          /work/aries/training/meta-openembedded/meta-oe \
+          /work/aries/meta-openembedded/meta-oe \
           /work/aries/meta-aries \
         "
 
