@@ -25,4 +25,6 @@ SRC_URI_append_m28evk = " \
 	"
 SRC_URI_append_mcvevk = " \
 	file://0004-Fix-bug-with-use-a-unique-name-to-register-freeze-co.patch \
+	file://0005-FogBugz-421702-2-implement-Frame-Buffer-II-for-Displ.patch \
+	file://0006-mcvevk-framebuffer-support-for-the-Altera-VIP-FB-II-.patch \
 	"
