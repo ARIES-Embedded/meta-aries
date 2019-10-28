@@ -12,7 +12,7 @@ COMPATIBLE_MACHINE_mcvevk = "mcvevk"
 COMPATIBLE_MACHINE_ma5d4evk = "ma5d4evk"
 
 KBRANCH_mcvevk = "v4.18/standard/intel-socfpga"
-SRCREV_machine_mcvevk = "d646afdd250db0b4bd461f27dd3a7f413eb12175"
+SRCREV_machine_mcvevk = "57c51dcf3c7990113e7fa97b6c63975626ac070e"
 
 KERNEL_VERSION_SANITY_SKIP="1"
 
@@ -22,4 +22,7 @@ SRC_URI_append_ma5d4evk = " \
 	"
 SRC_URI_append_m28evk = " \
 	file://0003-mtd-rawnand-gpmi-fix-MX28-bus-master-lockup-problem.patch \
+	"
+SRC_URI_append_mcvevk = " \
+	file://0004-Fix-bug-with-use-a-unique-name-to-register-freeze-co.patch \
 	"
