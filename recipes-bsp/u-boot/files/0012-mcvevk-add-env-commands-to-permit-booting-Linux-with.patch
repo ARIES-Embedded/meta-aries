@@ -1,0 +1,34 @@
+From f2978131630c8eea73ede7db3dd47d4130054bd0 Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Thu, 7 Nov 2019 20:32:07 +0100
+Subject: [PATCH] mcvevk: add env commands to permit booting Linux with
+ framebuffer support
+
+Aries Embedded offers a solution to realize a frame buffer device in the
+FPGA of the MCV SOM using Intel's IP core "VIP Frame Buffer II".
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ include/configs/socfpga_mcvevk.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/include/configs/socfpga_mcvevk.h b/include/configs/socfpga_mcvevk.h
+index 4d1c4f2..4bd8d2d 100644
+--- a/include/configs/socfpga_mcvevk.h
++++ b/include/configs/socfpga_mcvevk.h
+@@ -77,6 +77,12 @@
+ 	"mmc_mmc="							\
+ 		"run mmcload mmcargs addargs ; "			\
+ 		"bootm ${kernel_addr_r}\0"				\
++	"fdt_filename=socfpga_cyclone5_mcvevp_rev2_fb.dtb\0"		\
++	"mmc_mmc_fb="							\
++		"run load_fpga mmcload mmcargs addargs ; "		\
++		"mw.l 0xffc25080 0x00003fff ; "				\
++		"bootm ${kernel_addr_r}:kernel@1 - "			\
++		"${kernel_addr_r}:fdt@${fdt_filename}\0"		\
+ 	"mmc_nfs="							\
+ 		"run mmcload nfsargs addip addargs ; "			\
+ 		"bootm ${kernel_addr_r}\0"				\
+-- 
+2.7.4
+
