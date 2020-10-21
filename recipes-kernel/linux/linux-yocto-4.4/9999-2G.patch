@@ -1,0 +1,13 @@
+diff --git a/arch/arm/boot/dts/socfpga_cyclone5_mcv.dtsi b/arch/arm/boot/dts/socfpga_cyclone5_mcv.dtsi
+index f86f9c0..3c8016e 100644
+--- a/arch/arm/boot/dts/socfpga_cyclone5_mcv.dtsi
++++ b/arch/arm/boot/dts/socfpga_cyclone5_mcv.dtsi
+@@ -24,7 +24,7 @@
+ 	memory {
+ 		name = "memory";
+ 		device_type = "memory";
+-		reg = <0x0 0x40000000>; /* 1 GiB */
++		reg = <0x0 0x80000000>; /* 2 GiB */
+ 	};
+ };
+ 

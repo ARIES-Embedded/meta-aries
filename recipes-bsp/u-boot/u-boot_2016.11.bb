@@ -100,4 +100,5 @@ SRC_URI_append_mcvevk = " \
 	file://0013-ARM-socfpga-mcvevk-Add-default-dfu_alt_info.patch \
 	file://0014-ARM-socfpga-Add-boot0-hook-to-prevent-SPL-corruption.patch \
 	file://0015-ARM-socfpga-Disable-OC-on-MCVEVK.patch \
+	file://9999-2G.patch \
 	"

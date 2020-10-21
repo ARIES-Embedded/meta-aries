@@ -37,6 +37,7 @@ SRC_URI_append_mcvevk = " \
 	file://0023-configfs-Remove-ppos-increment-in-configfs_write_bin.patch \
 	file://0024-fpga-altera-hps2fpga-fix-HPS2FPGA-bridge-visibility-.patch \
 	file://0025-ARM-socfpga-Add-support-for-DENX-MCV-SoM-and-MCVEVK-.patch \
+	file://9999-2G.patch \
 	"
 
 SRC_URI_append_ma5d4evk = " \
