@@ -1,39 +1,39 @@
-From 19b36a9dc85e9dec6dc6781779702bc1afd48ed7 Mon Sep 17 00:00:00 2001
+From f9bb2ac59a0288a85f6321289b6d235e383acbbd Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Tue, 22 Oct 2019 10:27:05 +0200
-Subject: [PATCH] mcvevk: framebuffer support for the Altera VIP FB II 2 IP
- core
+Subject: [PATCH 2/2] socfpga: mcvevk: framebuffer support for the Altera VIP
+ FB II 2 IP core
 
 Aries Embedded provides an IP core to realize a frame buffer device in the
 FPGA of the MCV module and a display with a capacitive touch sensor for
 the MCVEVP rev. 2 Board.
 
 For the IP core from Aries Embedded we use 24 bpp and add the DTS file
-"socfpga_cyclone5_mcvevp_fb.dts".
+"socfpga_cyclone5_mcvevp_rev2_fb.dts".
 
 Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
 ---
- arch/arm/boot/dts/Makefile                         |   1 +
- .../boot/dts/socfpga_cyclone5_mcvevp_rev2_fb.dts   | 121 +++++++++++++++++++++
- drivers/video/fbdev/altvipfb2.h                    |   2 +-
+ arch/arm/boot/dts/Makefile                    |   1 +
+ .../dts/socfpga_cyclone5_mcvevp_rev2_fb.dts   | 121 ++++++++++++++++++
+ drivers/video/fbdev/altvipfb2.h               |   2 +-
  3 files changed, 123 insertions(+), 1 deletion(-)
  create mode 100644 arch/arm/boot/dts/socfpga_cyclone5_mcvevp_rev2_fb.dts
 
 diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
-index 8382337..f6228e0 100644
+index 0f84ce144456..0f4e6be57db0 100644
 --- a/arch/arm/boot/dts/Makefile
 +++ b/arch/arm/boot/dts/Makefile
-@@ -870,6 +870,7 @@ dtb-$(CONFIG_ARCH_SOCFPGA) += \
+@@ -792,6 +792,7 @@ dtb-$(CONFIG_ARCH_SOCFPGA) += \
  	socfpga_arria10_socdk_sdmmc.dtb \
  	socfpga_arria10_swvp.dtb \
  	socfpga_cyclone5_mcvevk.dtb \
-+	socfpga_cyclone5_mcvevk_fb.dtb \
++	socfpga_cyclone5_mcvevk_rev2_fb.dtb \
  	socfpga_cyclone5_socdk.dtb \
  	socfpga_cyclone5_de0_sockit.dtb \
  	socfpga_cyclone5_sockit.dtb \
 diff --git a/arch/arm/boot/dts/socfpga_cyclone5_mcvevp_rev2_fb.dts b/arch/arm/boot/dts/socfpga_cyclone5_mcvevp_rev2_fb.dts
 new file mode 100644
-index 00000000..7fdc9b2
+index 000000000000..1a4d7f0ac6b6
 --- /dev/null
 +++ b/arch/arm/boot/dts/socfpga_cyclone5_mcvevp_rev2_fb.dts
 @@ -0,0 +1,121 @@
@@ -145,7 +145,7 @@ index 00000000..7fdc9b2
 +		compatible = "edt,edt-ft5506";
 +		reg = <0x38>;
 +		interrupt-parent = <&portb>;
-+ 		interrupts = <28 IRQ_TYPE_EDGE_FALLING>;
++		interrupts = <28 IRQ_TYPE_EDGE_FALLING>;
 +		touchscreen-size-x = <800>;
 +		touchscreen-size-y = <480>;
 +	};
@@ -159,7 +159,7 @@ index 00000000..7fdc9b2
 +	status = "okay";
 +};
 diff --git a/drivers/video/fbdev/altvipfb2.h b/drivers/video/fbdev/altvipfb2.h
-index ac61453..0b46025 100644
+index ac6145304c9c..0b46025964ab 100644
 --- a/drivers/video/fbdev/altvipfb2.h
 +++ b/drivers/video/fbdev/altvipfb2.h
 @@ -23,7 +23,7 @@
@@ -172,5 +172,5 @@ index ac61453..0b46025 100644
  /* control registers */
  #define ALTVIPFB2_CONTROL		0
 -- 
-2.7.4
+2.20.1
 

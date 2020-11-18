@@ -1,0 +1,94 @@
+From f53266ee72f9d52c1c3df851dec6c9b7857c4b70 Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@grandegger.com>
+Date: Thu, 6 Aug 2020 10:14:31 +0200
+Subject: [PATCH 5/5] Revert "ARM: socfpga: Remove
+ socfpga_sdram_apply_static_cfg()"
+
+This reverts commit c5f4b805755912a3d2fe20f014b6b6ab0473bd73.
+
+Conflicts:
+	arch/arm/mach-socfpga/misc_gen5.c
+
+Without socfpga_sdram_apply_static_cfg(), the system hangs when Linux
+calls altvipfb2_start_hw() of the Intel Video and Image Processing(VIP)
+Frame Buffer II driver (drivers/video/fbdev/altvipfb2.c), but only
+after a power cycle. The issue does not show up after a soft reset and
+with v2018.11.
+
+Futhermore I realized, that do_bridge_reset() does call
+
+  writel(0x7, &reset_manager_base->brg_mod_reset);
+
+in the enable and disable case. This looks bogous to me. I think it
+should be
+
+  writel(0x0, &reset_manager_base->brg_mod_reset);
+
+for the disable case like it already was in v2018.11.
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ arch/arm/mach-socfpga/misc_gen5.c | 33 ++++++++++++++++++++++++++++++++-
+ 1 file changed, 32 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arm/mach-socfpga/misc_gen5.c b/arch/arm/mach-socfpga/misc_gen5.c
+index 22042d0..a4b6e33 100644
+--- a/arch/arm/mach-socfpga/misc_gen5.c
++++ b/arch/arm/mach-socfpga/misc_gen5.c
+@@ -213,6 +213,35 @@ static struct socfpga_reset_manager *reset_manager_base =
+ static struct socfpga_sdr_ctrl *sdr_ctrl =
+ 	(struct socfpga_sdr_ctrl *)SDR_CTRLGRP_ADDRESS;
+ 
++static void socfpga_sdram_apply_static_cfg(void)
++{
++	const u32 applymask = 0x8;
++	u32 val = readl(&sdr_ctrl->static_cfg) | applymask;
++
++	/*
++	 * SDRAM staticcfg register specific:
++	 * When applying the register setting, the CPU must not access
++	 * SDRAM. Luckily for us, we can abuse i-cache here to help us
++	 * circumvent the SDRAM access issue. The idea is to make sure
++	 * that the code is in one full i-cache line by branching past
++	 * it and back. Once it is in the i-cache, we execute the core
++	 * of the code and apply the register settings.
++	 *
++	 * The code below uses 7 instructions, while the Cortex-A9 has
++	 * 32-byte cachelines, thus the limit is 8 instructions total.
++	 */
++	asm volatile(
++		".align	5			\n"
++		"	b	2f		\n"
++		"1:	str	%0,	[%1]	\n"
++		"	dsb			\n"
++		"	isb			\n"
++		"	b	3f		\n"
++		"2:	b	1b		\n"
++		"3:	nop			\n"
++	: : "r"(val), "r"(&sdr_ctrl->static_cfg) : "memory", "cc");
++}
++
+ void do_bridge_reset(int enable, unsigned int mask)
+ {
+ 	int i;
+@@ -227,6 +256,7 @@ void do_bridge_reset(int enable, unsigned int mask)
+ 		}
+ 
+ 		writel(iswgrp_handoff[2], &sysmgr_regs->fpgaintfgrp_module);
++		socfpga_sdram_apply_static_cfg();
+ 		writel(iswgrp_handoff[3], &sdr_ctrl->fpgaport_rst);
+ 		writel(iswgrp_handoff[0], &reset_manager_base->brg_mod_reset);
+ 		writel(iswgrp_handoff[1], &nic301_regs->remap);
+@@ -236,7 +266,8 @@ void do_bridge_reset(int enable, unsigned int mask)
+ 	} else {
+ 		writel(0, &sysmgr_regs->fpgaintfgrp_module);
+ 		writel(0, &sdr_ctrl->fpgaport_rst);
+-		writel(0x7, &reset_manager_base->brg_mod_reset);
++		socfpga_sdram_apply_static_cfg();
++		writel(0, &reset_manager_base->brg_mod_reset);
+ 		writel(1, &nic301_regs->remap);
+ 	}
+ }
+-- 
+1.9.1
+

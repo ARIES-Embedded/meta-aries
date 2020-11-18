@@ -1,0 +1,75 @@
+From 3e9dced5f60382da83cd257c9befa6fdbf752d59 Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Wed, 20 Feb 2019 11:32:24 +0100
+Subject: [PATCH 4/8] ARM: at91/dt: sama5d4: fix duplicate usb labels in the
+ dts files
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ arch/arm/boot/dts/at91-sama5d4_ma5d4emmcevk.dts | 6 +++---
+ arch/arm/boot/dts/at91-sama5d4_ma5d4sfevk.dts   | 6 +++---
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/arch/arm/boot/dts/at91-sama5d4_ma5d4emmcevk.dts b/arch/arm/boot/dts/at91-sama5d4_ma5d4emmcevk.dts
+index 01b65b06f626..e0b075a2296d 100644
+--- a/arch/arm/boot/dts/at91-sama5d4_ma5d4emmcevk.dts
++++ b/arch/arm/boot/dts/at91-sama5d4_ma5d4emmcevk.dts
+@@ -92,14 +92,14 @@
+ 			};
+ 		};
+ 
+-		usb0: gadget@00400000 {
++		usb0: gadget@400000 {
+ 			atmel,vbus-gpio = <&pioE 31 GPIO_ACTIVE_HIGH>;
+ 			pinctrl-names = "default";
+ 			pinctrl-0 = <&pinctrl_usba_vbus>;
+ 			status = "okay";
+ 		};
+ 
+-		usb1: ohci@00500000 {
++		usb1: ohci@500000 {
+ 			num-ports = <3>;
+ 			atmel,vbus-gpio = <0
+ 					   &pioE 11 GPIO_ACTIVE_LOW
+@@ -108,7 +108,7 @@
+ 			status = "okay";
+ 		};
+ 
+-		usb2: ehci@00600000 {
++		usb2: ehci@600000 {
+ 			status = "okay";
+ 		};
+ 	};
+diff --git a/arch/arm/boot/dts/at91-sama5d4_ma5d4sfevk.dts b/arch/arm/boot/dts/at91-sama5d4_ma5d4sfevk.dts
+index 3236be8359ff..5b00cf8cd5b2 100644
+--- a/arch/arm/boot/dts/at91-sama5d4_ma5d4sfevk.dts
++++ b/arch/arm/boot/dts/at91-sama5d4_ma5d4sfevk.dts
+@@ -89,14 +89,14 @@
+ 			};
+ 		};
+ 
+-		usb0: gadget@00400000 {
++		usb0: gadget@400000 {
+ 			atmel,vbus-gpio = <&pioE 31 GPIO_ACTIVE_HIGH>;
+ 			pinctrl-names = "default";
+ 			pinctrl-0 = <&pinctrl_usba_vbus>;
+ 			status = "okay";
+ 		};
+ 
+-		usb1: ohci@00500000 {
++		usb1: ohci@500000 {
+ 			num-ports = <3>;
+ 			atmel,vbus-gpio = <0
+ 					   &pioE 11 GPIO_ACTIVE_LOW
+@@ -105,7 +105,7 @@
+ 			status = "okay";
+ 		};
+ 
+-		usb2: ehci@00600000 {
++		usb2: ehci@600000 {
+ 			status = "okay";
+ 		};
+ 	};
+-- 
+2.20.1
+

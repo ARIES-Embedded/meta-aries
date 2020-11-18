@@ -2,7 +2,7 @@ meta-aries
 ==========
 
 This layer provides support for ARIES Embedded Mxx SoM and Mxx EVK for
-OE-core/Yocto 2.6 (thud).
+OE-core/Yocto 3.1 (dunfell).
 
 The following boards are supported:
 
@@ -23,8 +23,8 @@ substitue the machine name "mcvevk" with the name of your EVK:
 
         $ cd <work_dir>
         $ git clone https://github.com/ARIES-Embedded/meta-aries.git
-        $ git clone -b thud git://git.yoctoproject.org/poky.git
-        $ git clone -b thud https://github.com/openembedded/meta-openembedded.git
+        $ git clone -b dunfell git://git.yoctoproject.org/poky.git
+        $ git clone -b dunfell https://github.com/openembedded/meta-openembedded.git
 
   * Setup the build environment for the MCVEVP:
 
@@ -34,7 +34,7 @@ substitue the machine name "mcvevk" with the name of your EVK:
 
         $ vi conf/local.conf
         ...
-        #MACHINE ?= "mpc8315e-rdb"
+        #MACHINE ?= "edgerouter"
         MACHINE ?= "mcvevk"
 
   * To save disk space you may want to add the line (optional):
@@ -62,13 +62,13 @@ substitue the machine name "mcvevk" with the name of your EVK:
 
   * Finally list the build results (images):
 
-        $ ls -1 tmp/deploy/image/mcvevk
+        $ ls -1 tmp/deploy/images/mcvevk
         ...
         core-image-full-cmdline-aries-mcvevk.wic.xz  # Compressed full image for the eMMC
         u-boot-with-spl.sfp                    # Content of the "magic" partition
         fitImage                               # FIT image with zImage + DTB file
-        zImage-socfpga_cyclone5_mcvevk.dtb     # DTB file
-
+        socfpga_cyclone5_mcvevk.dtb            # DTB file for old MCVEVP 
+        socfpga_cyclone5_mcvevp_rev2_fb.dtb    # DTB file for MCVEVP rev2
 
 Other useful resources:
 
