@@ -70,6 +70,11 @@ substitue the machine name "mcvevk" with the name of your EVK:
         socfpga_cyclone5_mcvevk.dtb            # DTB file for old MCVEVP 
         socfpga_cyclone5_mcvevp_rev2_fb.dtb    # DTB file for MCVEVP rev2
 
+Known Issues:
+
+  * U-Boot: on the MCPEVP, the command `ums 0 mmc 0` requires `usb start` to
+    be called in advance. Otherwise it does not work!
+
 Other useful resources:
 
   * [Yocto 'BSP Layer'](http://www.yoctoproject.org/docs/2.6/mega-manual/mega-manual.html#bsp-layers)
