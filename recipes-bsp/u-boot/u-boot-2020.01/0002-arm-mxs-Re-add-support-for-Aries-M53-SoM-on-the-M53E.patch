@@ -1,7 +1,7 @@
-From 1b9d9852b4498d748199817f6c37b46ce8aa4bfd Mon Sep 17 00:00:00 2001
+From 897c857003fddf0202d56710188204194bd3904b Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Sun, 24 May 2020 14:27:33 +0200
-Subject: [PATCH 2/5] arm: mxs: Re-add support for Aries M53 SoM on the M53EVK
+Subject: [PATCH 2/6] arm: mxs: Re-add support for Aries M53 SoM on the M53EVK
  board
 
 Re-add support for Aries Embedded M53 SoM, which is i.MX53 based
@@ -11,17 +11,17 @@ card and NAND. Ethernet, USB and LCD is supported.
 Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
 ---
  arch/arm/dts/Makefile                 |   1 +
- arch/arm/dts/imx53-m53evk-u-boot.dtsi |  47 +++++
- arch/arm/dts/imx53-m53evk.dts         | 372 +++++++++++++++++++++++++++++++++
+ arch/arm/dts/imx53-m53evk-u-boot.dtsi |  47 ++++
+ arch/arm/dts/imx53-m53evk.dts         | 372 +++++++++++++++++++++++++
  arch/arm/mach-imx/mx5/Kconfig         |   6 +
  arch/arm/mach-imx/mx5/Makefile        |   1 +
- board/aries/m53evk/Kconfig            |  15 ++
+ board/aries/m53evk/Kconfig            |  15 +
  board/aries/m53evk/MAINTAINERS        |   6 +
  board/aries/m53evk/Makefile           |   6 +
- board/aries/m53evk/imximage.cfg       |  91 ++++++++
- board/aries/m53evk/m53evk.c           | 377 ++++++++++++++++++++++++++++++++++
- configs/m53evk_defconfig              |  87 ++++++++
- include/configs/m53evk.h              | 257 +++++++++++++++++++++++
+ board/aries/m53evk/imximage.cfg       |  91 +++++++
+ board/aries/m53evk/m53evk.c           | 377 ++++++++++++++++++++++++++
+ configs/m53evk_defconfig              |  87 ++++++
+ include/configs/m53evk.h              | 257 ++++++++++++++++++
  12 files changed, 1266 insertions(+)
  create mode 100644 arch/arm/dts/imx53-m53evk-u-boot.dtsi
  create mode 100644 arch/arm/dts/imx53-m53evk.dts
@@ -34,7 +34,7 @@ Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
  create mode 100644 include/configs/m53evk.h
 
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 0127a91..326ecdf 100644
+index 0127a91a82..326ecdfb60 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
 @@ -572,6 +572,7 @@ dtb-$(CONFIG_VF610) += vf500-colibri.dtb \
@@ -47,7 +47,7 @@ index 0127a91..326ecdf 100644
  ifneq ($(CONFIG_MX6DL)$(CONFIG_MX6QDL)$(CONFIG_MX6S),)
 diff --git a/arch/arm/dts/imx53-m53evk-u-boot.dtsi b/arch/arm/dts/imx53-m53evk-u-boot.dtsi
 new file mode 100644
-index 0000000..bc4b348
+index 0000000000..bc4b3483a6
 --- /dev/null
 +++ b/arch/arm/dts/imx53-m53evk-u-boot.dtsi
 @@ -0,0 +1,47 @@
@@ -100,7 +100,7 @@ index 0000000..bc4b348
 +};
 diff --git a/arch/arm/dts/imx53-m53evk.dts b/arch/arm/dts/imx53-m53evk.dts
 new file mode 100644
-index 0000000..38b532c
+index 0000000000..38b532cc8f
 --- /dev/null
 +++ b/arch/arm/dts/imx53-m53evk.dts
 @@ -0,0 +1,372 @@
@@ -477,7 +477,7 @@ index 0000000..38b532c
 +	status = "okay";
 +};
 diff --git a/arch/arm/mach-imx/mx5/Kconfig b/arch/arm/mach-imx/mx5/Kconfig
-index bde37bb..384a04d 100644
+index bde37bb97e..384a04d5f6 100644
 --- a/arch/arm/mach-imx/mx5/Kconfig
 +++ b/arch/arm/mach-imx/mx5/Kconfig
 @@ -39,6 +39,11 @@ config TARGET_M53MENLO
@@ -501,7 +501,7 @@ index bde37bb..384a04d 100644
  
  endif
 diff --git a/arch/arm/mach-imx/mx5/Makefile b/arch/arm/mach-imx/mx5/Makefile
-index 40d1998..fe9b008 100644
+index 40d1998637..fe9b008449 100644
 --- a/arch/arm/mach-imx/mx5/Makefile
 +++ b/arch/arm/mach-imx/mx5/Makefile
 @@ -10,4 +10,5 @@ obj-y += lowlevel_init.o
@@ -512,7 +512,7 @@ index 40d1998..fe9b008 100644
  obj-$(CONFIG_TARGET_MX53LOCO)   += mx53_dram.o
 diff --git a/board/aries/m53evk/Kconfig b/board/aries/m53evk/Kconfig
 new file mode 100644
-index 0000000..2d49b40
+index 0000000000..2d49b40912
 --- /dev/null
 +++ b/board/aries/m53evk/Kconfig
 @@ -0,0 +1,15 @@
@@ -533,7 +533,7 @@ index 0000000..2d49b40
 +endif
 diff --git a/board/aries/m53evk/MAINTAINERS b/board/aries/m53evk/MAINTAINERS
 new file mode 100644
-index 0000000..57535b0
+index 0000000000..57535b01cb
 --- /dev/null
 +++ b/board/aries/m53evk/MAINTAINERS
 @@ -0,0 +1,6 @@
@@ -545,7 +545,7 @@ index 0000000..57535b0
 +F:	configs/m53evk_defconfig
 diff --git a/board/aries/m53evk/Makefile b/board/aries/m53evk/Makefile
 new file mode 100644
-index 0000000..c0a4004
+index 0000000000..c0a400416a
 --- /dev/null
 +++ b/board/aries/m53evk/Makefile
 @@ -0,0 +1,6 @@
@@ -557,7 +557,7 @@ index 0000000..c0a4004
 +obj-y	:= m53evk.o
 diff --git a/board/aries/m53evk/imximage.cfg b/board/aries/m53evk/imximage.cfg
 new file mode 100644
-index 0000000..91649ec
+index 0000000000..91649ec5d8
 --- /dev/null
 +++ b/board/aries/m53evk/imximage.cfg
 @@ -0,0 +1,91 @@
@@ -654,7 +654,7 @@ index 0000000..91649ec
 +DATA 4 0x63fd901c 0x00000000
 diff --git a/board/aries/m53evk/m53evk.c b/board/aries/m53evk/m53evk.c
 new file mode 100644
-index 0000000..20a0316
+index 0000000000..20a03165a8
 --- /dev/null
 +++ b/board/aries/m53evk/m53evk.c
 @@ -0,0 +1,377 @@
@@ -1037,7 +1037,7 @@ index 0000000..20a0316
 +#endif
 diff --git a/configs/m53evk_defconfig b/configs/m53evk_defconfig
 new file mode 100644
-index 0000000..0dd9c91
+index 0000000000..0dd9c91334
 --- /dev/null
 +++ b/configs/m53evk_defconfig
 @@ -0,0 +1,87 @@
@@ -1130,7 +1130,7 @@ index 0000000..0dd9c91
 +CONFIG_FAT_WRITE=y
 diff --git a/include/configs/m53evk.h b/include/configs/m53evk.h
 new file mode 100644
-index 0000000..b83c8ba
+index 0000000000..b83c8baa8c
 --- /dev/null
 +++ b/include/configs/m53evk.h
 @@ -0,0 +1,257 @@
@@ -1392,5 +1392,5 @@ index 0000000..b83c8ba
 +
 +#endif	/* __M53EVK_CONFIG_H__ */
 -- 
-1.9.1
+2.28.0
 

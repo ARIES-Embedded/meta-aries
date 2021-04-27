@@ -1,7 +1,7 @@
-From e09a3ad59d7096ac340791cbe601b51076a187f7 Mon Sep 17 00:00:00 2001
+From d9fc37b31a018628bdbe9205f091eaef0f19eb0f Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Thu, 7 Nov 2019 20:32:07 +0100
-Subject: [PATCH 4/5] mcvevk: add env commands to permit booting Linux with
+Subject: [PATCH 4/6] mcvevk: add env commands to permit booting Linux with
  framebuffer support
 
 Aries Embedded offers a solution to realize a frame buffer device in the
@@ -13,7 +13,7 @@ Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
  1 file changed, 6 insertions(+)
 
 diff --git a/include/configs/socfpga_mcvevk.h b/include/configs/socfpga_mcvevk.h
-index 590a9af..dd906f1 100644
+index 590a9af274..dd906f1575 100644
 --- a/include/configs/socfpga_mcvevk.h
 +++ b/include/configs/socfpga_mcvevk.h
 @@ -77,6 +77,12 @@
@@ -30,5 +30,5 @@ index 590a9af..dd906f1 100644
  		"run mmcload nfsargs addip addargs ; "			\
  		"bootm ${kernel_addr_r}\0"				\
 -- 
-1.9.1
+2.28.0
 

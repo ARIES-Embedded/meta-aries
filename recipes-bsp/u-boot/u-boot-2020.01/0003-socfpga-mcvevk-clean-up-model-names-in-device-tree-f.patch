@@ -1,7 +1,7 @@
-From 54492b5644efe9c1cd690c32ad98a31fb775d74d Mon Sep 17 00:00:00 2001
+From 6cd1c9b750fb257ed9b5eb92649beddb22ca2a92 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Thu, 11 Jun 2020 15:24:03 +0200
-Subject: [PATCH 3/5] socfpga: mcvevk: clean up model names in device tree
+Subject: [PATCH 3/6] socfpga: mcvevk: clean up model names in device tree
  files
 
 Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.com>
@@ -11,7 +11,7 @@ Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.com>
  2 files changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/arch/arm/dts/socfpga_cyclone5_mcv.dtsi b/arch/arm/dts/socfpga_cyclone5_mcv.dtsi
-index bd92806..607a350 100644
+index bd92806ffc..607a350d96 100644
 --- a/arch/arm/dts/socfpga_cyclone5_mcv.dtsi
 +++ b/arch/arm/dts/socfpga_cyclone5_mcv.dtsi
 @@ -6,7 +6,7 @@
@@ -24,7 +24,7 @@ index bd92806..607a350 100644
  
  	memory@0 {
 diff --git a/arch/arm/dts/socfpga_cyclone5_mcvevk.dts b/arch/arm/dts/socfpga_cyclone5_mcvevk.dts
-index ceaec29..fa29d64 100644
+index ceaec29770..fa29d64f1f 100644
 --- a/arch/arm/dts/socfpga_cyclone5_mcvevk.dts
 +++ b/arch/arm/dts/socfpga_cyclone5_mcvevk.dts
 @@ -6,8 +6,8 @@
@@ -39,5 +39,5 @@ index ceaec29..fa29d64 100644
  	aliases {
  		ethernet0 = &gmac0;
 -- 
-1.9.1
+2.28.0
 
