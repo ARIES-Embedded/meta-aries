@@ -12,3 +12,8 @@ SRC_URI_append_mcvevk = " \
 	file://0001-socfpga-mcvevk-clean-up-model-names-in-device-tree-f.patch \
 	file://0002-socfpga-mcvevk-framebuffer-support-for-the-Altera-VI.patch \
 	"
+SRC_URI_append_maxevk = " \
+	file://lbdaf.scc \
+	file://0003-ARM-dts-socfpga-Add-support-for-the-Aries-MAX-SoM-on.patch \
+	file://0004-usb-dwc2-add-device-tree-property-to-use-an-external.patch \
+	"

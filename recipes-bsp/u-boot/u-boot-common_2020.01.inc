@@ -27,10 +27,19 @@ SRC_URI_append_m53evk = " \
 	file://0002-arm-mxs-Re-add-support-for-Aries-M53-SoM-on-the-M53E.patch \
 	"
 
+# MA5D4EVK
+SRC_URI_append_ma5d4evk = " \
+	file://0003-arm-atmel-Re-add-support-for-the-Aries-MA5D4-SoM-on-.patch \
+	"
+
 # MCVEVK
 SRC_URI_append_mcvevk = " \
-	file://0003-socfpga-mcvevk-clean-up-model-names-in-device-tree-f.patch \
-	file://0004-mcvevk-add-env-commands-to-permit-booting-Linux-with.patch \
-	file://0005-Revert-ARM-socfpga-Remove-socfpga_sdram_apply_static.patch \
-	file://0006-configs-socfpga-enable-preboot-command-for-the-mcvev.patch \
+	file://0004-socfpga-mcvevk-clean-up-model-names-in-device-tree-f.patch \
+	file://0005-mcvevk-add-env-commands-to-permit-booting-Linux-with.patch \
+	file://0006-Revert-ARM-socfpga-Remove-socfpga_sdram_apply_static.patch \
+	"
+
+# MAXEVK
+SRC_URI_append_maxevk = " \
+	file://0007-arm-socfpga-Add-support-for-Aries-MAX-SoM-on-the-MAX.patch \
 	"

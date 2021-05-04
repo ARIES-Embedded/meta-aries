@@ -1,0 +1,150 @@
+From 38a28077ff60c135f699cef9acdb5965e64b810d Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@grandegger.com>
+Date: Mon, 17 Feb 2020 21:53:11 +0100
+Subject: [PATCH 3/4] ARM: dts: socfpga: Add support for the Aries MAX SoM on
+ the MAXEVK board
+
+Add support for Aries MAX Arria10 SoM, which is Arria10 based and the
+associated Aries MAXEVK baseboard. The board can boot from eMMC or
+the network. Ethernet, eMMC, UART and USB is supported.
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ arch/arm/boot/dts/Makefile                    |  1 +
+ arch/arm/boot/dts/socfpga_arria10_maxevk.dtsi | 76 +++++++++++++++++++
+ .../boot/dts/socfpga_arria10_maxevk_sdmmc.dts | 28 +++++++
+ 3 files changed, 105 insertions(+)
+ create mode 100644 arch/arm/boot/dts/socfpga_arria10_maxevk.dtsi
+ create mode 100644 arch/arm/boot/dts/socfpga_arria10_maxevk_sdmmc.dts
+
+diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
+index a77cdfc6f0f4..c0125f0350b7 100644
+--- a/arch/arm/boot/dts/Makefile
++++ b/arch/arm/boot/dts/Makefile
+@@ -951,6 +951,7 @@ dtb-$(CONFIG_ARCH_S5PV210) += \
+ 	s5pv210-torbreck.dtb
+ dtb-$(CONFIG_ARCH_SOCFPGA) += \
+ 	socfpga_arria5_socdk.dtb \
++	socfpga_arria10_maxevk_sdmmc.dtb \
+ 	socfpga_arria10_socdk_nand.dtb \
+ 	socfpga_arria10_socdk_qspi.dtb \
+ 	socfpga_arria10_socdk_sdmmc.dtb \
+diff --git a/arch/arm/boot/dts/socfpga_arria10_maxevk.dtsi b/arch/arm/boot/dts/socfpga_arria10_maxevk.dtsi
+new file mode 100644
+index 000000000000..348e7e8e8036
+--- /dev/null
++++ b/arch/arm/boot/dts/socfpga_arria10_maxevk.dtsi
+@@ -0,0 +1,76 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright (C) 2020 Wolfgang Grandegger <wg@aries-embedded.de>
++ */
++
++#include "socfpga_arria10.dtsi"
++
++/ {
++	model = "Aries MAX EVK";
++	compatible = "aries,maxevk", "altr,socfpga-arria10", "altr,socfpga";
++
++	aliases {
++		ethernet0 = &gmac1;
++		ethernet1 = &gmac2;
++		serial0 = &uart0;
++	};
++
++	chosen {
++		bootargs = "earlyprintk";
++		stdout-path = "serial0:115200n8";
++	};
++
++	memory@0 {
++		name = "memory";
++		device_type = "memory";
++		reg = <0x0 0x80000000>; /* 2GB */
++	};
++
++	ref_033v: 033-v-ref {
++		compatible = "regulator-fixed";
++		regulator-name = "0.33V";
++		regulator-min-microvolt = <330000>;
++		regulator-max-microvolt = <330000>;
++	};
++
++	soc {
++		clkmgr@ffd04000 {
++			clocks {
++				osc1 {
++					clock-frequency = <25000000>;
++				};
++			};
++		};
++	};
++};
++
++&gmac1 {
++	phy-mode = "rgmii";
++	phy-addr = <0>;
++	status = "okay";
++};
++
++&gmac2 {
++	phy-mode = "rgmii";
++	phy-addr = <0>;
++	status = "okay";
++};
++
++&gpio1 {
++	status = "disabled";
++};
++
++&uart0 {
++	status = "okay";
++};
++
++&usb1 {
++	status = "okay";
++	dr_mode = "host";
++	external-vbus-supply;
++	//disable-over-current;
++};
++
++&watchdog1 {
++	status = "okay";
++};
+diff --git a/arch/arm/boot/dts/socfpga_arria10_maxevk_sdmmc.dts b/arch/arm/boot/dts/socfpga_arria10_maxevk_sdmmc.dts
+new file mode 100644
+index 000000000000..bb2ee8c9ff8a
+--- /dev/null
++++ b/arch/arm/boot/dts/socfpga_arria10_maxevk_sdmmc.dts
+@@ -0,0 +1,28 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright (C) 2020 Wolfgang Grandegger <wg@aries-embedded.de>
++ */
++
++/dts-v1/;
++#include "socfpga_arria10_maxevk.dtsi"
++
++&mmc {
++	status = "okay";
++	num-slots = <1>;
++	cap-sd-highspeed;
++	cap-mmc-highspeed;
++	broken-cd;
++	bus-width = <8>;
++};
++
++&eccmgr {
++	sdmmca-ecc@ff8c2c00 {
++		compatible = "altr,socfpga-sdmmc-ecc";
++		reg = <0xff8c2c00 0x400>;
++		altr,ecc-parent = <&mmc>;
++		interrupts = <15 IRQ_TYPE_LEVEL_HIGH>,
++			     <47 IRQ_TYPE_LEVEL_HIGH>,
++			     <16 IRQ_TYPE_LEVEL_HIGH>,
++			     <48 IRQ_TYPE_LEVEL_HIGH>;
++	};
++};
+-- 
+2.28.0
+
