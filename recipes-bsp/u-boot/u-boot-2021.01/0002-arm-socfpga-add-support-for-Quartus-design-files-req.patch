@@ -1,0 +1,127 @@
+From 7e5c6b37f22810e741854d694f349c2b03d4834a Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Sat, 8 May 2021 14:55:03 +0200
+Subject: [PATCH 2/3] arm: socfpga: add support for Quartus design files
+ required by U-Boot
+
+It converts the XML handoff file from the Quartus design to
+"arch/arm/dts/<CONFIG_DEFAULT_DEVICE_TREE>_handoff.h", which will
+then be used by the device tree.
+
+And it creates the FIT image with the FPGA programming files (rbf)
+used by SPL to configure the FPGA. The specified FIT image source
+file (its) will used to create the FIT image binary (itb).
+
+The design files are expected to be in the "quartus" sub-directory!
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ Kconfig          |  2 ++
+ Makefile         |  3 +--
+ quartus/Kconfig  | 28 ++++++++++++++++++++++++++++
+ quartus/Makefile | 27 +++++++++++++++++++++++++++
+ 4 files changed, 58 insertions(+), 2 deletions(-)
+ create mode 100644 quartus/Kconfig
+ create mode 100644 quartus/Makefile
+
+diff --git a/Kconfig b/Kconfig
+index 6dc20ed25b..27b6659ab2 100644
+--- a/Kconfig
++++ b/Kconfig
+@@ -455,3 +455,5 @@ source "lib/Kconfig"
+ source "test/Kconfig"
+ 
+ source "tools/Kconfig"
++
++source "quartus/Kconfig"
+diff --git a/Makefile b/Makefile
+index b4f1cbcf9b..9899d8f985 100644
+--- a/Makefile
++++ b/Makefile
+@@ -816,7 +816,7 @@ libs-y += $(if $(BOARDDIR),board/$(BOARDDIR)/)
+ 
+ libs-y := $(sort $(libs-y))
+ 
+-u-boot-dirs	:= $(patsubst %/,%,$(filter %/, $(libs-y))) tools examples
++u-boot-dirs	:= quartus $(patsubst %/,%,$(filter %/, $(libs-y))) tools examples
+ 
+ u-boot-alldirs	:= $(sort $(u-boot-dirs) $(patsubst %/,%,$(filter %/, $(libs-))))
+ 
+@@ -825,7 +825,6 @@ libs-y		:= $(patsubst %/, %/built-in.o, $(libs-y))
+ u-boot-init := $(head-y)
+ u-boot-main := $(libs-y)
+ 
+-
+ # Add GCC lib
+ ifeq ($(CONFIG_USE_PRIVATE_LIBGCC),y)
+ PLATFORM_LIBGCC = arch/$(ARCH)/lib/lib.a
+diff --git a/quartus/Kconfig b/quartus/Kconfig
+new file mode 100644
+index 0000000000..075b676a87
+--- /dev/null
++++ b/quartus/Kconfig
+@@ -0,0 +1,28 @@
++menuconfig QUARTUS_SUPPORT
++	bool "Quartus design support"
++	depends on ARCH_SOCFPGA
++	help
++	  Creates XML handoff DTS and FIT image binary file from the
++	  Quartus design.
++
++if QUARTUS_SUPPORT
++
++config QUARTUS_XML_HANDOFF_FILE
++	string "XML handoff file"
++	depends on ARCH_SOCFPGA
++	default "quartus/hps.xml"
++	help
++   	  Converts the XML handoff file from the Quartus design to
++	  "arch/arm/dts/<CONFIG_DEFAULT_DEVICE_TREE>_handoff.h", which
++	  will be used by the device tree.
++
++config QUARTUS_FIT_IMAGE_SOURCE
++	string "FIT image source file"
++	depends on ARCH_SOCFPGA
++	default "board/aries/maxevk/fit_spl_fpga.its"
++	help
++	  Creates the FIT image with the FPGA programming files used by
++	  SPL to configure the FPGA. The specified FIT image source file
++	  (its) will used to create the FIT image binary (itb).
++
++endif
+diff --git a/quartus/Makefile b/quartus/Makefile
+new file mode 100644
+index 0000000000..8917bb509a
+--- /dev/null
++++ b/quartus/Makefile
+@@ -0,0 +1,27 @@
++# SPDX-License-Identifier: GPL-2.0+
++#
++# (C) Copyright 2021 Wolfgang Grandegger <wg@aries-embedded.de>
++
++ifdef CONFIG_QUARTUS_SUPPORT
++
++# mkimage source config file
++RBF_ITS = $(CONFIG_QUARTUS_FIT_IMAGE_SOURCE:"%"=%)
++RBF_ITB = $(basename $(notdir $(RBF_ITS))).itb
++
++HANDOFF_XML = $(CONFIG_QUARTUS_XML_HANDOFF_FILE:"%"=%)
++HANDOFF_DTS = $(srctree)/arch/arm/dts/$(CONFIG_DEFAULT_DEVICE_TREE:"%"=%)_handoff.h
++
++__build: $(RBF_ITB) $(HANDOFF_DTS)
++
++$(RBF_ITB): $(RBF_ITS)
++	@echo "  MKIMAGE $@"
++	@tools/mkimage -E -f $< $@
++
++$(HANDOFF_DTS):	$(HANDOFF_XML)
++	@echo "  HANDOFF $@"
++	@$(srctree)/arch/arm/mach-socfpga/qts-filter-a10.sh $< $@
++
++clean:
++	rm $(RBF_ITB)
++
++endif
+-- 
+2.28.0
+

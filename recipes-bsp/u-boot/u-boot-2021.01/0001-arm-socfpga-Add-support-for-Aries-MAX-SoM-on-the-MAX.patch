@@ -1,7 +1,7 @@
 From a616e113ee5d0953ed386c57909d45db4825a8a1 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Mon, 17 Feb 2020 20:11:02 +0100
-Subject: [PATCH] arm: socfpga: Add support for Aries MAX SoM on the MAXEVK
+Subject: [PATCH 1/3] arm: socfpga: Add support for Aries MAX SoM on the MAXEVK
  board
 
 Add support for Aries MAX SoM, which is Arria10 based and the

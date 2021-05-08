@@ -1,0 +1,49 @@
+From 27e30a5c822d818bc9ed7c31b9e148ca9e2cae9f Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Sat, 8 May 2021 15:16:52 +0200
+Subject: [PATCH 3/3] socfpga: maxevk: enable Quartus support and use generic
+ RBF file names
+
+The RBF files names are "output-core.rbf" and "output-periph.rbf" and
+are located in the sub-directory "quartus"
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ board/aries/maxevk/fit_spl_fpga.its | 4 ++--
+ configs/socfpga_maxevk_defconfig    | 1 +
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/board/aries/maxevk/fit_spl_fpga.its b/board/aries/maxevk/fit_spl_fpga.its
+index ae23d65d1c..8c3c004221 100644
+--- a/board/aries/maxevk/fit_spl_fpga.its
++++ b/board/aries/maxevk/fit_spl_fpga.its
+@@ -13,7 +13,7 @@
+ 	images {
+ 		fpga-periph-1 {
+ 			description = "FPGA peripheral bitstream";
+-			data = /incbin/("../../../DBM_SoC3_startup.periph.rbf");
++			data = /incbin/("../../../quartus/output.periph.rbf");
+ 			type = "fpga";
+ 			arch = "arm";
+ 			compression = "none";
+@@ -21,7 +21,7 @@
+ 
+ 		fpga-core-1 {
+ 			description = "FPGA core bitstream";
+-			data = /incbin/("../../../DBM_SoC3_startup.core.rbf");
++			data = /incbin/("../../../quartus/output.core.rbf");
+ 			type = "fpga";
+ 			arch = "arm";
+ 			compression = "none";
+diff --git a/configs/socfpga_maxevk_defconfig b/configs/socfpga_maxevk_defconfig
+index 91dc8e529e..ce1d0393ba 100644
+--- a/configs/socfpga_maxevk_defconfig
++++ b/configs/socfpga_maxevk_defconfig
+@@ -50,3 +50,4 @@ CONFIG_TIMER=y
+ CONFIG_SPL_TIMER=y
+ CONFIG_DESIGNWARE_APB_TIMER=y
+ # CONFIG_SPL_WDT is not set
++CONFIG_QUARTUS_SUPPORT=y
+-- 
+2.28.0
+
