@@ -28,7 +28,7 @@ SRC_URI_append_maxevk = " \
 	file://0001-arm-socfpga-Add-support-for-Aries-MAX-SoM-on-the-MAX.patch \
 	file://0002-arm-socfpga-add-support-for-Quartus-design-files-req.patch \
 	file://0003-socfpga-maxevk-enable-Quartus-support-and-use-generi.patch \
+	file://0004-socfpga-maxevk-change-ITS-file-to-use-the-Quartus-fu.patch \
 	file://hps.xml \
-	file://output.core.rbf \
-	file://output.periph.rbf \
+	file://output.rbf \
 	"

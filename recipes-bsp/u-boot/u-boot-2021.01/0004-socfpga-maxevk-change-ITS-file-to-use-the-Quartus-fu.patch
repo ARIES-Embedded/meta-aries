@@ -1,0 +1,47 @@
+From ebb7989872acd7b3c62b6fd5e8fadba2c83ca447 Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@grandegger.com>
+Date: Wed, 12 May 2021 15:16:13 +0200
+Subject: [PATCH] socfpga: maxevk: change ITS file to use the Quartus full RBF
+ file
+
+The "fit_spl_fpga.its" file now uses "output.rbf" located in
+the sub-directory "quartus" to build to build "fit_spl_fpga.itb"
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ board/aries/maxevk/fit_spl_fpga.its | 12 ++----------
+ 1 file changed, 2 insertions(+), 10 deletions(-)
+
+diff --git a/board/aries/maxevk/fit_spl_fpga.its b/board/aries/maxevk/fit_spl_fpga.its
+index 8c3c004221..6ca2b28f0b 100644
+--- a/board/aries/maxevk/fit_spl_fpga.its
++++ b/board/aries/maxevk/fit_spl_fpga.its
+@@ -13,15 +13,7 @@
+ 	images {
+ 		fpga-periph-1 {
+ 			description = "FPGA peripheral bitstream";
+-			data = /incbin/("../../../quartus/output.periph.rbf");
+-			type = "fpga";
+-			arch = "arm";
+-			compression = "none";
+-		};
+-
+-		fpga-core-1 {
+-			description = "FPGA core bitstream";
+-			data = /incbin/("../../../quartus/output.core.rbf");
++			data = /incbin/("../../../quartus/output.rbf");
+ 			type = "fpga";
+ 			arch = "arm";
+ 			compression = "none";
+@@ -32,7 +24,7 @@
+ 		default = "config-1";
+ 		config-1 {
+ 			description = "Boot with FPGA early IO release config";
+-			fpga = "fpga-periph-1", "fpga-core-1";
++			fpga = "fpga-periph-1";
+ 		};
+ 	};
+ };
+-- 
+2.28.0
+
