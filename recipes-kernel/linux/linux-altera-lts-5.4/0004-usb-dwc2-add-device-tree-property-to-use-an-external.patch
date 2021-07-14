@@ -1,7 +1,7 @@
-From 8bdcfb5616c386d377fe2e93ad3122cab0e613ca Mon Sep 17 00:00:00 2001
+From 622615d586f4c1d1736b518563b6b2238bfa2575 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Fri, 27 Mar 2020 11:29:45 +0100
-Subject: [PATCH 4/4] usb: dwc2: add device-tree property to use an external
+Subject: [PATCH 4/6] usb: dwc2: add device-tree property to use an external
  VBUS supply
 
 Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>

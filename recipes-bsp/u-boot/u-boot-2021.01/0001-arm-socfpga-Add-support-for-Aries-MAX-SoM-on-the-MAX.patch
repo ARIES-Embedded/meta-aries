@@ -1,7 +1,7 @@
-From a616e113ee5d0953ed386c57909d45db4825a8a1 Mon Sep 17 00:00:00 2001
+From a77df6e6f7f3065071feadda9e87fd8e6e8a8108 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Mon, 17 Feb 2020 20:11:02 +0100
-Subject: [PATCH 1/3] arm: socfpga: Add support for Aries MAX SoM on the MAXEVK
+Subject: [PATCH 1/5] arm: socfpga: Add support for Aries MAX SoM on the MAXEVK
  board
 
 Add support for Aries MAX SoM, which is Arria10 based and the
@@ -11,25 +11,25 @@ or the network. Ethernet, eMMC and UART is supported.
 Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
 ---
  arch/arm/dts/Makefile                         |   1 +
- .../dts/socfpga_arria10_maxevk-u-boot.dtsi    |  20 ++
- arch/arm/dts/socfpga_arria10_maxevk.dtsi      |  59 ++++
- .../socfpga_arria10_maxevk_sdmmc-u-boot.dtsi  |  47 +++
- arch/arm/dts/socfpga_arria10_maxevk_sdmmc.dts |  27 ++
- .../socfpga_arria10_maxevk_sdmmc_handoff.h    | 305 ++++++++++++++++++
- arch/arm/mach-socfpga/Kconfig                 |   7 +
- board/aries/maxevk/Kconfig                    |  18 ++
+ arch/arm/dts/socfpga_arria10_max-u-boot.dtsi  |  52 +++
+ arch/arm/dts/socfpga_arria10_max.dtsi         |  68 ++++
+ .../dts/socfpga_arria10_maxevk-u-boot.dtsi    |  13 +
+ arch/arm/dts/socfpga_arria10_maxevk.dts       |  41 +++
+ arch/arm/dts/socfpga_arria10_maxevk_handoff.h | 305 ++++++++++++++++++
+ arch/arm/mach-socfpga/Kconfig                 |   5 +
+ board/aries/maxevk/Kconfig                    |  12 +
  board/aries/maxevk/MAINTAINERS                |   9 +
  board/aries/maxevk/Makefile                   |   5 +
  board/aries/maxevk/fit_spl_fpga.its           |  38 +++
  board/aries/maxevk/socfpga.c                  |   6 +
  configs/socfpga_maxevk_defconfig              |  52 +++
  include/configs/socfpga_maxevk.h              |  45 +++
- 14 files changed, 639 insertions(+)
+ 14 files changed, 652 insertions(+)
+ create mode 100644 arch/arm/dts/socfpga_arria10_max-u-boot.dtsi
+ create mode 100644 arch/arm/dts/socfpga_arria10_max.dtsi
  create mode 100644 arch/arm/dts/socfpga_arria10_maxevk-u-boot.dtsi
- create mode 100644 arch/arm/dts/socfpga_arria10_maxevk.dtsi
- create mode 100644 arch/arm/dts/socfpga_arria10_maxevk_sdmmc-u-boot.dtsi
- create mode 100644 arch/arm/dts/socfpga_arria10_maxevk_sdmmc.dts
- create mode 100644 arch/arm/dts/socfpga_arria10_maxevk_sdmmc_handoff.h
+ create mode 100644 arch/arm/dts/socfpga_arria10_maxevk.dts
+ create mode 100644 arch/arm/dts/socfpga_arria10_maxevk_handoff.h
  create mode 100644 board/aries/maxevk/Kconfig
  create mode 100644 board/aries/maxevk/MAINTAINERS
  create mode 100644 board/aries/maxevk/Makefile
@@ -39,26 +39,26 @@ Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
  create mode 100644 include/configs/socfpga_maxevk.h
 
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index fd47e408f8..8ca7b290a9 100644
+index fd47e408f8..7636f72717 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
 @@ -364,6 +364,7 @@ dtb-$(CONFIG_ARCH_SOCFPGA) +=				\
  	socfpga_agilex_socdk.dtb			\
  	socfpga_arria5_secu1.dtb			\
  	socfpga_arria5_socdk.dtb			\
-+	socfpga_arria10_maxevk_sdmmc.dtb		\
++	socfpga_arria10_maxevk.dtb			\
  	socfpga_arria10_socdk_sdmmc.dtb			\
  	socfpga_cyclone5_mcvevk.dtb			\
  	socfpga_cyclone5_is1.dtb			\
-diff --git a/arch/arm/dts/socfpga_arria10_maxevk-u-boot.dtsi b/arch/arm/dts/socfpga_arria10_maxevk-u-boot.dtsi
+diff --git a/arch/arm/dts/socfpga_arria10_max-u-boot.dtsi b/arch/arm/dts/socfpga_arria10_max-u-boot.dtsi
 new file mode 100644
-index 0000000000..547d6bfe08
+index 0000000000..2451b33f72
 --- /dev/null
-+++ b/arch/arm/dts/socfpga_arria10_maxevk-u-boot.dtsi
-@@ -0,0 +1,20 @@
++++ b/arch/arm/dts/socfpga_arria10_max-u-boot.dtsi
+@@ -0,0 +1,52 @@
 +// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Copyright (C) 2015, 2020 Intel. All rights reserved.
++ * Copyright (C) 2021, Wolfgang Grandegger <wg@aries-embedded.de>
 + */
 +
 +#include "socfpga_arria10-u-boot.dtsi"
@@ -67,97 +67,7 @@ index 0000000000..547d6bfe08
 +	aliases {
 +		bootargs = "console=ttyS0,115200";
 +	};
-+};
 +
-+&uart0 {
-+	u-boot,dm-pre-reloc;
-+};
-+
-+&watchdog1 {
-+        u-boot,dm-pre-reloc;
-+};
-diff --git a/arch/arm/dts/socfpga_arria10_maxevk.dtsi b/arch/arm/dts/socfpga_arria10_maxevk.dtsi
-new file mode 100644
-index 0000000000..04dd164e02
---- /dev/null
-+++ b/arch/arm/dts/socfpga_arria10_maxevk.dtsi
-@@ -0,0 +1,59 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Copyright (C) 2020 Wolfgang Grandegger <wg@aries-embedded.de>
-+ */
-+
-+#include "socfpga_arria10.dtsi"
-+
-+/ {
-+	model = "Aries MAX EVK";
-+	compatible = "aries,maxevk", "altr,socfpga-arria10", "altr,socfpga";
-+
-+	aliases {
-+		ethernet0 = &gmac1;
-+		ethernet1 = &gmac2;
-+		serial0 = &uart0;
-+	};
-+
-+	chosen {
-+		bootargs = "earlyprintk";
-+		stdout-path = "serial0:115200n8";
-+	};
-+
-+	memory@0 {
-+		name = "memory";
-+		device_type = "memory";
-+		reg = <0x0 0x80000000>; /* 2GB */
-+	};
-+
-+};
-+
-+&gmac1 {
-+	phy-mode = "rgmii";
-+	phy-addr = <0>;
-+	status = "okay";
-+};
-+
-+&gmac2 {
-+	phy-mode = "rgmii";
-+	phy-addr = <0>;
-+	status = "okay";
-+};
-+
-+&gpio1 {
-+	status = "disabled";
-+};
-+
-+&uart0 {
-+	status = "okay";
-+};
-+
-+&usb1 {
-+	status = "okay";
-+	external-vbus-supply;
-+	//disable-over-current;
-+};
-+
-+&watchdog1 {
-+	status = "okay";
-+};
-diff --git a/arch/arm/dts/socfpga_arria10_maxevk_sdmmc-u-boot.dtsi b/arch/arm/dts/socfpga_arria10_maxevk_sdmmc-u-boot.dtsi
-new file mode 100644
-index 0000000000..a362b00b36
---- /dev/null
-+++ b/arch/arm/dts/socfpga_arria10_maxevk_sdmmc-u-boot.dtsi
-@@ -0,0 +1,47 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (C) 2014-2015, 2020 Intel. All rights reserved.
-+ */
-+
-+#include "socfpga_arria10_maxevk_sdmmc_handoff.h"
-+#include "socfpga_arria10-handoff.dtsi"
-+#include "socfpga_arria10_handoff_u-boot.dtsi"
-+#include "socfpga_arria10_maxevk-u-boot.dtsi"
-+
-+/ {
 +	chosen {
 +		firmware-loader = <&fs_loader0>;
 +	};
@@ -194,24 +104,65 @@ index 0000000000..a362b00b36
 +&sdmmc_clk {
 +	u-boot,dm-pre-reloc;
 +};
-diff --git a/arch/arm/dts/socfpga_arria10_maxevk_sdmmc.dts b/arch/arm/dts/socfpga_arria10_maxevk_sdmmc.dts
++
++&watchdog1 {
++        u-boot,dm-pre-reloc;
++};
+diff --git a/arch/arm/dts/socfpga_arria10_max.dtsi b/arch/arm/dts/socfpga_arria10_max.dtsi
 new file mode 100644
-index 0000000000..9a827e5339
+index 0000000000..c775ca7f0a
 --- /dev/null
-+++ b/arch/arm/dts/socfpga_arria10_maxevk_sdmmc.dts
-@@ -0,0 +1,27 @@
++++ b/arch/arm/dts/socfpga_arria10_max.dtsi
+@@ -0,0 +1,68 @@
 +// SPDX-License-Identifier: GPL-2.0+
 +/*
 + * Copyright (C) 2020 Wolfgang Grandegger <wg@aries-embedded.de>
 + */
 +
-+/dts-v1/;
-+#include "socfpga_arria10_maxevk.dtsi"
++#include "socfpga_arria10.dtsi"
++
++/ {
++	model = "Aries MAX";
++	compatible = "altr,socfpga-arria10", "altr,socfpga";
++
++	chosen {
++		bootargs = "earlyprintk";
++		stdout-path = "serial0:115200n8";
++	};
++
++	memory@0 {
++		name = "memory";
++		device_type = "memory";
++		reg = <0x0 0x80000000>; /* 2GB */
++	};
++
++	ref_033v: 033-v-ref {
++		compatible = "regulator-fixed";
++		regulator-name = "0.33V";
++		regulator-min-microvolt = <330000>;
++		regulator-max-microvolt = <330000>;
++	};
++
++	soc {
++		clkmgr@ffd04000 {
++			clocks {
++				osc1 {
++					clock-frequency = <25000000>;
++				};
++			};
++		};
++	};
++};
++
++&gpio1 {
++	status = "disabled";
++};
 +
 +&mmc {
 +	status = "okay";
 +	num-slots = <1>;
 +	cap-sd-highspeed;
++	cap-mmc-highspeed;
 +	broken-cd;
 +	bus-width = <8>;
 +};
@@ -227,11 +178,81 @@ index 0000000000..9a827e5339
 +			     <48 IRQ_TYPE_LEVEL_HIGH>;
 +	};
 +};
-diff --git a/arch/arm/dts/socfpga_arria10_maxevk_sdmmc_handoff.h b/arch/arm/dts/socfpga_arria10_maxevk_sdmmc_handoff.h
++
++&watchdog1 {
++	status = "okay";
++};
+diff --git a/arch/arm/dts/socfpga_arria10_maxevk-u-boot.dtsi b/arch/arm/dts/socfpga_arria10_maxevk-u-boot.dtsi
+new file mode 100644
+index 0000000000..fafb42a185
+--- /dev/null
++++ b/arch/arm/dts/socfpga_arria10_maxevk-u-boot.dtsi
+@@ -0,0 +1,13 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2021, Wolfgang Grandegger <wg@aries-embedded.de>
++ */
++
++#include "socfpga_arria10_maxevk_handoff.h"
++#include "socfpga_arria10-handoff.dtsi"
++#include "socfpga_arria10_handoff_u-boot.dtsi"
++#include "socfpga_arria10_max-u-boot.dtsi"
++
++&uart0 {
++	u-boot,dm-pre-reloc;
++};
+diff --git a/arch/arm/dts/socfpga_arria10_maxevk.dts b/arch/arm/dts/socfpga_arria10_maxevk.dts
+new file mode 100644
+index 0000000000..e1b2be19f9
+--- /dev/null
++++ b/arch/arm/dts/socfpga_arria10_maxevk.dts
+@@ -0,0 +1,41 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright (C) 2020 Wolfgang Grandegger <wg@aries-embedded.de>
++ */
++
++/dts-v1/;
++#include "socfpga_arria10_max.dtsi"
++
++/ {
++	model = "Aries MAX EVK";
++	compatible = "aries,maxevk", "altr,socfpga-arria10", "altr,socfpga";
++
++	aliases {
++		ethernet0 = &gmac1;
++		ethernet1 = &gmac2;
++		serial0 = &uart0;
++	};
++};
++
++&gmac1 {
++	phy-mode = "rgmii";
++	phy-addr = <0>;
++	status = "okay";
++};
++
++&gmac2 {
++	phy-mode = "rgmii";
++	phy-addr = <0>;
++	status = "okay";
++};
++
++&uart0 {
++	status = "okay";
++};
++
++&usb1 {
++	status = "okay";
++	dr_mode = "host";
++	external-vbus-supply;
++	//disable-over-current;
++};
+diff --git a/arch/arm/dts/socfpga_arria10_maxevk_handoff.h b/arch/arm/dts/socfpga_arria10_maxevk_handoff.h
 new file mode 100644
 index 0000000000..79b210b37f
 --- /dev/null
-+++ b/arch/arm/dts/socfpga_arria10_maxevk_sdmmc_handoff.h
++++ b/arch/arm/dts/socfpga_arria10_maxevk_handoff.h
 @@ -0,0 +1,305 @@
 +/* SPDX-License-Identifier: BSD-3-Clause */
 +/*
@@ -539,7 +560,7 @@ index 0000000000..79b210b37f
 +
 +#endif /* __SOCFPGA_ARRIA10_CONFIG_H__ */
 diff --git a/arch/arm/mach-socfpga/Kconfig b/arch/arm/mach-socfpga/Kconfig
-index 26f2cf8e47..ac1dd18ab2 100644
+index 26f2cf8e47..7816c224fa 100644
 --- a/arch/arm/mach-socfpga/Kconfig
 +++ b/arch/arm/mach-socfpga/Kconfig
 @@ -94,6 +94,10 @@ config TARGET_SOCFPGA_ARIES_MCVEVK
@@ -553,49 +574,26 @@ index 26f2cf8e47..ac1dd18ab2 100644
  config TARGET_SOCFPGA_ARRIA10_SOCDK
  	bool "Altera SOCFPGA SoCDK (Arria 10)"
  	select TARGET_SOCFPGA_ARRIA10
-@@ -164,6 +168,7 @@ config SYS_BOARD
- 	default "de1-soc" if TARGET_SOCFPGA_TERASIC_DE1_SOC
- 	default "de10-nano" if TARGET_SOCFPGA_TERASIC_DE10_NANO
- 	default "is1" if TARGET_SOCFPGA_IS1
-+	default "maxevk" if TARGET_SOCFPGA_ARRIA10_MAXEVK
- 	default "mcvevk" if TARGET_SOCFPGA_ARIES_MCVEVK
- 	default "secu1" if TARGET_SOCFPGA_ARRIA5_SECU1
- 	default "sockit" if TARGET_SOCFPGA_TERASIC_SOCKIT
-@@ -178,6 +183,7 @@ config SYS_VENDOR
- 	default "altera" if TARGET_SOCFPGA_ARRIA10_SOCDK
- 	default "altera" if TARGET_SOCFPGA_CYCLONE5_SOCDK
- 	default "altera" if TARGET_SOCFPGA_STRATIX10_SOCDK
-+	default "aries" if TARGET_SOCFPGA_ARRIA10_MAXEVK
- 	default "aries" if TARGET_SOCFPGA_ARIES_MCVEVK
- 	default "devboards" if TARGET_SOCFPGA_DEVBOARDS_DBM_SOC1
- 	default "ebv" if TARGET_SOCFPGA_EBV_SOCRATES
-@@ -202,6 +208,7 @@ config SYS_CONFIG_NAME
- 	default "socfpga_de1_soc" if TARGET_SOCFPGA_TERASIC_DE1_SOC
- 	default "socfpga_de10_nano" if TARGET_SOCFPGA_TERASIC_DE10_NANO
- 	default "socfpga_is1" if TARGET_SOCFPGA_IS1
-+	default "socfpga_maxevk" if TARGET_SOCFPGA_ARRIA10_MAXEVK
- 	default "socfpga_mcvevk" if TARGET_SOCFPGA_ARIES_MCVEVK
- 	default "socfpga_sockit" if TARGET_SOCFPGA_TERASIC_SOCKIT
- 	default "socfpga_socrates" if TARGET_SOCFPGA_EBV_SOCRATES
+@@ -210,5 +214,6 @@ config SYS_CONFIG_NAME
+ 	default "socfpga_vining_fpga" if TARGET_SOCFPGA_SOFTING_VINING_FPGA
+ 
+ source "board/keymile/Kconfig"
++source "board/aries/maxevk/Kconfig"
+ 
+ endif
 diff --git a/board/aries/maxevk/Kconfig b/board/aries/maxevk/Kconfig
 new file mode 100644
-index 0000000000..c1738d864b
+index 0000000000..7da591e997
 --- /dev/null
 +++ b/board/aries/maxevk/Kconfig
-@@ -0,0 +1,18 @@
+@@ -0,0 +1,12 @@
 +if TARGET_SOCFPGA_ARRIA10_MAXEVK
-+
-+config SYS_CPU
-+	default "armv7"
 +
 +config SYS_BOARD
 +	default "maxevk"
 +
 +config SYS_VENDOR
 +	default "aries"
-+
-+config SYS_SOC
-+	default "socfpga_arria10"
 +
 +config SYS_CONFIG_NAME
 +	default "socfpga_maxevk"
@@ -685,7 +683,7 @@ index 0000000000..4c466cb944
 +#include <common.h>
 diff --git a/configs/socfpga_maxevk_defconfig b/configs/socfpga_maxevk_defconfig
 new file mode 100644
-index 0000000000..91dc8e529e
+index 0000000000..bfe05be841
 --- /dev/null
 +++ b/configs/socfpga_maxevk_defconfig
 @@ -0,0 +1,52 @@
@@ -699,14 +697,14 @@ index 0000000000..91dc8e529e
 +CONFIG_TARGET_SOCFPGA_ARRIA10_MAXEVK=y
 +CONFIG_IDENT_STRING="socfpga_arria10"
 +CONFIG_SPL_FS_FAT=y
-+CONFIG_DEFAULT_DEVICE_TREE="socfpga_arria10_maxevk_sdmmc"
++CONFIG_DEFAULT_DEVICE_TREE="socfpga_arria10_maxevk"
 +CONFIG_DISTRO_DEFAULTS=y
 +CONFIG_FIT=y
 +CONFIG_SPL_FIT=y
 +CONFIG_USE_BOOTARGS=y
 +CONFIG_BOOTARGS="console=ttyS0,115200"
 +# CONFIG_USE_BOOTCOMMAND is not set
-+CONFIG_DEFAULT_FDT_FILE="socfpga_arria10_maxevk_sdmmc.dtb"
++CONFIG_DEFAULT_FDT_FILE="socfpga_arria10_maxevk.dtb"
 +CONFIG_SYS_CONSOLE_IS_IN_ENV=y
 +CONFIG_SYS_CONSOLE_OVERWRITE_ROUTINE=y
 +CONFIG_SYS_CONSOLE_ENV_OVERWRITE=y

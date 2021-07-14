@@ -1,7 +1,7 @@
-From 7e5c6b37f22810e741854d694f349c2b03d4834a Mon Sep 17 00:00:00 2001
+From 85a5478727c51c88aed165a1e2031b579d52fc02 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Sat, 8 May 2021 14:55:03 +0200
-Subject: [PATCH 2/3] arm: socfpga: add support for Quartus design files
+Subject: [PATCH 2/5] arm: socfpga: add support for Quartus design files
  required by U-Boot
 
 It converts the XML handoff file from the Quartus design to
@@ -57,7 +57,7 @@ index b4f1cbcf9b..9899d8f985 100644
  PLATFORM_LIBGCC = arch/$(ARCH)/lib/lib.a
 diff --git a/quartus/Kconfig b/quartus/Kconfig
 new file mode 100644
-index 0000000000..075b676a87
+index 0000000000..ae508e6ba7
 --- /dev/null
 +++ b/quartus/Kconfig
 @@ -0,0 +1,28 @@
@@ -75,7 +75,7 @@ index 0000000000..075b676a87
 +	depends on ARCH_SOCFPGA
 +	default "quartus/hps.xml"
 +	help
-+   	  Converts the XML handoff file from the Quartus design to
++	  Converts the XML handoff file from the Quartus design to
 +	  "arch/arm/dts/<CONFIG_DEFAULT_DEVICE_TREE>_handoff.h", which
 +	  will be used by the device tree.
 +

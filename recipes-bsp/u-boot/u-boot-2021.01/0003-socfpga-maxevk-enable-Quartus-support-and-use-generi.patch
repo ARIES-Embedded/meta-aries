@@ -1,20 +1,40 @@
-From 27e30a5c822d818bc9ed7c31b9e148ca9e2cae9f Mon Sep 17 00:00:00 2001
+From bcdbe2240748e1dbfdc2f30830b762a3be0b6b34 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Sat, 8 May 2021 15:16:52 +0200
-Subject: [PATCH 3/3] socfpga: maxevk: enable Quartus support and use generic
+Subject: [PATCH 3/5] socfpga: maxevk: enable Quartus support and use generic
  RBF file names
 
-The RBF files names are "output-core.rbf" and "output-periph.rbf" and
-are located in the sub-directory "quartus"
+Two ITS files are provided, "fit_spl_fpga.its" and "fit_spl_fpga_full.its".
+The first one uses the split RBF images named "output-core.rbf" and
+"output-periph.rbf", while the latter uses the full RBF image named
+"output.rbf. The images are expected in the directory "quartus/maxevk".
+Because the split images do not yet boot, "fit_spl_fpga_full.its" is
+set in the defconfig for the moment.
 
 Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
 ---
- board/aries/maxevk/fit_spl_fpga.its | 4 ++--
- configs/socfpga_maxevk_defconfig    | 1 +
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ arch/arm/dts/socfpga_arria10_maxevk_handoff.h |  4 +--
+ board/aries/maxevk/fit_spl_fpga.its           |  4 +--
+ board/aries/maxevk/fit_spl_fpga_full.its      | 30 +++++++++++++++++++
+ configs/socfpga_maxevk_defconfig              |  3 ++
+ 4 files changed, 37 insertions(+), 4 deletions(-)
+ create mode 100644 board/aries/maxevk/fit_spl_fpga_full.its
 
+diff --git a/arch/arm/dts/socfpga_arria10_maxevk_handoff.h b/arch/arm/dts/socfpga_arria10_maxevk_handoff.h
+index 79b210b37f..79beb415c5 100644
+--- a/arch/arm/dts/socfpga_arria10_maxevk_handoff.h
++++ b/arch/arm/dts/socfpga_arria10_maxevk_handoff.h
+@@ -1,6 +1,6 @@
+-/* SPDX-License-Identifier: BSD-3-Clause */
++// SPDX-License-Identifier: BSD-3-Clause
+ /*
+- * Altera Arria10 SoCFPGA configuration
++ * Intel Arria 10 SoCFPGA configuration
+  */
+ 
+ #ifndef __SOCFPGA_ARRIA10_CONFIG_H__
 diff --git a/board/aries/maxevk/fit_spl_fpga.its b/board/aries/maxevk/fit_spl_fpga.its
-index ae23d65d1c..8c3c004221 100644
+index ae23d65d1c..098e8150da 100644
 --- a/board/aries/maxevk/fit_spl_fpga.its
 +++ b/board/aries/maxevk/fit_spl_fpga.its
 @@ -13,7 +13,7 @@
@@ -22,7 +42,7 @@ index ae23d65d1c..8c3c004221 100644
  		fpga-periph-1 {
  			description = "FPGA peripheral bitstream";
 -			data = /incbin/("../../../DBM_SoC3_startup.periph.rbf");
-+			data = /incbin/("../../../quartus/output.periph.rbf");
++			data = /incbin/("../../../quartus/maxevk/output.periph.rbf");
  			type = "fpga";
  			arch = "arm";
  			compression = "none";
@@ -31,19 +51,57 @@ index ae23d65d1c..8c3c004221 100644
  		fpga-core-1 {
  			description = "FPGA core bitstream";
 -			data = /incbin/("../../../DBM_SoC3_startup.core.rbf");
-+			data = /incbin/("../../../quartus/output.core.rbf");
++			data = /incbin/("../../../quartus/maxevk/output.core.rbf");
  			type = "fpga";
  			arch = "arm";
  			compression = "none";
+diff --git a/board/aries/maxevk/fit_spl_fpga_full.its b/board/aries/maxevk/fit_spl_fpga_full.its
+new file mode 100644
+index 0000000000..fa039bcd80
+--- /dev/null
++++ b/board/aries/maxevk/fit_spl_fpga_full.its
+@@ -0,0 +1,30 @@
++// SPDX-License-Identifier: GPL-2.0
++ /*
++ * Copyright (C) 2019 Intel Corporation <www.intel.com>
++ *
++ */
++
++/dts-v1/;
++
++/ {
++	description = "FIT image with FPGA bistream";
++	#address-cells = <1>;
++
++	images {
++		fpga-periph-1 {
++			description = "FPGA peripheral bitstream";
++			data = /incbin/("../../../quartus/maxevk/output.rbf");
++			type = "fpga";
++			arch = "arm";
++			compression = "none";
++		};
++	};
++
++	configurations {
++		default = "config-1";
++		config-1 {
++			description = "Boot with FPGA early IO release config";
++			fpga = "fpga-periph-1";
++		};
++	};
++};
 diff --git a/configs/socfpga_maxevk_defconfig b/configs/socfpga_maxevk_defconfig
-index 91dc8e529e..ce1d0393ba 100644
+index bfe05be841..89c9c42672 100644
 --- a/configs/socfpga_maxevk_defconfig
 +++ b/configs/socfpga_maxevk_defconfig
-@@ -50,3 +50,4 @@ CONFIG_TIMER=y
+@@ -50,3 +50,6 @@ CONFIG_TIMER=y
  CONFIG_SPL_TIMER=y
  CONFIG_DESIGNWARE_APB_TIMER=y
  # CONFIG_SPL_WDT is not set
 +CONFIG_QUARTUS_SUPPORT=y
++CONFIG_QUARTUS_XML_HANDOFF_FILE="quartus/maxevk/hps.xml"
++CONFIG_QUARTUS_FIT_IMAGE_SOURCE="board/aries/maxevk/fit_spl_fpga_full.its"
 -- 
 2.28.0
 
