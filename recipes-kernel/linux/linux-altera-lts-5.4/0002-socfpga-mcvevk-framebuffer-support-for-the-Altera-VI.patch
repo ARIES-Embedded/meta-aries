@@ -27,7 +27,7 @@ index b21b3a64641a..a77cdfc6f0f4 100644
  	socfpga_arria10_socdk_sdmmc.dtb \
  	socfpga_cyclone5_chameleon96.dtb \
  	socfpga_cyclone5_mcvevk.dtb \
-+	socfpga_cyclone5_mcvevk_rev2_fb.dtb \
++	socfpga_cyclone5_mcvevp_rev2_fb.dtb \
  	socfpga_cyclone5_socdk.dtb \
  	socfpga_cyclone5_de0_nano_soc.dtb \
  	socfpga_cyclone5_sockit.dtb \
