@@ -1,7 +1,7 @@
-From 7b61eeff0476b534fabca7998c984acb6ba87b15 Mon Sep 17 00:00:00 2001
+From 1ed5e555828729d5d268075d8602d6ab09b58b75 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Thu, 22 Apr 2021 09:31:36 +0200
-Subject: [PATCH 6/6] configs: socfpga: enable preboot command for the mcvevk
+Subject: [PATCH 5/5] configs: socfpga: enable preboot command for the mcvevk
  board
 
 The default preboot command is "run try_bootscript".

@@ -1,7 +1,7 @@
-From 7996c63558bd65808d442b07b29c2fedb6d930ab Mon Sep 17 00:00:00 2001
+From ac31941b33c21abe582d0602838fb833f81b9ff5 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@grandegger.com>
 Date: Thu, 6 Aug 2020 10:14:31 +0200
-Subject: [PATCH 5/6] Revert "ARM: socfpga: Remove
+Subject: [PATCH 4/5] Revert "ARM: socfpga: Remove
  socfpga_sdram_apply_static_cfg()"
 
 This reverts commit c5f4b805755912a3d2fe20f014b6b6ab0473bd73.

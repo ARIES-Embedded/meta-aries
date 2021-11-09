@@ -1,7 +1,7 @@
-From fffd07f7c7314d0ed157e61bca3a9834b1b004c3 Mon Sep 17 00:00:00 2001
+From f841e6088e4ce47a57bdd233164a52205a7aa429 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Sat, 21 Mar 2020 21:07:13 +0100
-Subject: [PATCH 1/6] arm: mxs: Re-add support for Aries M28 SoM and M28EVK
+Subject: [PATCH 1/5] arm: mxs: Re-add support for Aries M28 SoM and M28EVK
  board
 
 Re-add support for Aries Embedded M28 SoM, which is i.MX28 based

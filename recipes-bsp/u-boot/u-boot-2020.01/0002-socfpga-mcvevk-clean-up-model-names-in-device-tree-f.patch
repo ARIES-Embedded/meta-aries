@@ -1,7 +1,7 @@
-From 6cd1c9b750fb257ed9b5eb92649beddb22ca2a92 Mon Sep 17 00:00:00 2001
+From 35241c37799abaf648e343c7154d7d0807cb5322 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Thu, 11 Jun 2020 15:24:03 +0200
-Subject: [PATCH 3/6] socfpga: mcvevk: clean up model names in device tree
+Subject: [PATCH 2/5] socfpga: mcvevk: clean up model names in device tree
  files
 
 Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.com>
