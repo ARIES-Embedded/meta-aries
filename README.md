@@ -8,8 +8,9 @@ The following boards are supported:
 
   * M28EVK
   * M53EVK
-  * MCVEVK and MCVEVP
   * MA5D4EVK
+  * MCVEVK and MCVEVP
+  * MAXEVK
 
 This Yocto layer could be used to build an embedded Linux distribution
 as shown below. The example is for the MCVEVP. For other EVKs just
