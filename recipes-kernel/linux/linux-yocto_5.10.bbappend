@@ -1,4 +1,4 @@
-FILESEXTRAPATHS:prepend := "${THISDIR}/config:${THISDIR}/linux-yocto-5.4:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/config:${THISDIR}/linux-yocto-5.10:"
 
 SRC_URI:append = " file://aries;type=kmeta;destsuffix=aries "
 KERNEL_FEATURES:append:m28evk = " bsp/m28evk/m28evk.scc "
