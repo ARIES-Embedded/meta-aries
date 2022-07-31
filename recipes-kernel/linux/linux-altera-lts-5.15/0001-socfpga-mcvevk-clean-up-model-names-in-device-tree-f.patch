@@ -1,0 +1,43 @@
+From 316ec8a7b576eb07e5afbc3f4b03d4073cf1f723 Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Thu, 11 Jun 2020 15:33:02 +0200
+Subject: [PATCH 1/4] socfpga: mcvevk: clean up model names in device tree
+ files
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ arch/arm/boot/dts/socfpga_cyclone5_mcv.dtsi   | 2 +-
+ arch/arm/boot/dts/socfpga_cyclone5_mcvevk.dts | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm/boot/dts/socfpga_cyclone5_mcv.dtsi b/arch/arm/boot/dts/socfpga_cyclone5_mcv.dtsi
+index bd92806ffc12..607a350d969d 100644
+--- a/arch/arm/boot/dts/socfpga_cyclone5_mcv.dtsi
++++ b/arch/arm/boot/dts/socfpga_cyclone5_mcv.dtsi
+@@ -6,7 +6,7 @@
+ #include "socfpga_cyclone5.dtsi"
+ 
+ / {
+-	model = "Aries/DENX MCV";
++	model = "Aries MCV";
+ 	compatible = "altr,socfpga-cyclone5", "altr,socfpga";
+ 
+ 	memory@0 {
+diff --git a/arch/arm/boot/dts/socfpga_cyclone5_mcvevk.dts b/arch/arm/boot/dts/socfpga_cyclone5_mcvevk.dts
+index ceaec29770c6..fa29d64f1f28 100644
+--- a/arch/arm/boot/dts/socfpga_cyclone5_mcvevk.dts
++++ b/arch/arm/boot/dts/socfpga_cyclone5_mcvevk.dts
+@@ -6,8 +6,8 @@
+ #include "socfpga_cyclone5_mcv.dtsi"
+ 
+ / {
+-	model = "Aries/DENX MCV EVK";
+-	compatible = "denx,mcvevk", "altr,socfpga-cyclone5", "altr,socfpga";
++	model = "Aries MCV EVK";
++	compatible = "aries,mcvevk", "altr,socfpga-cyclone5", "altr,socfpga";
+ 
+ 	aliases {
+ 		ethernet0 = &gmac0;
+-- 
+2.34.1
+
