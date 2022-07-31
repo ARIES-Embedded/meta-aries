@@ -1,0 +1,33 @@
+From 95589ae0edeee6e6fba2a6d0bed7a8039dad57aa Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Sun, 31 Jul 2022 17:00:31 +0200
+Subject: [PATCH 5/6] usb: dwc2: handle return code of dev_read_size() in of
+ to, plat function
+
+dev_read_size() returns -EINVAL (-22) if the property "g-tx-fifo-size"
+does not exist. If that's the case, we now keep the default value of 0.
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ drivers/usb/gadget/dwc2_udc_otg.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/usb/gadget/dwc2_udc_otg.c b/drivers/usb/gadget/dwc2_udc_otg.c
+index fb10884755..4384d04570 100644
+--- a/drivers/usb/gadget/dwc2_udc_otg.c
++++ b/drivers/usb/gadget/dwc2_udc_otg.c
+@@ -996,8 +996,9 @@ static int dwc2_udc_otg_of_to_plat(struct udevice *dev)
+ 	plat->rx_fifo_sz = dev_read_u32_default(dev, "g-rx-fifo-size", 0);
+ 	plat->np_tx_fifo_sz = dev_read_u32_default(dev, "g-np-tx-fifo-size", 0);
+ 
+-	plat->tx_fifo_sz_nb =
+-		dev_read_size(dev, "g-tx-fifo-size") / sizeof(u32);
++	ret = dev_read_size(dev, "g-tx-fifo-size");
++	if (ret > 0)
++		platdata->tx_fifo_sz_nb = ret / sizeof(u32);
+ 	if (plat->tx_fifo_sz_nb > DWC2_MAX_HW_ENDPOINTS)
+ 		plat->tx_fifo_sz_nb = DWC2_MAX_HW_ENDPOINTS;
+ 	if (plat->tx_fifo_sz_nb) {
+-- 
+2.34.1
+
