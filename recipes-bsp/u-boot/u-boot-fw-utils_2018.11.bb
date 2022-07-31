@@ -28,7 +28,7 @@ do_install_class-cross () {
 	install -m 755 ${S}/tools/env/fw_printenv ${D}${bindir_cross}/fw_setenv
 }
 
-SYSROOT_DIRS_append_class-cross = " ${bindir_cross}"
+SYSROOT_DIRS:append:class-cross = " ${bindir_cross}"
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 BBCLASSEXTEND = "cross"

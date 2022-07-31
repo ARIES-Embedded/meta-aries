@@ -24,11 +24,11 @@ inherit autotools pkgconfig
 
 EXTRA_OECONF = "--enable-shared --disable-h3600 --enable-input --disable-corgi --disable-collie --disable-mk712 --disable-arctic2 --disable-ucb1x00"
 
-do_install_prepend() {
+do_install:prepend() {
     install -m 0644 ${WORKDIR}/ts.conf ${S}/etc/ts.conf
 }
 
-do_install_append() {
+do_install:append() {
     install -d ${D}${sysconfdir}/profile.d/
     install -m 0755 ${WORKDIR}/tslib.sh ${D}${sysconfdir}/profile.d/
 }
