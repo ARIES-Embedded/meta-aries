@@ -2,14 +2,18 @@ meta-aries
 ==========
 
 This layer provides support for ARIES Embedded Mxx SoM and Mxx EVK for
-OE-core/Yocto 3.1 (dunfell).
+OE-core/Yocto 4.0 (kirkstone).
 
 The following boards are supported:
+
+  * MCVEVK and MCVEVP
+
+Note: for now, only the MCVEVK and MCVEVP is supported! We are working
+on the upgrade of the BSP for the following boards... stay tuned!
 
   * M28EVK
   * M53EVK
   * MA5D4EVK
-  * MCVEVK and MCVEVP
   * MAXEVK
 
 This Yocto layer could be used to build an embedded Linux distribution
@@ -23,9 +27,9 @@ substitue the machine name "mcvevk" with the name of your EVK:
   * Get the Yocto sources:
 
         $ cd <work_dir>
-        $ git clone https://github.com/ARIES-Embedded/meta-aries.git
-        $ git clone -b dunfell git://git.yoctoproject.org/poky.git
-        $ git clone -b dunfell https://github.com/openembedded/meta-openembedded.git
+        $ git clone -b kirkstone https://github.com/ARIES-Embedded/meta-aries.git
+        $ git clone -b kirkstone git://git.yoctoproject.org/poky.git
+        $ git clone -b kirkstone https://github.com/openembedded/meta-openembedded.git
 
   * Setup the build environment for the MCVEVP:
 
@@ -78,7 +82,5 @@ Known Issues:
 
 Other useful resources:
 
-  * [Yocto 'BSP Layer'](http://www.yoctoproject.org/docs/2.6/mega-manual/mega-manual.html#bsp-layers)
-  * [Yocto 'Getting Setup'](http://www.yoctoproject.org/docs/2.6/mega-manual/mega-manual.html#getting-setup)
-  * [Yocto 'Project Quickstart'](http://www.yoctoproject.org/docs/2.6/yocto-project-qs/yocto-project-qs.html)
+  * [Yocto Project Documentation](https://docs.yoctoproject.org/4.0.2/)
   * Hardware Manuals and Quick Start Guide from the [ARIES Embedded WEB site](http://www.aries-embedded.de)
