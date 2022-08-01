@@ -28,4 +28,6 @@ SRC_URI_append_mcvevk = " \
 	file://0003-mcvevk-add-env-commands-to-permit-booting-Linux-with.patch \
 	file://0004-Revert-ARM-socfpga-Remove-socfpga_sdram_apply_static.patch \
 	file://0005-configs-socfpga-enable-preboot-command-for-the-mcvev.patch \
+	file://0006-ARM-socfpga-gen5-release-reset-before-using-USB-as-d.patch \
+	file://0007-ARM-socfpga-gen5-release-reset-before-using-USB-as-h.patch \
 	"
