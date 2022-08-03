@@ -77,6 +77,7 @@ SRC_URI:append:ma5d4evk = " \
 	file://0008-ma5d4evk-remove-CONFIG_NR_DRAM_BANKS-fron-board-s-he.patch \
 	file://0009-ma5d4evk-temporarily-revert-the-DM-support.patch \
 	file://0010-ma5d4evk-select-FDT-blob-in-FIT-image-by-file-name.patch \
+	file://0011-ma5d4evk-fix-names-of-the-elements-in-the-fitImage.patch \
 	"
 
 do_compile:append:ma5d4evk () {
@@ -97,6 +98,7 @@ do_deploy:append:ma5d4evk () {
 
 # MCVEVK
 SRC_URI:append:mcvevk = " \
-	file://0011-mcvevk-fix-device-tree-to-work-with-DM-serial.patch \
+	file://0012-mcvevk-fix-device-tree-to-work-with-DM-serial.patch \
+	file://0013-mcvevk-add-env-commands-to-permit-booting-Linux-with.patch \
 	"
 

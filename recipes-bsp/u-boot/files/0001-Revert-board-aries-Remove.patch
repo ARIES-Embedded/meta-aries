@@ -1,7 +1,7 @@
-From bfdee0208cb67f02ac50205e8928fac8f820bf49 Mon Sep 17 00:00:00 2001
+From bf73efb3113b85a4a0f7a4c9396670038bc7bd9d Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Fri, 23 Nov 2018 21:52:09 +0100
-Subject: [PATCH 01/11] Revert "board/aries: Remove"
+Subject: [PATCH 01/13] Revert "board/aries: Remove"
 
 This reverts commit 03b54997d568a6879a045ba775e44d62289a8fb9.
 
@@ -11,9 +11,9 @@ Conflicts:
 ---
  .travis.yml                              |   9 +-
  arch/arm/dts/Makefile                    |   4 +
- arch/arm/dts/at91-sama5d4_ma5d4.dtsi     | 142 +++++++
- arch/arm/dts/at91-sama5d4_ma5d4evk.dts   | 149 +++++++
- arch/arm/dts/socfpga_cyclone5_mcvevk.dts |  58 +++
+ arch/arm/dts/at91-sama5d4_ma5d4.dtsi     | 142 +++++
+ arch/arm/dts/at91-sama5d4_ma5d4evk.dts   | 149 +++++
+ arch/arm/dts/socfpga_cyclone5_mcvevk.dts |  58 ++
  arch/arm/mach-at91/Kconfig               |   9 +
  arch/arm/mach-imx/mx5/Kconfig            |   6 +
  arch/arm/mach-imx/mx5/Makefile           |   1 +
@@ -23,32 +23,32 @@ Conflicts:
  board/aries/m28evk/MAINTAINERS           |   6 +
  board/aries/m28evk/Makefile              |  10 +
  board/aries/m28evk/README                |  13 +
- board/aries/m28evk/m28evk.c              | 172 ++++++++
- board/aries/m28evk/spl_boot.c            | 205 ++++++++++
+ board/aries/m28evk/m28evk.c              | 172 ++++++
+ board/aries/m28evk/spl_boot.c            | 205 +++++++
  board/aries/m53evk/Kconfig               |  15 +
  board/aries/m53evk/MAINTAINERS           |   6 +
  board/aries/m53evk/Makefile              |   6 +
- board/aries/m53evk/imximage.cfg          |  91 +++++
- board/aries/m53evk/m53evk.c              | 364 +++++++++++++++++
+ board/aries/m53evk/imximage.cfg          |  91 ++++
+ board/aries/m53evk/m53evk.c              | 364 +++++++++++++
  board/aries/ma5d4evk/Kconfig             |  12 +
  board/aries/ma5d4evk/MAINTAINERS         |   6 +
  board/aries/ma5d4evk/Makefile            |   5 +
- board/aries/ma5d4evk/ma5d4evk.c          | 456 +++++++++++++++++++++
+ board/aries/ma5d4evk/ma5d4evk.c          | 456 ++++++++++++++++
  board/aries/mcvevk/MAINTAINERS           |   5 +
  board/aries/mcvevk/Makefile              |   7 +
- board/aries/mcvevk/qts/iocsr_config.h    | 659 +++++++++++++++++++++++++++++++
- board/aries/mcvevk/qts/pinmux_config.h   | 218 ++++++++++
- board/aries/mcvevk/qts/pll_config.h      |  84 ++++
- board/aries/mcvevk/qts/sdram_config.h    | 343 ++++++++++++++++
+ board/aries/mcvevk/qts/iocsr_config.h    | 659 +++++++++++++++++++++++
+ board/aries/mcvevk/qts/pinmux_config.h   | 218 ++++++++
+ board/aries/mcvevk/qts/pll_config.h      |  84 +++
+ board/aries/mcvevk/qts/sdram_config.h    | 343 ++++++++++++
  board/aries/mcvevk/socfpga.c             |   5 +
- configs/m28evk_defconfig                 |  58 +++
- configs/m53evk_defconfig                 |  58 +++
+ configs/m28evk_defconfig                 |  58 ++
+ configs/m53evk_defconfig                 |  58 ++
  configs/ma5d4evk_defconfig               |  61 +++
- configs/socfpga_mcvevk_defconfig         |  68 ++++
- include/configs/m28evk.h                 | 225 +++++++++++
- include/configs/m53evk.h                 | 267 +++++++++++++
- include/configs/ma5d4evk.h               | 217 ++++++++++
- include/configs/socfpga_mcvevk.h         | 102 +++++
+ configs/socfpga_mcvevk_defconfig         |  68 +++
+ include/configs/m28evk.h                 | 225 ++++++++
+ include/configs/m53evk.h                 | 267 +++++++++
+ include/configs/ma5d4evk.h               | 217 ++++++++
+ include/configs/socfpga_mcvevk.h         | 102 ++++
  40 files changed, 4145 insertions(+), 3 deletions(-)
  create mode 100644 arch/arm/dts/at91-sama5d4_ma5d4.dtsi
  create mode 100644 arch/arm/dts/at91-sama5d4_ma5d4evk.dts
@@ -85,7 +85,7 @@ Conflicts:
  create mode 100644 include/configs/socfpga_mcvevk.h
 
 diff --git a/.travis.yml b/.travis.yml
-index 6ce2ef7..e48165e 100644
+index 6ce2ef7fba..e48165eef8 100644
 --- a/.travis.yml
 +++ b/.travis.yml
 @@ -171,9 +171,12 @@ matrix:
@@ -113,7 +113,7 @@ index 6ce2ef7..e48165e 100644
        env:
          - BUILDMAN="sandbox x86"
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index d36447d..f264d58 100644
+index d36447d18d..f264d589da 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
 @@ -198,6 +198,7 @@ dtb-$(CONFIG_ARCH_SOCFPGA) +=				\
@@ -136,7 +136,7 @@ index d36447d..f264d58 100644
  
 diff --git a/arch/arm/dts/at91-sama5d4_ma5d4.dtsi b/arch/arm/dts/at91-sama5d4_ma5d4.dtsi
 new file mode 100644
-index 0000000..d3e79fb
+index 0000000000..d3e79fbf19
 --- /dev/null
 +++ b/arch/arm/dts/at91-sama5d4_ma5d4.dtsi
 @@ -0,0 +1,142 @@
@@ -284,7 +284,7 @@ index 0000000..d3e79fb
 +};
 diff --git a/arch/arm/dts/at91-sama5d4_ma5d4evk.dts b/arch/arm/dts/at91-sama5d4_ma5d4evk.dts
 new file mode 100644
-index 0000000..f65a67b
+index 0000000000..f65a67b751
 --- /dev/null
 +++ b/arch/arm/dts/at91-sama5d4_ma5d4evk.dts
 @@ -0,0 +1,149 @@
@@ -439,7 +439,7 @@ index 0000000..f65a67b
 +};
 diff --git a/arch/arm/dts/socfpga_cyclone5_mcvevk.dts b/arch/arm/dts/socfpga_cyclone5_mcvevk.dts
 new file mode 100644
-index 0000000..65bec15
+index 0000000000..65bec1536f
 --- /dev/null
 +++ b/arch/arm/dts/socfpga_cyclone5_mcvevk.dts
 @@ -0,0 +1,58 @@
@@ -502,7 +502,7 @@ index 0000000..65bec15
 +	status = "okay";
 +};
 diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index a6329dc..5ca317a 100644
+index a6329dc022..5ca317a85a 100644
 --- a/arch/arm/mach-at91/Kconfig
 +++ b/arch/arm/mach-at91/Kconfig
 @@ -201,6 +201,14 @@ config TARGET_SAMA5D4EK
@@ -529,7 +529,7 @@ index a6329dc..5ca317a 100644
  source "board/atmel/at91sam9260ek/Kconfig"
  source "board/atmel/at91sam9261ek/Kconfig"
 diff --git a/arch/arm/mach-imx/mx5/Kconfig b/arch/arm/mach-imx/mx5/Kconfig
-index 29051c4..06f7c85 100644
+index 29051c40f3..06f7c85bb0 100644
 --- a/arch/arm/mach-imx/mx5/Kconfig
 +++ b/arch/arm/mach-imx/mx5/Kconfig
 @@ -35,6 +35,11 @@ config TARGET_M53MENLO
@@ -553,7 +553,7 @@ index 29051c4..06f7c85 100644
  source "board/freescale/mx51evk/Kconfig"
  source "board/freescale/mx53ard/Kconfig"
 diff --git a/arch/arm/mach-imx/mx5/Makefile b/arch/arm/mach-imx/mx5/Makefile
-index 40d1998..1fc9c96 100644
+index 40d1998637..1fc9c96aaa 100644
 --- a/arch/arm/mach-imx/mx5/Makefile
 +++ b/arch/arm/mach-imx/mx5/Makefile
 @@ -9,5 +9,6 @@ obj-y := soc.o clock.o
@@ -564,7 +564,7 @@ index 40d1998..1fc9c96 100644
  obj-$(CONFIG_TARGET_MX53CX9020) += mx53_dram.o
  obj-$(CONFIG_TARGET_MX53LOCO)   += mx53_dram.o
 diff --git a/arch/arm/mach-imx/mxs/Kconfig b/arch/arm/mach-imx/mxs/Kconfig
-index 68072d5..684d49e 100644
+index 68072d5a1f..684d49e5db 100644
 --- a/arch/arm/mach-imx/mxs/Kconfig
 +++ b/arch/arm/mach-imx/mxs/Kconfig
 @@ -50,6 +50,9 @@ config TARGET_APX4DEVKIT
@@ -586,7 +586,7 @@ index 68072d5..684d49e 100644
  source "board/freescale/mx28evk/Kconfig"
  source "board/ppcag/bg0900/Kconfig"
 diff --git a/arch/arm/mach-socfpga/Kconfig b/arch/arm/mach-socfpga/Kconfig
-index 06f8527..c2a0f99 100644
+index 06f8527aa4..c2a0f996dd 100644
 --- a/arch/arm/mach-socfpga/Kconfig
 +++ b/arch/arm/mach-socfpga/Kconfig
 @@ -52,6 +52,10 @@ config TARGET_SOCFPGA_CYCLONE5_SOCDK
@@ -626,7 +626,7 @@ index 06f8527..c2a0f99 100644
  	default "socfpga_sr1500" if TARGET_SOCFPGA_SR1500
 diff --git a/board/aries/m28evk/Kconfig b/board/aries/m28evk/Kconfig
 new file mode 100644
-index 0000000..ab5577c
+index 0000000000..ab5577cf74
 --- /dev/null
 +++ b/board/aries/m28evk/Kconfig
 @@ -0,0 +1,15 @@
@@ -647,7 +647,7 @@ index 0000000..ab5577c
 +endif
 diff --git a/board/aries/m28evk/MAINTAINERS b/board/aries/m28evk/MAINTAINERS
 new file mode 100644
-index 0000000..aad6313
+index 0000000000..aad6313dbe
 --- /dev/null
 +++ b/board/aries/m28evk/MAINTAINERS
 @@ -0,0 +1,6 @@
@@ -659,7 +659,7 @@ index 0000000..aad6313
 +F:	configs/m28evk_defconfig
 diff --git a/board/aries/m28evk/Makefile b/board/aries/m28evk/Makefile
 new file mode 100644
-index 0000000..fc642e0
+index 0000000000..fc642e0836
 --- /dev/null
 +++ b/board/aries/m28evk/Makefile
 @@ -0,0 +1,10 @@
@@ -675,7 +675,7 @@ index 0000000..fc642e0
 +endif
 diff --git a/board/aries/m28evk/README b/board/aries/m28evk/README
 new file mode 100644
-index 0000000..9f0d995
+index 0000000000..9f0d995452
 --- /dev/null
 +++ b/board/aries/m28evk/README
 @@ -0,0 +1,13 @@
@@ -694,7 +694,7 @@ index 0000000..9f0d995
 +boot from NAND flash.
 diff --git a/board/aries/m28evk/m28evk.c b/board/aries/m28evk/m28evk.c
 new file mode 100644
-index 0000000..ba8cc90
+index 0000000000..ba8cc90217
 --- /dev/null
 +++ b/board/aries/m28evk/m28evk.c
 @@ -0,0 +1,172 @@
@@ -872,7 +872,7 @@ index 0000000..ba8cc90
 +#endif
 diff --git a/board/aries/m28evk/spl_boot.c b/board/aries/m28evk/spl_boot.c
 new file mode 100644
-index 0000000..ddec8dc
+index 0000000000..ddec8dca6e
 --- /dev/null
 +++ b/board/aries/m28evk/spl_boot.c
 @@ -0,0 +1,205 @@
@@ -1083,7 +1083,7 @@ index 0000000..ddec8dc
 +}
 diff --git a/board/aries/m53evk/Kconfig b/board/aries/m53evk/Kconfig
 new file mode 100644
-index 0000000..2d49b40
+index 0000000000..2d49b40912
 --- /dev/null
 +++ b/board/aries/m53evk/Kconfig
 @@ -0,0 +1,15 @@
@@ -1104,7 +1104,7 @@ index 0000000..2d49b40
 +endif
 diff --git a/board/aries/m53evk/MAINTAINERS b/board/aries/m53evk/MAINTAINERS
 new file mode 100644
-index 0000000..73a68cf
+index 0000000000..73a68cf5aa
 --- /dev/null
 +++ b/board/aries/m53evk/MAINTAINERS
 @@ -0,0 +1,6 @@
@@ -1116,7 +1116,7 @@ index 0000000..73a68cf
 +F:	configs/m53evk_defconfig
 diff --git a/board/aries/m53evk/Makefile b/board/aries/m53evk/Makefile
 new file mode 100644
-index 0000000..c0a4004
+index 0000000000..c0a400416a
 --- /dev/null
 +++ b/board/aries/m53evk/Makefile
 @@ -0,0 +1,6 @@
@@ -1128,7 +1128,7 @@ index 0000000..c0a4004
 +obj-y	:= m53evk.o
 diff --git a/board/aries/m53evk/imximage.cfg b/board/aries/m53evk/imximage.cfg
 new file mode 100644
-index 0000000..91649ec
+index 0000000000..91649ec5d8
 --- /dev/null
 +++ b/board/aries/m53evk/imximage.cfg
 @@ -0,0 +1,91 @@
@@ -1225,7 +1225,7 @@ index 0000000..91649ec
 +DATA 4 0x63fd901c 0x00000000
 diff --git a/board/aries/m53evk/m53evk.c b/board/aries/m53evk/m53evk.c
 new file mode 100644
-index 0000000..77ba69c
+index 0000000000..77ba69c705
 --- /dev/null
 +++ b/board/aries/m53evk/m53evk.c
 @@ -0,0 +1,364 @@
@@ -1595,7 +1595,7 @@ index 0000000..77ba69c
 +#endif
 diff --git a/board/aries/ma5d4evk/Kconfig b/board/aries/ma5d4evk/Kconfig
 new file mode 100644
-index 0000000..56b4f4a
+index 0000000000..56b4f4a1a8
 --- /dev/null
 +++ b/board/aries/ma5d4evk/Kconfig
 @@ -0,0 +1,12 @@
@@ -1613,7 +1613,7 @@ index 0000000..56b4f4a
 +endif
 diff --git a/board/aries/ma5d4evk/MAINTAINERS b/board/aries/ma5d4evk/MAINTAINERS
 new file mode 100644
-index 0000000..a2fab52
+index 0000000000..a2fab52dfc
 --- /dev/null
 +++ b/board/aries/ma5d4evk/MAINTAINERS
 @@ -0,0 +1,6 @@
@@ -1625,7 +1625,7 @@ index 0000000..a2fab52
 +F:	configs/ma5d4evk_defconfig
 diff --git a/board/aries/ma5d4evk/Makefile b/board/aries/ma5d4evk/Makefile
 new file mode 100644
-index 0000000..15fc294
+index 0000000000..15fc2946d8
 --- /dev/null
 +++ b/board/aries/ma5d4evk/Makefile
 @@ -0,0 +1,5 @@
@@ -1636,7 +1636,7 @@ index 0000000..15fc294
 +obj-y += ma5d4evk.o
 diff --git a/board/aries/ma5d4evk/ma5d4evk.c b/board/aries/ma5d4evk/ma5d4evk.c
 new file mode 100644
-index 0000000..c2b6845
+index 0000000000..c2b6845edc
 --- /dev/null
 +++ b/board/aries/ma5d4evk/ma5d4evk.c
 @@ -0,0 +1,456 @@
@@ -2098,7 +2098,7 @@ index 0000000..c2b6845
 +#endif
 diff --git a/board/aries/mcvevk/MAINTAINERS b/board/aries/mcvevk/MAINTAINERS
 new file mode 100644
-index 0000000..0b719a1
+index 0000000000..0b719a154c
 --- /dev/null
 +++ b/board/aries/mcvevk/MAINTAINERS
 @@ -0,0 +1,5 @@
@@ -2109,7 +2109,7 @@ index 0000000..0b719a1
 +F:	configs/socfpga_mcvevk_defconfig
 diff --git a/board/aries/mcvevk/Makefile b/board/aries/mcvevk/Makefile
 new file mode 100644
-index 0000000..e1c8a6b
+index 0000000000..e1c8a6b3c7
 --- /dev/null
 +++ b/board/aries/mcvevk/Makefile
 @@ -0,0 +1,7 @@
@@ -2122,7 +2122,7 @@ index 0000000..e1c8a6b
 +obj-y	:= socfpga.o
 diff --git a/board/aries/mcvevk/qts/iocsr_config.h b/board/aries/mcvevk/qts/iocsr_config.h
 new file mode 100644
-index 0000000..e233d02
+index 0000000000..e233d02b97
 --- /dev/null
 +++ b/board/aries/mcvevk/qts/iocsr_config.h
 @@ -0,0 +1,659 @@
@@ -2787,7 +2787,7 @@ index 0000000..e233d02
 +#endif /* __SOCFPGA_IOCSR_CONFIG_H__ */
 diff --git a/board/aries/mcvevk/qts/pinmux_config.h b/board/aries/mcvevk/qts/pinmux_config.h
 new file mode 100644
-index 0000000..85f892a
+index 0000000000..85f892ae47
 --- /dev/null
 +++ b/board/aries/mcvevk/qts/pinmux_config.h
 @@ -0,0 +1,218 @@
@@ -3011,7 +3011,7 @@ index 0000000..85f892a
 +#endif /* __SOCFPGA_PINMUX_CONFIG_H__ */
 diff --git a/board/aries/mcvevk/qts/pll_config.h b/board/aries/mcvevk/qts/pll_config.h
 new file mode 100644
-index 0000000..4fa868e
+index 0000000000..4fa868e458
 --- /dev/null
 +++ b/board/aries/mcvevk/qts/pll_config.h
 @@ -0,0 +1,84 @@
@@ -3101,7 +3101,7 @@ index 0000000..4fa868e
 +#endif /* __SOCFPGA_PLL_CONFIG_H__ */
 diff --git a/board/aries/mcvevk/qts/sdram_config.h b/board/aries/mcvevk/qts/sdram_config.h
 new file mode 100644
-index 0000000..fd72926
+index 0000000000..fd72926a89
 --- /dev/null
 +++ b/board/aries/mcvevk/qts/sdram_config.h
 @@ -0,0 +1,343 @@
@@ -3450,7 +3450,7 @@ index 0000000..fd72926
 +#endif /* __SOCFPGA_SDRAM_CONFIG_H__ */
 diff --git a/board/aries/mcvevk/socfpga.c b/board/aries/mcvevk/socfpga.c
 new file mode 100644
-index 0000000..f173bf8
+index 0000000000..f173bf84ac
 --- /dev/null
 +++ b/board/aries/mcvevk/socfpga.c
 @@ -0,0 +1,5 @@
@@ -3461,7 +3461,7 @@ index 0000000..f173bf8
 +#include <common.h>
 diff --git a/configs/m28evk_defconfig b/configs/m28evk_defconfig
 new file mode 100644
-index 0000000..e26d49a
+index 0000000000..e26d49aef6
 --- /dev/null
 +++ b/configs/m28evk_defconfig
 @@ -0,0 +1,58 @@
@@ -3525,7 +3525,7 @@ index 0000000..e26d49a
 +CONFIG_OF_LIBFDT=y
 diff --git a/configs/m53evk_defconfig b/configs/m53evk_defconfig
 new file mode 100644
-index 0000000..71f1d9f
+index 0000000000..71f1d9fa6c
 --- /dev/null
 +++ b/configs/m53evk_defconfig
 @@ -0,0 +1,58 @@
@@ -3589,7 +3589,7 @@ index 0000000..71f1d9f
 +CONFIG_OF_LIBFDT=y
 diff --git a/configs/ma5d4evk_defconfig b/configs/ma5d4evk_defconfig
 new file mode 100644
-index 0000000..312191b
+index 0000000000..312191b6e3
 --- /dev/null
 +++ b/configs/ma5d4evk_defconfig
 @@ -0,0 +1,61 @@
@@ -3656,7 +3656,7 @@ index 0000000..312191b
 +# CONFIG_EFI_LOADER is not set
 diff --git a/configs/socfpga_mcvevk_defconfig b/configs/socfpga_mcvevk_defconfig
 new file mode 100644
-index 0000000..fcae88d
+index 0000000000..fcae88d09f
 --- /dev/null
 +++ b/configs/socfpga_mcvevk_defconfig
 @@ -0,0 +1,68 @@
@@ -3730,7 +3730,7 @@ index 0000000..fcae88d
 +CONFIG_USE_TINY_PRINTF=y
 diff --git a/include/configs/m28evk.h b/include/configs/m28evk.h
 new file mode 100644
-index 0000000..bb1d6b4
+index 0000000000..bb1d6b4f5d
 --- /dev/null
 +++ b/include/configs/m28evk.h
 @@ -0,0 +1,225 @@
@@ -3961,7 +3961,7 @@ index 0000000..bb1d6b4
 +#endif /* __CONFIGS_M28EVK_H__ */
 diff --git a/include/configs/m53evk.h b/include/configs/m53evk.h
 new file mode 100644
-index 0000000..9eaafc5
+index 0000000000..9eaafc538c
 --- /dev/null
 +++ b/include/configs/m53evk.h
 @@ -0,0 +1,267 @@
@@ -4234,7 +4234,7 @@ index 0000000..9eaafc5
 +#endif	/* __M53EVK_CONFIG_H__ */
 diff --git a/include/configs/ma5d4evk.h b/include/configs/ma5d4evk.h
 new file mode 100644
-index 0000000..5e3d6e8
+index 0000000000..5e3d6e80a8
 --- /dev/null
 +++ b/include/configs/ma5d4evk.h
 @@ -0,0 +1,217 @@
@@ -4457,7 +4457,7 @@ index 0000000..5e3d6e8
 +#endif	/* __MA5D4EVK_CONFIG_H__ */
 diff --git a/include/configs/socfpga_mcvevk.h b/include/configs/socfpga_mcvevk.h
 new file mode 100644
-index 0000000..4d1c4f2
+index 0000000000..4d1c4f2c2b
 --- /dev/null
 +++ b/include/configs/socfpga_mcvevk.h
 @@ -0,0 +1,102 @@
@@ -4564,5 +4564,5 @@ index 0000000..4d1c4f2
 +
 +#endif	/* __CONFIG_ARIES_MCVEVK_H__ */
 -- 
-1.9.1
+2.34.1
 

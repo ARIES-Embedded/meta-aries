@@ -1,7 +1,7 @@
-From 11305c414269379a3ba60cba081f9cf5e569285c Mon Sep 17 00:00:00 2001
+From a72cc05704b5c502ac47e7e50453ecb8a08db12d Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Wed, 2 Jan 2019 11:09:05 +0100
-Subject: [PATCH 11/11] mcvevk: fix device tree to work with DM serial
+Subject: [PATCH 12/13] mcvevk: fix device tree to work with DM serial
 
 Device trees need to have the serial console device available
 before relocation and require a stdout-path in chosen at least
@@ -14,7 +14,7 @@ Signed-of-by: Wolfgang Grandegger <wg@aries-embedded.de>
  1 file changed, 5 insertions(+)
 
 diff --git a/arch/arm/dts/socfpga_cyclone5_mcvevk.dts b/arch/arm/dts/socfpga_cyclone5_mcvevk.dts
-index 65bec15..9d9bbcf 100644
+index 65bec1536f..9d9bbcf4f3 100644
 --- a/arch/arm/dts/socfpga_cyclone5_mcvevk.dts
 +++ b/arch/arm/dts/socfpga_cyclone5_mcvevk.dts
 @@ -11,6 +11,7 @@
@@ -34,5 +34,5 @@ index 65bec15..9d9bbcf 100644
 +        u-boot,dm-pre-reloc;
 +};
 -- 
-1.9.1
+2.34.1
 
