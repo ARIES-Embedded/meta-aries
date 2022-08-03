@@ -1,0 +1,39 @@
+From a71ff7a2b3f78c7c209c991f332d4c237c2e3e82 Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Mon, 23 Nov 2020 08:31:23 +0100
+Subject: [PATCH 6/9] ARM: at91/dt: ma5d4evk: fix GPIO used for SD card
+ detection
+
+Like for the board without SPI NOR flash, the card detect of the
+SD card slot is on PIOE (and not 5).
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ arch/arm/boot/dts/at91-sama5d4_ma5d4sfevk.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/boot/dts/at91-sama5d4_ma5d4sfevk.dts b/arch/arm/boot/dts/at91-sama5d4_ma5d4sfevk.dts
+index 80e304f0d207..4824174ab96a 100644
+--- a/arch/arm/boot/dts/at91-sama5d4_ma5d4sfevk.dts
++++ b/arch/arm/boot/dts/at91-sama5d4_ma5d4sfevk.dts
+@@ -64,7 +64,7 @@ mmc1: mmc@fc000000 {
+ 				slot@0 {
+ 					reg = <0>;
+ 					bus-width = <4>;
+-					cd-gpios = <&pioE 5 0>;
++					cd-gpios = <&pioE 2 0>;
+ 				};
+ 			};
+ 
+@@ -79,7 +79,7 @@ usart1: serial@f8030000 {
+ 			pinctrl@fc06a000 {
+ 				board {
+ 					pinctrl_mmc1_cd: mmc1_cd {
+-						atmel,pins = <AT91_PIOE 5 AT91_PERIPH_GPIO AT91_PINCTRL_PULL_UP_DEGLITCH>;
++						atmel,pins = <AT91_PIOE 2 AT91_PERIPH_GPIO AT91_PINCTRL_PULL_UP_DEGLITCH>;
+ 					};
+ 					pinctrl_usba_vbus: usba_vbus {
+ 						atmel,pins =
+-- 
+2.34.1
+

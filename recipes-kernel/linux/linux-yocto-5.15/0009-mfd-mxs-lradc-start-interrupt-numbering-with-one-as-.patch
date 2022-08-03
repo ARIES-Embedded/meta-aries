@@ -1,0 +1,63 @@
+From d4dd26f96ac417a63acb47aac5028fc7081dbb5e Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Tue, 2 Aug 2022 12:11:50 +0200
+Subject: [PATCH 9/9] mfd: mxs-lradc: start interrupt numbering with one as
+ zero is invalid
+
+This fixes the following kernel warning message:
+
+  ------------[ cut here ]------------
+  WARNING: CPU: 0 PID: 1 at drivers/base/platform.c:333 __platform_get_irq_byname+0xa4/0xc0
+  0 is an invalid IRQ number
+  Modules linked in:
+  CPU: 0 PID: 1 Comm: swapper Not tainted 5.10.130-yocto-standard #1
+  Hardware name: Freescale MXS (Device Tree)
+  [<c00119f4>] (unwind_backtrace) from [<c000e000>] (show_stack+0x18/0x1c)
+  [<c000e000>] (show_stack) from [<c001e34c>] (__warn+0xc4/0xf0)
+  [<c001e34c>] (__warn) from [<c098c9dc>] (warn_slowpath_fmt+0x80/0xc0)
+  [<c098c9dc>] (warn_slowpath_fmt) from [<c063fd80>] (__platform_get_irq_byname+0xa4/0xc0)
+  [<c063fd80>] (__platform_get_irq_byname) from [<c063fdb4>] (platform_get_irq_byname+0x18/0x4c)
+  [<c063fdb4>] (platform_get_irq_byname) from [<c071f46c>] (mxs_lradc_ts_probe+0x1b8/0x318)
+  [<c071f46c>] (mxs_lradc_ts_probe) from [<c063ffbc>] (platform_drv_probe+0x50/0x9c)
+  [<c063ffbc>] (platform_drv_probe) from [<c063e0c8>] (really_probe+0x230/0x388)
+  [<c063e0c8>] (really_probe) from [<c063e460>] (driver_probe_device+0xa4/0xb0)
+  [<c063e460>] (driver_probe_device) from [<c063e618>] (device_driver_attach+0x4c/0x64)
+  [<c063e618>] (device_driver_attach) from [<c063e6e4>] (__driver_attach+0xb4/0xbc)
+  [<c063e6e4>] (__driver_attach) from [<c063c340>] (bus_for_each_dev+0x6c/0xb0)
+  [<c063c340>] (bus_for_each_dev) from [<c063d38c>] (bus_add_driver+0xb8/0x1c8)
+  [<c063d38c>] (bus_add_driver) from [<c063f038>] (driver_register+0xb4/0xf8)
+  [<c063f038>] (driver_register) from [<c000a8f8>] (do_one_initcall+0xb4/0x220)
+  [<c000a8f8>] (do_one_initcall) from [<c0da1154>] (kernel_init_freeable+0x1ec/0x238)
+  [<c0da1154>] (kernel_init_freeable) from [<c099bbac>] (kernel_init+0x10/0x10c)
+  [<c099bbac>] (kernel_init) from [<c0008540>] (ret_from_fork+0x14/0x34)
+
+Signed-off-by: Wolfgang Grandgger <wg@aries-embedded.de>
+---
+ drivers/mfd/mxs-lradc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/drivers/mfd/mxs-lradc.c b/drivers/mfd/mxs-lradc.c
+index 111d11fd25aa..29eb2b614f6e 100644
+--- a/drivers/mfd/mxs-lradc.c
++++ b/drivers/mfd/mxs-lradc.c
+@@ -25,7 +25,7 @@
+ #define RES_MEM			0
+ 
+ enum mx23_lradc_irqs {
+-	MX23_LRADC_TS_IRQ = 0,
++	MX23_LRADC_TS_IRQ = 1,
+ 	MX23_LRADC_CH0_IRQ,
+ 	MX23_LRADC_CH1_IRQ,
+ 	MX23_LRADC_CH2_IRQ,
+@@ -37,7 +37,7 @@ enum mx23_lradc_irqs {
+ };
+ 
+ enum mx28_lradc_irqs {
+-	MX28_LRADC_TS_IRQ = 0,
++	MX28_LRADC_TS_IRQ = 1,
+ 	MX28_LRADC_TRESH0_IRQ,
+ 	MX28_LRADC_TRESH1_IRQ,
+ 	MX28_LRADC_CH0_IRQ,
+-- 
+2.34.1
+
