@@ -2,19 +2,18 @@ meta-aries
 ==========
 
 This layer provides support for ARIES Embedded Mxx SoM and Mxx EVK for
-OE-core/Yocto 4.0 (kirkstone).
+OE-core/Yocto 4.0 (Kirkstone).
 
 The following boards are supported:
 
   * MCVEVK and MCVEVP
-
-Note: for now, only the MCVEVK and MCVEVP is supported! We are working
-on the upgrade of the BSP for the following boards... stay tuned!
-
+  * MAXEVK
   * M28EVK
   * M53EVK
   * MA5D4EVK
-  * MAXEVK
+
+The Liunx Kernel versions 5.10 and 5.15 are supported. By default the
+Linux version 5.10 is built.
 
 This Yocto layer could be used to build an embedded Linux distribution
 as shown below. The example is for the MCVEVP. For other EVKs just
@@ -45,6 +44,10 @@ substitue the machine name "mcvevk" with the name of your EVK:
   * To save disk space you may want to add the line (optional):
 
         INHERIT += "rm_work"
+
+  + If you prefer Kernel version 5.15 instead of 5.10, please add:
+
+        PREFERRED_VERSION_linux-altera-lts = "5.15%"
 
   * Add the last two lines to `conf/bblayers.conf`:
 
