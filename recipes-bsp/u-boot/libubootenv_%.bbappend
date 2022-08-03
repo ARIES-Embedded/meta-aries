@@ -2,7 +2,7 @@ FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
 
 SRC_URI += "file://fw_env.config"
 
-ALLOW_EMPTY_${PN} = "1"
+ALLOW_EMPTY:${PN} = "1"
 
 do_install:append () {
     if [ "${PN}" = "libubootenv" ]; then
@@ -11,6 +11,6 @@ do_install:append () {
     fi
 }
 
-FILES_${PN} += " \
+FILES:${PN} += " \
     ${sysconfdir}/fw_env.config \
 "

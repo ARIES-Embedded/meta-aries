@@ -7,9 +7,9 @@ PROVIDES_class-native = "u-boot-mkimage-native u-boot-mkenvimage-native"
 PACKAGES += "${PN}-mkimage ${PN}-mkenvimage"
 
 # Required for backward compatibility with "u-boot-mkimage-xxx.bb"
-RPROVIDES_${PN}-mkimage = "u-boot-mkimage"
-RREPLACES_${PN}-mkimage = "u-boot-mkimage"
-RCONFLICTS_${PN}-mkimage = "u-boot-mkimage"
+RPROVIDES:${PN}-mkimage = "u-boot-mkimage"
+RREPLACES:${PN}-mkimage = "u-boot-mkimage"
+RCONFLICTS:${PN}-mkimage = "u-boot-mkimage"
 
 EXTRA_OEMAKE_class-target = 'CROSS_COMPILE="${TARGET_PREFIX}" CC="${CC} ${CFLAGS} ${LDFLAGS}" HOSTCC="${BUILD_CC} ${BUILD_CFLAGS} ${BUILD_LDFLAGS}" STRIP=true V=1'
 EXTRA_OEMAKE_class-native = 'CC="${BUILD_CC} ${BUILD_CFLAGS} ${BUILD_LDFLAGS}" HOSTCC="${BUILD_CC} ${BUILD_CFLAGS} ${BUILD_LDFLAGS}" STRIP=true V=1'
@@ -68,14 +68,14 @@ do_install () {
 	ln -sf uboot-fit_check_sign ${D}${bindir}/fit_check_sign
 }
 
-ALLOW_EMPTY_${PN} = "1"
-FILES_${PN} = ""
-FILES_${PN}-mkimage = "${bindir}/uboot-mkimage ${bindir}/mkimage ${bindir}/uboot-dumpimage ${bindir}/dumpimage ${bindir}/uboot-fit_check_sign ${bindir}/fit_check_sign"
-FILES_${PN}-mkenvimage = "${bindir}/uboot-mkenvimage ${bindir}/mkenvimage"
+ALLOW_EMPTY:${PN} = "1"
+FILES:${PN} = ""
+FILES:${PN}-mkimage = "${bindir}/uboot-mkimage ${bindir}/mkimage ${bindir}/uboot-dumpimage ${bindir}/dumpimage ${bindir}/uboot-fit_check_sign ${bindir}/fit_check_sign"
+FILES:${PN}-mkenvimage = "${bindir}/uboot-mkenvimage ${bindir}/mkenvimage"
 
-RDEPENDS_${PN}-mkimage += "dtc"
-RDEPENDS_${PN} += "${PN}-mkimage ${PN}-mkenvimage"
-RDEPENDS_${PN}_class-native = ""
+RDEPENDS:${PN}-mkimage += "dtc"
+RDEPENDS:${PN} += "${PN}-mkimage ${PN}-mkenvimage"
+RDEPENDS:${PN}_class-native = ""
 
 BBCLASSEXTEND = "native nativesdk"
 

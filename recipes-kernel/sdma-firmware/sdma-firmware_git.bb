@@ -23,4 +23,4 @@ do_install() {
 	cp -r *.bin ${D}/lib/firmware/imx/sdma/
 }
 
-FILES_${PN} += "/lib/firmware/imx/sdma/*"
+FILES:${PN} += "/lib/firmware/imx/sdma/*"
