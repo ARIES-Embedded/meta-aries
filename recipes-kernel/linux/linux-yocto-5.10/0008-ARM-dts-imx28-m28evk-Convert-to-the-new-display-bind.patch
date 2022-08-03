@@ -1,7 +1,7 @@
-From 587489010a4cf4e0d71a45c8dcac70c5e0c47d6a Mon Sep 17 00:00:00 2001
+From 89ba874fb6b43e3846fa98c3b06d067ae2ec566e Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Tue, 10 Nov 2020 10:58:34 +0100
-Subject: [PATCH 8/8] ARM: dts: imx28-m28evk: Convert to the new display
+Subject: [PATCH 8/9] ARM: dts: imx28-m28evk: Convert to the new display
  bindings
 
 imx28-evk board uses a Ampire AM-800480R2 800x480 7" panel display.
@@ -21,7 +21,7 @@ diff --git a/arch/arm/boot/dts/imx28-m28evk.dts b/arch/arm/boot/dts/imx28-m28evk
 index c870891e293b..7c10c329e328 100644
 --- a/arch/arm/boot/dts/imx28-m28evk.dts
 +++ b/arch/arm/boot/dts/imx28-m28evk.dts
-@@ -11,6 +11,19 @@
+@@ -11,6 +11,19 @@ / {
  	model = "Aries M28EVK";
  	compatible = "aries,m28evk", "fsl,imx28";
  
@@ -41,7 +41,7 @@ index c870891e293b..7c10c329e328 100644
  	apb@80000000 {
  		apbh@80000000 {
  			ssp0: spi@80010000 {
-@@ -76,30 +89,10 @@
+@@ -76,30 +89,10 @@ lcdif@80030000 {
  				pinctrl-names = "default";
  				pinctrl-0 = <&lcdif_24bit_pins_a
  					     &lcdif_pins_m28>;
@@ -75,7 +75,7 @@ index c870891e293b..7c10c329e328 100644
  					};
  				};
  			};
-@@ -225,7 +218,7 @@
+@@ -225,7 +218,7 @@ mac1: ethernet@800f4000 {
  		};
  	};
  
@@ -84,7 +84,7 @@ index c870891e293b..7c10c329e328 100644
  		compatible = "pwm-backlight";
  		pwms = <&pwm 4 5000000>;
  		brightness-levels = <0 4 8 16 32 64 128 255>;
-@@ -258,6 +251,13 @@
+@@ -258,6 +251,13 @@ reg_usb1_vbus: regulator@3 {
  			regulator-min-microvolt = <5000000>;
  			regulator-max-microvolt = <5000000>;
  			gpio = <&gpio3 13 0>;
@@ -99,5 +99,5 @@ index c870891e293b..7c10c329e328 100644
  	};
  
 -- 
-2.20.1
+2.34.1
 

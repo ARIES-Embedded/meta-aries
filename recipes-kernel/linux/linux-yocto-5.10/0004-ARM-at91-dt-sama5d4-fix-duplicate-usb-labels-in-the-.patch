@@ -1,7 +1,7 @@
-From 3e9dced5f60382da83cd257c9befa6fdbf752d59 Mon Sep 17 00:00:00 2001
+From 5a89ea8ab1d9dd38ed6a50ae35ef4147ab65df78 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Wed, 20 Feb 2019 11:32:24 +0100
-Subject: [PATCH 4/8] ARM: at91/dt: sama5d4: fix duplicate usb labels in the
+Subject: [PATCH 4/9] ARM: at91/dt: sama5d4: fix duplicate usb labels in the
  dts files
 
 Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
@@ -14,7 +14,7 @@ diff --git a/arch/arm/boot/dts/at91-sama5d4_ma5d4emmcevk.dts b/arch/arm/boot/dts
 index 01b65b06f626..e0b075a2296d 100644
 --- a/arch/arm/boot/dts/at91-sama5d4_ma5d4emmcevk.dts
 +++ b/arch/arm/boot/dts/at91-sama5d4_ma5d4emmcevk.dts
-@@ -92,14 +92,14 @@
+@@ -92,14 +92,14 @@ pinctrl_usba_vbus: usba_vbus {
  			};
  		};
  
@@ -31,7 +31,7 @@ index 01b65b06f626..e0b075a2296d 100644
  			num-ports = <3>;
  			atmel,vbus-gpio = <0
  					   &pioE 11 GPIO_ACTIVE_LOW
-@@ -108,7 +108,7 @@
+@@ -108,7 +108,7 @@ &pioE 14 GPIO_ACTIVE_LOW
  			status = "okay";
  		};
  
@@ -44,7 +44,7 @@ diff --git a/arch/arm/boot/dts/at91-sama5d4_ma5d4sfevk.dts b/arch/arm/boot/dts/a
 index 3236be8359ff..5b00cf8cd5b2 100644
 --- a/arch/arm/boot/dts/at91-sama5d4_ma5d4sfevk.dts
 +++ b/arch/arm/boot/dts/at91-sama5d4_ma5d4sfevk.dts
-@@ -89,14 +89,14 @@
+@@ -89,14 +89,14 @@ pinctrl_usba_vbus: usba_vbus {
  			};
  		};
  
@@ -61,7 +61,7 @@ index 3236be8359ff..5b00cf8cd5b2 100644
  			num-ports = <3>;
  			atmel,vbus-gpio = <0
  					   &pioE 11 GPIO_ACTIVE_LOW
-@@ -105,7 +105,7 @@
+@@ -105,7 +105,7 @@ &pioE 14 GPIO_ACTIVE_LOW
  			status = "okay";
  		};
  
@@ -71,5 +71,5 @@ index 3236be8359ff..5b00cf8cd5b2 100644
  		};
  	};
 -- 
-2.20.1
+2.34.1
 

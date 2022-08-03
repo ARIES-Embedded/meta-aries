@@ -1,7 +1,7 @@
-From 66b9c60d4e9612d9f2c6cc7a72b71bcf6c70c296 Mon Sep 17 00:00:00 2001
+From 6e098ee8e94b0da81361a062d0cf84109220fc0a Mon Sep 17 00:00:00 2001
 From: Marek Vasut <marex@denx.de>
 Date: Sat, 14 May 2016 21:25:03 +0200
-Subject: [PATCH 2/8] ARM: at91/dt: sama5d4: Adjust DTS for released board
+Subject: [PATCH 2/9] ARM: at91/dt: sama5d4: Adjust DTS for released board
  version
 
 The SoM released on the market has swapped SD card controllers to allow
@@ -356,5 +356,5 @@ index 000000000000..01b65b06f626
 +	};
 +};
 -- 
-2.20.1
+2.34.1
 

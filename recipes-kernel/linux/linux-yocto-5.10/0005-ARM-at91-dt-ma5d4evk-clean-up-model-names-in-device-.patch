@@ -1,7 +1,7 @@
-From 4508b8d146328e01a6fea1a63fa2d61ac7551f34 Mon Sep 17 00:00:00 2001
+From 17facebe70579323465ee5c19c75af6e6ee03333 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Wed, 26 Aug 2020 09:46:03 +0200
-Subject: [PATCH 5/8] ARM: at91/dt: ma5d4evk: clean up model names in device
+Subject: [PATCH 5/9] ARM: at91/dt: ma5d4evk: clean up model names in device
  tree
 
 Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
@@ -15,7 +15,7 @@ Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
  6 files changed, 12 insertions(+), 12 deletions(-)
 
 diff --git a/arch/arm/boot/dts/at91-sama5d4_ma5d4.dtsi b/arch/arm/boot/dts/at91-sama5d4_ma5d4.dtsi
-index 0be184a870eb..5e628dc77be7 100644
+index 710cb72bda5a..2a1431e19f2f 100644
 --- a/arch/arm/boot/dts/at91-sama5d4_ma5d4.dtsi
 +++ b/arch/arm/boot/dts/at91-sama5d4_ma5d4.dtsi
 @@ -6,8 +6,8 @@
@@ -27,7 +27,7 @@ index 0be184a870eb..5e628dc77be7 100644
 +	model = "Aries MA5D4";
 +	compatible = "aries,ma5d4", "atmel,sama5d4", "atmel,sama5";
  
- 	memory {
+ 	memory@20000000 {
  		reg = <0x20000000 0x10000000>;
 diff --git a/arch/arm/boot/dts/at91-sama5d4_ma5d4emmc.dtsi b/arch/arm/boot/dts/at91-sama5d4_ma5d4emmc.dtsi
 index d44d0f3ea3a0..c1771176bebc 100644
@@ -60,7 +60,7 @@ index e0b075a2296d..88a382c19796 100644
  	chosen {
  		bootargs = "ignore_loglevel earlyprintk";
 diff --git a/arch/arm/boot/dts/at91-sama5d4_ma5d4evk.dts b/arch/arm/boot/dts/at91-sama5d4_ma5d4evk.dts
-index af4969485c88..12a61cdab4de 100644
+index 4d7cee569ff2..15fe916172da 100644
 --- a/arch/arm/boot/dts/at91-sama5d4_ma5d4evk.dts
 +++ b/arch/arm/boot/dts/at91-sama5d4_ma5d4evk.dts
 @@ -7,8 +7,8 @@
@@ -105,5 +105,5 @@ index 5b00cf8cd5b2..80e304f0d207 100644
  	chosen {
  		bootargs = "ignore_loglevel earlyprintk";
 -- 
-2.20.1
+2.34.1
 

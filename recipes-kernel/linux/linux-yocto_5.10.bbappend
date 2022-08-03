@@ -28,4 +28,5 @@ SRC_URI:append:m28evk = " \
 	file://0001-drm-panel-Add-support-for-Ampire-AM-800480R2-800x480.patch \
 	file://0007-ARM-dts-imx28-m28-cleanup-model-and-compatibility-na.patch \
 	file://0008-ARM-dts-imx28-m28evk-Convert-to-the-new-display-bind.patch \
+	file://0009-mfd-mxs-lradc-start-interrupt-numbering-with-one-as-.patch \
 	"

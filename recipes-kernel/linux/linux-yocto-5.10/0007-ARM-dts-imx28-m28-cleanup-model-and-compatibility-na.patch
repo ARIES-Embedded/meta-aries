@@ -1,7 +1,7 @@
-From 0ac163c94c4f530773d6a3fe203f4051694322e7 Mon Sep 17 00:00:00 2001
+From 5eedc94097c598d3fa52fc1f8c3efb83f1ced9a8 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Tue, 10 Nov 2020 13:13:03 +0100
-Subject: [PATCH 7/8] ARM: dts: imx28-m28: cleanup model and compatibility
+Subject: [PATCH 7/9] ARM: dts: imx28-m28: cleanup model and compatibility
  names
 
 Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
@@ -11,7 +11,7 @@ Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
  2 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/arch/arm/boot/dts/imx28-m28.dtsi b/arch/arm/boot/dts/imx28-m28.dtsi
-index 0bac72d5351f..a322568ac85b 100644
+index 2bdb4c093545..a9c69076015b 100644
 --- a/arch/arm/boot/dts/imx28-m28.dtsi
 +++ b/arch/arm/boot/dts/imx28-m28.dtsi
 @@ -6,8 +6,8 @@
@@ -41,5 +41,5 @@ index f3bddc5ada4b..c870891e293b 100644
  	apb@80000000 {
  		apbh@80000000 {
 -- 
-2.20.1
+2.34.1
 
