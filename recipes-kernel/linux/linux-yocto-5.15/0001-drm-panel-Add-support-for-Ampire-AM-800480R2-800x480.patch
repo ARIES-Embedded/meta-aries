@@ -1,8 +1,8 @@
-From f5bdd2b21de699543998e71347d51a57a1d006d5 Mon Sep 17 00:00:00 2001
+From c36b37f471aabca66ec20b5cf69b5f5c1c950433 Mon Sep 17 00:00:00 2001
 From: Marek Vasut <marex@denx.de>
 Date: Sat, 11 Jun 2016 15:51:46 +0200
-Subject: [PATCH 1/9] drm/panel: Add support for Ampire AM-800480R2 800x480 7"
- panel
+Subject: [PATCH 01/10] drm/panel: Add support for Ampire AM-800480R2 800x480
+ 7" panel
 
 This adds support for the AM-800480R2 7" 800x480 panel to the
 DRM simple panel driver. This panel is slightly different from
@@ -16,10 +16,10 @@ Cc: Nicolas Ferre <nicolas.ferre@atmel.com>
  1 file changed, 27 insertions(+)
 
 diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index bf2c845ef3a2..82822b45a8d0 100644
+index 8dd7013c75f2..79719b95188b 100644
 --- a/drivers/gpu/drm/panel/panel-simple.c
 +++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -710,6 +710,30 @@ static const struct panel_desc ampire_am_480272h3tmqw_t01h = {
+@@ -896,6 +896,30 @@ static const struct panel_desc ampire_am_480272h3tmqw_t01h = {
  	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
  };
  
@@ -50,7 +50,7 @@ index bf2c845ef3a2..82822b45a8d0 100644
  static const struct drm_display_mode ampire_am800480r3tmqwa1h_mode = {
  	.clock = 33333,
  	.hdisplay = 800,
-@@ -3913,6 +3937,9 @@ static const struct of_device_id platform_of_match[] = {
+@@ -4477,6 +4501,9 @@ static const struct of_device_id platform_of_match[] = {
  		.compatible = "ampire,am800480r3tmqwa1h",
  		.data = &ampire_am800480r3tmqwa1h,
  	}, {

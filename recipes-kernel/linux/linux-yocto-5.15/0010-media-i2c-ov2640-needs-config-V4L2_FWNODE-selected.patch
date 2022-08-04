@@ -1,0 +1,25 @@
+From e4de33755b2cdd7745d43769d32e6874ddceae49 Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Thu, 4 Aug 2022 11:20:09 +0200
+Subject: [PATCH 10/10] media: i2c: ov2640 needs config V4L2_FWNODE selected
+
+Signed-off-by: Wolfgang Grandgger <wg@aries-embedded.de>
+---
+ drivers/media/i2c/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/media/i2c/Kconfig b/drivers/media/i2c/Kconfig
+index 6157e73eef24..c656078d3ada 100644
+--- a/drivers/media/i2c/Kconfig
++++ b/drivers/media/i2c/Kconfig
+@@ -899,6 +899,7 @@ config VIDEO_OV02A10
+ config VIDEO_OV2640
+ 	tristate "OmniVision OV2640 sensor support"
+ 	depends on VIDEO_V4L2 && I2C
++	select V4L2_FWNODE
+ 	help
+ 	  This is a Video4Linux2 sensor driver for the OmniVision
+ 	  OV2640 camera.
+-- 
+2.34.1
+

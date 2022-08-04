@@ -1,7 +1,7 @@
-From 17facebe70579323465ee5c19c75af6e6ee03333 Mon Sep 17 00:00:00 2001
+From c1604761242bca0009ae75787911290464556c44 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Wed, 26 Aug 2020 09:46:03 +0200
-Subject: [PATCH 5/9] ARM: at91/dt: ma5d4evk: clean up model names in device
+Subject: [PATCH 05/10] ARM: at91/dt: ma5d4evk: clean up model names in device
  tree
 
 Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>

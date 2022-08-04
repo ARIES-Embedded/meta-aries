@@ -29,4 +29,5 @@ SRC_URI:append:m28evk = " \
 	file://0007-ARM-dts-imx28-m28-cleanup-model-and-compatibility-na.patch \
 	file://0008-ARM-dts-imx28-m28evk-Convert-to-the-new-display-bind.patch \
 	file://0009-mfd-mxs-lradc-start-interrupt-numbering-with-one-as-.patch \
+	file://0010-media-i2c-ov2640-needs-config-V4L2_FWNODE-selected.patch \
 	"
