@@ -39,9 +39,9 @@ do_install:append() {
 RPROVIDES:tslib-conf = "libts-0.0-conf"
 
 PACKAGES =+ "tslib-conf tslib-tests tslib-calibrate"
-DEBIAN_NOAUTONAME_tslib-conf = "1"
-DEBIAN_NOAUTONAME_tslib-tests = "1"
-DEBIAN_NOAUTONAME_tslib-calibrate = "1"
+DEBIAN_NOAUTONAME:tslib-conf = "1"
+DEBIAN_NOAUTONAME:tslib-tests = "1"
+DEBIAN_NOAUTONAME:tslib-calibrate = "1"
 
 RDEPENDS:${PN} = "tslib-conf"
 RRECOMMENDS:${PN} = "pointercal"
