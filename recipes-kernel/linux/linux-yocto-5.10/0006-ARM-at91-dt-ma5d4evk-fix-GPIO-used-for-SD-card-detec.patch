@@ -1,7 +1,7 @@
 From a71ff7a2b3f78c7c209c991f332d4c237c2e3e82 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Mon, 23 Nov 2020 08:31:23 +0100
-Subject: [PATCH 6/9] ARM: at91/dt: ma5d4evk: fix GPIO used for SD card
+Subject: [PATCH 06/10] ARM: at91/dt: ma5d4evk: fix GPIO used for SD card
  detection
 
 Like for the board without SPI NOR flash, the card detect of the

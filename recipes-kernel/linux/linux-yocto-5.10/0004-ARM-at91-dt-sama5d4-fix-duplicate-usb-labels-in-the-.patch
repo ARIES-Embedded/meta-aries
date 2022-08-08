@@ -1,7 +1,7 @@
 From 5a89ea8ab1d9dd38ed6a50ae35ef4147ab65df78 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Wed, 20 Feb 2019 11:32:24 +0100
-Subject: [PATCH 4/9] ARM: at91/dt: sama5d4: fix duplicate usb labels in the
+Subject: [PATCH 04/10] ARM: at91/dt: sama5d4: fix duplicate usb labels in the
  dts files
 
 Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>

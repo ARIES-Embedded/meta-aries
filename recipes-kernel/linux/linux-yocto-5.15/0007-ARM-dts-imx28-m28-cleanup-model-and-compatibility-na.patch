@@ -1,7 +1,7 @@
 From 66415dd38b8875ff1457f6281d78543e79929e1b Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Tue, 10 Nov 2020 13:13:03 +0100
-Subject: [PATCH 07/10] ARM: dts: imx28-m28: cleanup model and compatibility
+Subject: [PATCH 07/11] ARM: dts: imx28-m28: cleanup model and compatibility
  names
 
 Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>

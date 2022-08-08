@@ -1,0 +1,33 @@
+From 53365c9d281f609c64f020b2fdb83a5e9eaf2dee Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Sat, 6 Aug 2022 14:55:15 +0200
+Subject: [PATCH 11/11] drm/panel: increase clock freq of Ampire AM-800480R2 to
+ get 60 Hz vrefresh
+
+Commit 0425662fdf05665235e768e2fbcb4ced12432b43 nukes the mode->vrefresh
+and just calculate it on demand. Unfortunately, the calculated frequency
+for the Ampire AM-800480R2 is just 56 instead of 60 Hz, which shifts the
+beginnig of the line beyond the middle of the display. To compensate for
+that, we increase the clock frequency.
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ drivers/gpu/drm/panel/panel-simple.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 79719b95188b..63692f1e6a5e 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -897,7 +897,7 @@ static const struct panel_desc ampire_am_480272h3tmqw_t01h = {
+ };
+ 
+ static const struct drm_display_mode ampire_am800480r2_mode = {
+-	.clock = 33333,
++	.clock = 35414,
+ 	.hdisplay = 800,
+ 	.hsync_start = 800 + 168,
+ 	.hsync_end = 800 + 168 + 64,
+-- 
+2.34.1
+

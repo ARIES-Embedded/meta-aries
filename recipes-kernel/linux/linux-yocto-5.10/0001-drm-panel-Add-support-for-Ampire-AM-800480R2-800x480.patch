@@ -1,8 +1,8 @@
 From f5bdd2b21de699543998e71347d51a57a1d006d5 Mon Sep 17 00:00:00 2001
 From: Marek Vasut <marex@denx.de>
 Date: Sat, 11 Jun 2016 15:51:46 +0200
-Subject: [PATCH 1/9] drm/panel: Add support for Ampire AM-800480R2 800x480 7"
- panel
+Subject: [PATCH 01/10] drm/panel: Add support for Ampire AM-800480R2 800x480
+ 7" panel
 
 This adds support for the AM-800480R2 7" 800x480 panel to the
 DRM simple panel driver. This panel is slightly different from

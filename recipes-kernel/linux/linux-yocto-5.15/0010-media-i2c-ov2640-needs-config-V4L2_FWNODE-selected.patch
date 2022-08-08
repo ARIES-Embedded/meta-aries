@@ -1,7 +1,7 @@
 From e4de33755b2cdd7745d43769d32e6874ddceae49 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Thu, 4 Aug 2022 11:20:09 +0200
-Subject: [PATCH 10/10] media: i2c: ov2640 needs config V4L2_FWNODE selected
+Subject: [PATCH 10/11] media: i2c: ov2640 needs config V4L2_FWNODE selected
 
 Signed-off-by: Wolfgang Grandgger <wg@aries-embedded.de>
 ---

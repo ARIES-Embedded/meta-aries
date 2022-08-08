@@ -1,7 +1,7 @@
 From 04837f3d8061c49706da9b9ac8483f46042af91a Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Tue, 2 Aug 2022 12:11:50 +0200
-Subject: [PATCH 09/10] mfd: mxs-lradc: start interrupt numbering with one as
+Subject: [PATCH 09/11] mfd: mxs-lradc: start interrupt numbering with one as
  zero is invalid
 
 This fixes the following kernel warning message:

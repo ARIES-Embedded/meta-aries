@@ -1,7 +1,7 @@
 From 89ba874fb6b43e3846fa98c3b06d067ae2ec566e Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Tue, 10 Nov 2020 10:58:34 +0100
-Subject: [PATCH 8/9] ARM: dts: imx28-m28evk: Convert to the new display
+Subject: [PATCH 08/10] ARM: dts: imx28-m28evk: Convert to the new display
  bindings
 
 imx28-evk board uses a Ampire AM-800480R2 800x480 7" panel display.

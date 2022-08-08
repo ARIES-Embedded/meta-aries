@@ -1,7 +1,7 @@
 From 5713bede95594f75c94b536a590e88e2a54d5b70 Mon Sep 17 00:00:00 2001
 From: Marek Vasut <marex@denx.de>
 Date: Thu, 22 Oct 2015 00:05:08 +0200
-Subject: [PATCH 03/10] ARM: at91/dt: sama5d4: Add support for DENX MA5D4 SoM
+Subject: [PATCH 03/11] ARM: at91/dt: sama5d4: Add support for DENX MA5D4 SoM
  and EVK
 
 Add support for the DENX MA5D4 SoM and MA5D4EVK board. The system
