@@ -1,7 +1,7 @@
 From 366c2fade3bbac74f6ed6bf6229d9821e9d519f3 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@grandegger.com>
 Date: Mon, 17 Feb 2020 21:53:11 +0100
-Subject: [PATCH 3/4] ARM: dts: socfpga: Add support for the Aries MAX SoM on
+Subject: [PATCH 3/5] ARM: dts: socfpga: Add support for the Aries MAX SoM on
  the MAXEVK board
 
 Add support for Aries MAX Arria10 SoM, which is Arria10 based and the

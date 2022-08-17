@@ -1,0 +1,90 @@
+From 31fbb9074b18077c89ac3ed18feee01a8ab5e43e Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@grandegger.com>
+Date: Wed, 17 Aug 2022 15:12:29 +0200
+Subject: [PATCH 5/5] socfpga: mcvevk: re-adjust skew values to it's previous
+ default values
+
+Commit bcf3440c6dd78bfe5836ec0990fe36d7b4bb7d20 does change the default
+values of the the pad skew registers. With this new setting, no link is
+established on a 1Gbps network. Therefore we restore the old default
+values.
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ arch/arm/boot/dts/socfpga_cyclone5_mcvevk.dts | 23 +++++++++++++++++++
+ .../dts/socfpga_cyclone5_mcvevp_rev2_fb.dts   | 23 +++++++++++++++++++
+ 2 files changed, 46 insertions(+)
+
+diff --git a/arch/arm/boot/dts/socfpga_cyclone5_mcvevk.dts b/arch/arm/boot/dts/socfpga_cyclone5_mcvevk.dts
+index fa29d64f1f28..e53be027f78d 100644
+--- a/arch/arm/boot/dts/socfpga_cyclone5_mcvevk.dts
++++ b/arch/arm/boot/dts/socfpga_cyclone5_mcvevk.dts
+@@ -29,7 +29,30 @@ &can1 {
+ 
+ &gmac0 {
+ 	phy-mode = "rgmii";
++	phy-handle = <&phy0>;
+ 	status = "okay";
++
++	mdio0 {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		compatible = "snps,dwmac-mdio";
++		phy0: ethernet-phy@0 {
++			reg = <0>;
++			rxd0-skew-ps = <420>;
++			rxd1-skew-ps = <420>;
++			rxd2-skew-ps = <420>;
++			rxd3-skew-ps = <420>;
++			txd0-skew-ps = <420>;
++			txd1-skew-ps = <420>;
++			txd2-skew-ps = <420>;
++			txd3-skew-ps = <420>;
++			txen-skew-ps = <420>;
++			txc-skew-ps = <900>;
++			rxdv-skew-ps = <420>;
++			rxc-skew-ps = <900>;
++		};
++	};
+ };
+ 
+ &gpio0 {	/* GPIO  0 ... 28 */
+diff --git a/arch/arm/boot/dts/socfpga_cyclone5_mcvevp_rev2_fb.dts b/arch/arm/boot/dts/socfpga_cyclone5_mcvevp_rev2_fb.dts
+index 1a4d7f0ac6b6..a6fdb38c98ae 100644
+--- a/arch/arm/boot/dts/socfpga_cyclone5_mcvevp_rev2_fb.dts
++++ b/arch/arm/boot/dts/socfpga_cyclone5_mcvevp_rev2_fb.dts
+@@ -83,7 +83,30 @@ &can1 {
+ 
+ &gmac0 {
+ 	phy-mode = "rgmii";
++	phy-handle = <&phy0>;
+ 	status = "okay";
++
++	mdio0 {
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		compatible = "snps,dwmac-mdio";
++		phy0: ethernet-phy@0 {
++			reg = <0>;
++			rxd0-skew-ps = <420>;
++			rxd1-skew-ps = <420>;
++			rxd2-skew-ps = <420>;
++			rxd3-skew-ps = <420>;
++			txd0-skew-ps = <420>;
++			txd1-skew-ps = <420>;
++			txd2-skew-ps = <420>;
++			txd3-skew-ps = <420>;
++			txen-skew-ps = <420>;
++			txc-skew-ps = <900>;
++			rxdv-skew-ps = <420>;
++			rxc-skew-ps = <900>;
++		};
++	};
+ };
+ 
+ &gpio0 {	/* GPIO  0 ... 28 */
+-- 
+2.34.1
+

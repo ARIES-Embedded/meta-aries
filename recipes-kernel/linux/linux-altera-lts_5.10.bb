@@ -13,6 +13,7 @@ SRC_URI:append:mcvevk = " \
 	file://lbdaf.scc \
 	file://0001-socfpga-mcvevk-clean-up-model-names-in-device-tree-f.patch \
 	file://0002-socfpga-mcvevk-framebuffer-support-for-the-Altera-VI.patch \
+	file://0005-socfpga-mcvevk-re-adjust-skew-values-to-it-s-previou.patch \
 	"
 
 SRC_URI:append:maxevk = " \
