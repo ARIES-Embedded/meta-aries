@@ -1,4 +1,4 @@
-From 31fbb9074b18077c89ac3ed18feee01a8ab5e43e Mon Sep 17 00:00:00 2001
+From ba8f78b3b5e83f77e855ed4b21c664ae1cd495d2 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@grandegger.com>
 Date: Wed, 17 Aug 2022 15:12:29 +0200
 Subject: [PATCH 5/5] socfpga: mcvevk: re-adjust skew values to it's previous

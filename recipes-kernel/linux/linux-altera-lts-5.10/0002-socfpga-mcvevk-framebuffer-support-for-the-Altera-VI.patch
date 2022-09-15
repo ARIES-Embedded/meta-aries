@@ -1,4 +1,4 @@
-From cb6f73f4c8df6be0e915932cdea397175443117d Mon Sep 17 00:00:00 2001
+From 7448179c904a4251c63c444ef48271f04857e470 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Tue, 22 Oct 2019 10:27:05 +0200
 Subject: [PATCH 2/5] socfpga: mcvevk: framebuffer support for the Altera VIP

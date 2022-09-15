@@ -1,4 +1,4 @@
-From 7fda06e558d11d72fc0e707cfa36f2d0ba2700ac Mon Sep 17 00:00:00 2001
+From cec34c6706191391d260f31d8a687222fd39e3a0 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Fri, 27 Mar 2020 11:29:45 +0100
 Subject: [PATCH 4/5] usb: dwc2: add device-tree property to use an external
