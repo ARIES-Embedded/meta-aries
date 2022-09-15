@@ -1,9 +1,9 @@
-LINUX_VERSION = "5.15.30"
+LINUX_VERSION = "5.15.60"
 LINUX_VERSION_SUFFIX = "-lts"
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
-SRCREV = "548455e5d4a8c121115b314cc2cb5ea950d75921"
+SRCREV = "ad64c7d7824c8efdcb9d0a891e0bb83ed120c019"
 
 include linux-altera.inc
 

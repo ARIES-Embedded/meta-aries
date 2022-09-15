@@ -1,4 +1,4 @@
-From 366c2fade3bbac74f6ed6bf6229d9821e9d519f3 Mon Sep 17 00:00:00 2001
+From 5e7233a1d27c7827b28cda4c9f55f911f518e59d Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@grandegger.com>
 Date: Mon, 17 Feb 2020 21:53:11 +0100
 Subject: [PATCH 3/5] ARM: dts: socfpga: Add support for the Aries MAX SoM on
