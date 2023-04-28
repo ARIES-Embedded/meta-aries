@@ -1,4 +1,4 @@
-From 5e7233a1d27c7827b28cda4c9f55f911f518e59d Mon Sep 17 00:00:00 2001
+From bfd1c401d6d40c3a98909e5811a20bcb554dcb52 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@grandegger.com>
 Date: Mon, 17 Feb 2020 21:53:11 +0100
 Subject: [PATCH 3/5] ARM: dts: socfpga: Add support for the Aries MAX SoM on
@@ -18,10 +18,10 @@ Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
  create mode 100644 arch/arm/boot/dts/socfpga_arria10_maxevk.dts
 
 diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
-index 8337602bc930..488e7d541940 100644
+index 82a05703d145..cd6e6e3e7a32 100644
 --- a/arch/arm/boot/dts/Makefile
 +++ b/arch/arm/boot/dts/Makefile
-@@ -1076,6 +1076,7 @@ dtb-$(CONFIG_ARCH_S5PV210) += \
+@@ -1077,6 +1077,7 @@ dtb-$(CONFIG_ARCH_S5PV210) += \
  	s5pv210-torbreck.dtb
  dtb-$(CONFIG_ARCH_INTEL_SOCFPGA) += \
  	socfpga_arria5_socdk.dtb \

@@ -1,4 +1,4 @@
-From 331994350fe93919ba4292c50cd90be60217a8bd Mon Sep 17 00:00:00 2001
+From ae3241b17ea233f44cb0a7ba84e600104b5d6095 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Tue, 22 Oct 2019 10:27:05 +0200
 Subject: [PATCH 2/5] socfpga: mcvevk: framebuffer support for the Altera VIP
@@ -20,10 +20,10 @@ Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
  create mode 100644 arch/arm/boot/dts/socfpga_cyclone5_mcvevp_rev2_fb.dts
 
 diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
-index 27ca1ca6e827..8337602bc930 100644
+index 7a72fc636a7a..82a05703d145 100644
 --- a/arch/arm/boot/dts/Makefile
 +++ b/arch/arm/boot/dts/Makefile
-@@ -1081,6 +1081,7 @@ dtb-$(CONFIG_ARCH_INTEL_SOCFPGA) += \
+@@ -1082,6 +1082,7 @@ dtb-$(CONFIG_ARCH_INTEL_SOCFPGA) += \
  	socfpga_arria10_socdk_sdmmc.dtb \
  	socfpga_cyclone5_chameleon96.dtb \
  	socfpga_cyclone5_mcvevk.dtb \
