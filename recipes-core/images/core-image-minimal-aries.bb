@@ -26,6 +26,7 @@ IMAGE_INSTALL = "\
     mmc-utils \
     strace \
     htop \
+    devmem2 \
     "
 
 IMAGE_LINGUAS = " "
