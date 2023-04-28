@@ -8,4 +8,6 @@ SRC_URI:append:mcvevk = " \
         file://0004-configs-socfpga-enable-preboot-command-for-the-mcvev.patch \
         file://0005-usb-dwc2-handle-return-code-of-dev_read_size-in-of-t.patch \
         file://0006-ARM-socfpga-gen5-release-reset-before-using-USB-as-d.patch \
+        file://0007-configs-socfpga_mcvevk-generate-random-mac-address-i.patch \
+        file://0008-board-aries-mcvevk-support-the-Renesas-5P35023-clock.patch \
         "

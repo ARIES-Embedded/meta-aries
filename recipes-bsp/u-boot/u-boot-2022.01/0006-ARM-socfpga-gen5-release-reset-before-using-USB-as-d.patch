@@ -1,7 +1,7 @@
-From 978a70cca08a269cea94d4dcd89c8fd9a61e6109 Mon Sep 17 00:00:00 2001
+From 852b596e9b74f31affacfb5c45029c4899d3cacc Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Sat, 26 Feb 2022 08:37:22 +0100
-Subject: [PATCH 6/6] ARM: socfpga: gen5: release reset before using USB as
+Subject: [PATCH 6/8] ARM: socfpga: gen5: release reset before using USB as
  device with ums
 
 The command "ums 0 mmc 0" does not work because the USB device is still

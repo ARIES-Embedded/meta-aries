@@ -1,7 +1,7 @@
-From c09f5a98f1154a264335270ea621ac3862a15fff Mon Sep 17 00:00:00 2001
+From 7facb427faf58884ba37e2dbe7f6802867d0458c Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@grandegger.com>
 Date: Thu, 6 Aug 2020 10:14:31 +0200
-Subject: [PATCH 3/6] Revert "ARM: socfpga: Remove
+Subject: [PATCH 3/8] Revert "ARM: socfpga: Remove
  socfpga_sdram_apply_static_cfg()"
 
 This reverts commit c5f4b805755912a3d2fe20f014b6b6ab0473bd73.
@@ -15,24 +15,13 @@ Frame Buffer II driver (drivers/video/fbdev/altvipfb2.c), but only
 after a power cycle. The issue does not show up after a soft reset and
 with v2018.11.
 
-Futhermore I realized, that do_bridge_reset() does call
-
-  writel(0x7, &reset_manager_base->brg_mod_reset);
-
-in the enable and disable case. This looks bogous to me. I think it
-should be
-
-  writel(0x0, &reset_manager_base->brg_mod_reset);
-
-for the disable case like it already was in v2018.11.
-
 Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
 ---
- arch/arm/mach-socfpga/misc_gen5.c | 33 ++++++++++++++++++++++++++++++-
- 1 file changed, 32 insertions(+), 1 deletion(-)
+ arch/arm/mach-socfpga/misc_gen5.c | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
 diff --git a/arch/arm/mach-socfpga/misc_gen5.c b/arch/arm/mach-socfpga/misc_gen5.c
-index 4edf4f9b5c..81af810776 100644
+index 4edf4f9b5c..8397cf1c17 100644
 --- a/arch/arm/mach-socfpga/misc_gen5.c
 +++ b/arch/arm/mach-socfpga/misc_gen5.c
 @@ -217,6 +217,35 @@ int arch_early_init_r(void)
@@ -79,16 +68,14 @@ index 4edf4f9b5c..81af810776 100644
  		writel(iswgrp_handoff[3], &sdr_ctrl->fpgaport_rst);
  		writel(iswgrp_handoff[0],
  		       socfpga_get_rstmgr_addr() + RSTMGR_GEN5_BRGMODRST);
-@@ -246,7 +276,8 @@ void do_bridge_reset(int enable, unsigned int mask)
+@@ -246,6 +276,7 @@ void do_bridge_reset(int enable, unsigned int mask)
  		writel(0, socfpga_get_sysmgr_addr() +
  		       SYSMGR_GEN5_FPGAINFGRP_MODULE);
  		writel(0, &sdr_ctrl->fpgaport_rst);
--		writel(0x7, socfpga_get_rstmgr_addr() + RSTMGR_GEN5_BRGMODRST);
 +		socfpga_sdram_apply_static_cfg();
-+		writel(0x0, socfpga_get_rstmgr_addr() + RSTMGR_GEN5_BRGMODRST);
+ 		writel(0x7, socfpga_get_rstmgr_addr() + RSTMGR_GEN5_BRGMODRST);
  		writel(1, &nic301_regs->remap);
  	}
- }
 -- 
 2.34.1
 

@@ -1,7 +1,7 @@
 From f479a31e490302a9b1c3de92bbe0b4d1e2e7cb27 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Thu, 7 Nov 2019 20:32:07 +0100
-Subject: [PATCH 2/6] mcvevk: add env commands to permit booting Linux with
+Subject: [PATCH 2/8] mcvevk: add env commands to permit booting Linux with
  framebuffer support
 
 Aries Embedded offers a solution to realize a frame buffer device in the

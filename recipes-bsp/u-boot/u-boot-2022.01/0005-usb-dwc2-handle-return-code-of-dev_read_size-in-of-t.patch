@@ -1,7 +1,7 @@
-From 95589ae0edeee6e6fba2a6d0bed7a8039dad57aa Mon Sep 17 00:00:00 2001
+From 69a1be89b415fefdac7ab59da4ed50c049a00ee2 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Sun, 31 Jul 2022 17:00:31 +0200
-Subject: [PATCH 5/6] usb: dwc2: handle return code of dev_read_size() in of
+Subject: [PATCH 5/8] usb: dwc2: handle return code of dev_read_size() in of
  to, plat function
 
 dev_read_size() returns -EINVAL (-22) if the property "g-tx-fifo-size"
