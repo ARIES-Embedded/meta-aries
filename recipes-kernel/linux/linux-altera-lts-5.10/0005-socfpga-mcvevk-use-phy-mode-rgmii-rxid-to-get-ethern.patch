@@ -1,0 +1,49 @@
+From 0283be26165e0374a3874081055cdf0ba8928d99 Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Wed, 17 Aug 2022 15:12:29 +0200
+Subject: [PATCH 5/5] socfpga: mcvevk: use phy mode rgmii-rxid to get ethernet
+ working
+
+Commit bcf3440c6dd78bfe5836ec0990fe36d7b4bb7d20 does change the default
+values of the pad skew registers. It actually tries to set optimal
+values. These do not work for the ARIES MCVEVP board on a 1 Gbps
+network. Using the phy mode "rgmii-rxid" instead of "rgmii" fixes the
+issue. There is no need to restore the old default values using a mdio
+device tree node. The "rgmii-id" mode does also work for the upcoming
+MXXEVP board using the KSZ9131RNX phy.
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ arch/arm/boot/dts/socfpga_cyclone5_mcvevk.dts         | 2 +-
+ arch/arm/boot/dts/socfpga_cyclone5_mcvevp_rev2_fb.dts | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/boot/dts/socfpga_cyclone5_mcvevk.dts b/arch/arm/boot/dts/socfpga_cyclone5_mcvevk.dts
+index fa29d64f1f28..f8730b0f1214 100644
+--- a/arch/arm/boot/dts/socfpga_cyclone5_mcvevk.dts
++++ b/arch/arm/boot/dts/socfpga_cyclone5_mcvevk.dts
+@@ -28,7 +28,7 @@ &can1 {
+ };
+ 
+ &gmac0 {
+-	phy-mode = "rgmii";
++	phy-mode = "rgmii-rxid";
+ 	status = "okay";
+ };
+ 
+diff --git a/arch/arm/boot/dts/socfpga_cyclone5_mcvevp_rev2_fb.dts b/arch/arm/boot/dts/socfpga_cyclone5_mcvevp_rev2_fb.dts
+index 1a4d7f0ac6b6..cdc45f283687 100644
+--- a/arch/arm/boot/dts/socfpga_cyclone5_mcvevp_rev2_fb.dts
++++ b/arch/arm/boot/dts/socfpga_cyclone5_mcvevp_rev2_fb.dts
+@@ -82,7 +82,7 @@ &can1 {
+ };
+ 
+ &gmac0 {
+-	phy-mode = "rgmii";
++	phy-mode = "rgmii-rxid";
+ 	status = "okay";
+ };
+ 
+-- 
+2.34.1
+
