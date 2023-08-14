@@ -8,6 +8,7 @@ IMAGE_INSTALL = "\
     packagegroup-core-full-cmdline \
     ${CORE_IMAGE_EXTRA_INSTALL} \
     parted \
+    os-release \
     u-boot-fw-utils \
     e2fsprogs-resize2fs \
     i2c-tools \

@@ -15,6 +15,7 @@ IMAGE_INSTALL = "\
     ethtool \
     ${VIRTUAL-RUNTIME_login_manager} \
     ${VIRTUAL-RUNTIME_syslog} \
+    os-release \
     iproute2 \
     e2fsprogs \
     parted \
