@@ -1,0 +1,45 @@
+From 66415dd38b8875ff1457f6281d78543e79929e1b Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Tue, 10 Nov 2020 13:13:03 +0100
+Subject: [PATCH 07/11] ARM: dts: imx28-m28: cleanup model and compatibility
+ names
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ arch/arm/boot/dts/imx28-m28.dtsi   | 4 ++--
+ arch/arm/boot/dts/imx28-m28evk.dts | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/arm/boot/dts/imx28-m28.dtsi b/arch/arm/boot/dts/imx28-m28.dtsi
+index 2bdb4c093545..a9c69076015b 100644
+--- a/arch/arm/boot/dts/imx28-m28.dtsi
++++ b/arch/arm/boot/dts/imx28-m28.dtsi
+@@ -6,8 +6,8 @@
+ #include "imx28.dtsi"
+ 
+ / {
+-	model = "Aries/DENX M28";
+-	compatible = "aries,m28", "denx,m28", "fsl,imx28";
++	model = "Aries M28";
++	compatible = "aries,m28", "fsl,imx28";
+ 
+ 	memory@40000000 {
+ 		device_type = "memory";
+diff --git a/arch/arm/boot/dts/imx28-m28evk.dts b/arch/arm/boot/dts/imx28-m28evk.dts
+index f3bddc5ada4b..c870891e293b 100644
+--- a/arch/arm/boot/dts/imx28-m28evk.dts
++++ b/arch/arm/boot/dts/imx28-m28evk.dts
+@@ -8,8 +8,8 @@
+ #include "imx28-m28.dtsi"
+ 
+ / {
+-	model = "Aries/DENX M28EVK";
+-	compatible = "aries,m28evk", "denx,m28evk", "fsl,imx28";
++	model = "Aries M28EVK";
++	compatible = "aries,m28evk", "fsl,imx28";
+ 
+ 	apb@80000000 {
+ 		apbh@80000000 {
+-- 
+2.34.1
+

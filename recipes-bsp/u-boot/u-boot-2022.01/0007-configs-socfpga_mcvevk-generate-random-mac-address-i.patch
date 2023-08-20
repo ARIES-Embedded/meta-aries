@@ -1,0 +1,29 @@
+From b073958f2891839033262296014b463a676a9676 Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Wed, 24 May 2023 09:42:18 +0200
+Subject: [PATCH 7/8] configs: socfpga_mcvevk: generate random mac address if
+ ethaddr is unset
+
+This is necessary to make the Ethernet interface function even when
+the ethaddr variable for that interface is unset.
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ configs/socfpga_mcvevk_defconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/configs/socfpga_mcvevk_defconfig b/configs/socfpga_mcvevk_defconfig
+index b400992a78..3c76cfa9c3 100644
+--- a/configs/socfpga_mcvevk_defconfig
++++ b/configs/socfpga_mcvevk_defconfig
+@@ -39,6 +39,7 @@ CONFIG_ENV_OVERWRITE=y
+ CONFIG_ENV_IS_IN_MMC=y
+ CONFIG_SYS_RELOC_GD_ENV_ADDR=y
+ CONFIG_VERSION_VARIABLE=y
++CONFIG_NET_RANDOM_ETHADDR=y
+ CONFIG_DFU_MMC=y
+ CONFIG_SYS_DFU_DATA_BUF_SIZE=0x1000000
+ CONFIG_DWAPB_GPIO=y
+-- 
+2.34.1
+

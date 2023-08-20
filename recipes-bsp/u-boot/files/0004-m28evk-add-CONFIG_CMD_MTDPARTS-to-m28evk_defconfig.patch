@@ -1,7 +1,7 @@
-From 61b4566672592ea70f0e3cb78437f3a6adafce80 Mon Sep 17 00:00:00 2001
+From f76e01278c23c5c09de85814fd6d8a5878a29ebb Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Thu, 7 Feb 2019 11:38:06 +0100
-Subject: [PATCH 04/11] m28evk: add CONFIG_CMD_MTDPARTS to m28evk_defconfig
+Subject: [PATCH 04/13] m28evk: add CONFIG_CMD_MTDPARTS to m28evk_defconfig
 
 Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
 ---
@@ -9,7 +9,7 @@ Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
  1 file changed, 1 insertion(+)
 
 diff --git a/configs/m28evk_defconfig b/configs/m28evk_defconfig
-index bb85a8e..446c0f3 100644
+index bb85a8edae..446c0f3d2f 100644
 --- a/configs/m28evk_defconfig
 +++ b/configs/m28evk_defconfig
 @@ -38,6 +38,7 @@ CONFIG_CMD_EXT4=y
@@ -21,5 +21,5 @@ index bb85a8e..446c0f3 100644
  CONFIG_MTDPARTS_DEFAULT="mtdparts=gpmi-nand:3m(u-boot),512k(env1),512k(env2),14m(boot),238m(data),-@4096k(UBI)"
  CONFIG_CMD_UBI=y
 -- 
-1.9.1
+2.34.1
 

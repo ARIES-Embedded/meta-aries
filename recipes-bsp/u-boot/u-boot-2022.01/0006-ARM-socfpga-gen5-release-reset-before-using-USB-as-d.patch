@@ -1,0 +1,64 @@
+From 852b596e9b74f31affacfb5c45029c4899d3cacc Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Sat, 26 Feb 2022 08:37:22 +0100
+Subject: [PATCH 6/8] ARM: socfpga: gen5: release reset before using USB as
+ device with ums
+
+The command "ums 0 mmc 0" does not work because the USB device is still
+in reset. Releasing it in board_usb_init() fixes the problem. This issue
+has been observed on the MCVEVK board.
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ arch/arm/dts/socfpga_cyclone5_mcvevk.dts                | 1 +
+ arch/arm/mach-socfpga/board.c                           | 8 ++++++++
+ arch/arm/mach-socfpga/include/mach/reset_manager_gen5.h | 2 ++
+ 3 files changed, 11 insertions(+)
+
+diff --git a/arch/arm/dts/socfpga_cyclone5_mcvevk.dts b/arch/arm/dts/socfpga_cyclone5_mcvevk.dts
+index fa29d64f1f..bba6ad7af2 100644
+--- a/arch/arm/dts/socfpga_cyclone5_mcvevk.dts
++++ b/arch/arm/dts/socfpga_cyclone5_mcvevk.dts
+@@ -12,6 +12,7 @@
+ 	aliases {
+ 		ethernet0 = &gmac0;
+ 		stmpe-i2c0 = &stmpe1;
++		udc0 = &usb1;
+ 	};
+ 
+ 	chosen {
+diff --git a/arch/arm/mach-socfpga/board.c b/arch/arm/mach-socfpga/board.c
+index 7267163222..a2eed73fe9 100644
+--- a/arch/arm/mach-socfpga/board.c
++++ b/arch/arm/mach-socfpga/board.c
+@@ -83,6 +83,14 @@ int board_usb_init(int index, enum usb_init_type init)
+ 	/* Patch the address from OF into the controller pdata. */
+ 	socfpga_otg_data.regs_otg = addr;
+ 
++#ifdef CONFIG_TARGET_SOCFPGA_GEN5
++	/* First release reset of the USB port */
++	if (addr == SOCFPGA_USB0_ADDRESS)
++		socfpga_per_reset(SOCFPGA_RESET(USB0), 0);
++	else if (addr == SOCFPGA_USB1_ADDRESS)
++		socfpga_per_reset(SOCFPGA_RESET(USB1), 0);
++#endif
++
+ 	return dwc2_udc_probe(&socfpga_otg_data);
+ }
+ 
+diff --git a/arch/arm/mach-socfpga/include/mach/reset_manager_gen5.h b/arch/arm/mach-socfpga/include/mach/reset_manager_gen5.h
+index d108eac1e2..611403cf00 100644
+--- a/arch/arm/mach-socfpga/include/mach/reset_manager_gen5.h
++++ b/arch/arm/mach-socfpga/include/mach/reset_manager_gen5.h
+@@ -31,6 +31,8 @@ void socfpga_bridges_reset(int enable);
+  */
+ #define RSTMGR_EMAC0		RSTMGR_DEFINE(1, 0)
+ #define RSTMGR_EMAC1		RSTMGR_DEFINE(1, 1)
++#define RSTMGR_USB0		RSTMGR_DEFINE(1, 2)
++#define RSTMGR_USB1		RSTMGR_DEFINE(1, 3)
+ #define RSTMGR_NAND		RSTMGR_DEFINE(1, 4)
+ #define RSTMGR_QSPI		RSTMGR_DEFINE(1, 5)
+ #define RSTMGR_L4WD0		RSTMGR_DEFINE(1, 6)
+-- 
+2.34.1
+

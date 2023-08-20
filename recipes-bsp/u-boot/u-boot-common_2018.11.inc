@@ -11,7 +11,7 @@ PE = "1"
 SRCREV = "0157013f4a4945bbdb70bb4d98d680e0845fd784"
 
 
-SRC_URI = "git://git.denx.de/u-boot.git \
+SRC_URI = "git://git.denx.de/u-boot.git;protocol=https;branch=master \
 	   file://0001-Revert-board-aries-Remove.patch \
 	   file://0002-board-aries-add-MAINTAINERS-file-for-the-Aries-files.patch \
 	  "

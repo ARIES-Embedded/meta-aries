@@ -1,7 +1,7 @@
-From 889067928a8266ab58fdfefd58e0967dd82aa575 Mon Sep 17 00:00:00 2001
+From bcc7545aa04cb1008166a93ab6152324619dd2f2 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Thu, 16 Nov 2017 12:30:56 +0100
-Subject: [PATCH 10/11] ma5d4evk: select FDT blob in FIT image by file name
+Subject: [PATCH 10/13] ma5d4evk: select FDT blob in FIT image by file name
 
 Since Yocto 2.4, the FDT blobs in a FIT image are labeled by
 file name instead of sequence number.
@@ -12,7 +12,7 @@ Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
  1 file changed, 4 insertions(+), 2 deletions(-)
 
 diff --git a/include/configs/ma5d4evk.h b/include/configs/ma5d4evk.h
-index 7926294..4eca95b 100644
+index 792629467a..4eca95b56c 100644
 --- a/include/configs/ma5d4evk.h
 +++ b/include/configs/ma5d4evk.h
 @@ -130,6 +130,8 @@
@@ -37,5 +37,5 @@ index 7926294..4eca95b 100644
  	"mmc_mmc="							\
  		"run fdtimg mmcload mmcargs addargs ; "			\
 -- 
-1.9.1
+2.34.1
 

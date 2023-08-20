@@ -1,7 +1,7 @@
-From 10964565b7a92df6c3bc341ff1c34d2b8ffde2ab Mon Sep 17 00:00:00 2001
+From 44b28165a186f3d477af103d76edb1dc2ab74664 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Wed, 23 Jan 2019 10:57:45 +0100
-Subject: [PATCH 09/11] ma5d4evk: temporarily revert the DM support
+Subject: [PATCH 09/13] ma5d4evk: temporarily revert the DM support
 
 Ths patch reverts the following patches to temporarily get rid of
 the DM support:
@@ -13,8 +13,8 @@ the DM support:
 
 Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
 ---
- arch/arm/dts/at91-sama5d4_ma5d4.dtsi   | 142 -------------------------------
- arch/arm/dts/at91-sama5d4_ma5d4evk.dts | 149 ---------------------------------
+ arch/arm/dts/at91-sama5d4_ma5d4.dtsi   | 142 -----------------------
+ arch/arm/dts/at91-sama5d4_ma5d4evk.dts | 149 -------------------------
  arch/arm/mach-at91/Kconfig             |   2 -
  board/aries/ma5d4evk/ma5d4evk.c        |   6 +-
  configs/ma5d4evk_defconfig             |   7 +-
@@ -25,7 +25,7 @@ Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
 
 diff --git a/arch/arm/dts/at91-sama5d4_ma5d4.dtsi b/arch/arm/dts/at91-sama5d4_ma5d4.dtsi
 deleted file mode 100644
-index d3e79fb..0000000
+index d3e79fbf19..0000000000
 --- a/arch/arm/dts/at91-sama5d4_ma5d4.dtsi
 +++ /dev/null
 @@ -1,142 +0,0 @@
@@ -173,7 +173,7 @@ index d3e79fb..0000000
 -};
 diff --git a/arch/arm/dts/at91-sama5d4_ma5d4evk.dts b/arch/arm/dts/at91-sama5d4_ma5d4evk.dts
 deleted file mode 100644
-index f65a67b..0000000
+index f65a67b751..0000000000
 --- a/arch/arm/dts/at91-sama5d4_ma5d4evk.dts
 +++ /dev/null
 @@ -1,149 +0,0 @@
@@ -327,7 +327,7 @@ index f65a67b..0000000
 -	};
 -};
 diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 5ca317a..7b49e3c 100644
+index 5ca317a85a..7b49e3cf2b 100644
 --- a/arch/arm/mach-at91/Kconfig
 +++ b/arch/arm/mach-at91/Kconfig
 @@ -205,8 +205,6 @@ config TARGET_MA5D4EVK
@@ -340,7 +340,7 @@ index 5ca317a..7b49e3c 100644
  
  config TARGET_MEESC
 diff --git a/board/aries/ma5d4evk/ma5d4evk.c b/board/aries/ma5d4evk/ma5d4evk.c
-index c2b6845..b7264bc 100644
+index c2b6845edc..b7264bc6ca 100644
 --- a/board/aries/ma5d4evk/ma5d4evk.c
 +++ b/board/aries/ma5d4evk/ma5d4evk.c
 @@ -30,7 +30,7 @@ DECLARE_GLOBAL_DATA_PTR;
@@ -371,7 +371,7 @@ index c2b6845..b7264bc 100644
  #endif
  #ifdef CONFIG_GENERIC_ATMEL_MCI
 diff --git a/configs/ma5d4evk_defconfig b/configs/ma5d4evk_defconfig
-index 9450f77..ee8b32c 100644
+index 9450f77507..ee8b32c872 100644
 --- a/configs/ma5d4evk_defconfig
 +++ b/configs/ma5d4evk_defconfig
 @@ -6,10 +6,8 @@ CONFIG_SPL_GPIO_SUPPORT=y
@@ -412,7 +412,7 @@ index 9450f77..ee8b32c 100644
 +CONFIG_OF_LIBFDT=y
  # CONFIG_EFI_LOADER is not set
 diff --git a/include/configs/ma5d4evk.h b/include/configs/ma5d4evk.h
-index 31f01b5..7926294 100644
+index 31f01b519c..792629467a 100644
 --- a/include/configs/ma5d4evk.h
 +++ b/include/configs/ma5d4evk.h
 @@ -85,6 +85,7 @@
@@ -424,5 +424,5 @@ index 31f01b5..7926294 100644
  #define CONFIG_SPI_FLASH_ATMEL
  #define CONFIG_SF_DEFAULT_BUS		0
 -- 
-1.9.1
+2.34.1
 

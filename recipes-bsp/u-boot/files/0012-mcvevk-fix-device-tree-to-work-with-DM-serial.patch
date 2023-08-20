@@ -1,0 +1,38 @@
+From a72cc05704b5c502ac47e7e50453ecb8a08db12d Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Wed, 2 Jan 2019 11:09:05 +0100
+Subject: [PATCH 12/13] mcvevk: fix device tree to work with DM serial
+
+Device trees need to have the serial console device available
+before relocation and require a stdout-path in chosen at least
+for SPL to have a console. This has been done for the other
+socfpga boards by commit 79a436d56848c4213c1452ca60211568b0c8b31a.
+
+Signed-of-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ arch/arm/dts/socfpga_cyclone5_mcvevk.dts | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/arch/arm/dts/socfpga_cyclone5_mcvevk.dts b/arch/arm/dts/socfpga_cyclone5_mcvevk.dts
+index 65bec1536f..9d9bbcf4f3 100644
+--- a/arch/arm/dts/socfpga_cyclone5_mcvevk.dts
++++ b/arch/arm/dts/socfpga_cyclone5_mcvevk.dts
+@@ -11,6 +11,7 @@
+ 
+ 	chosen {
+ 		bootargs = "console=ttyS0,115200";
++		stdout-path = "serial0:115200n8";
+ 	};
+ 
+ 	aliases {
+@@ -56,3 +57,7 @@
+ 	disable-over-current;
+ 	status = "okay";
+ };
++
++&uart0 {
++        u-boot,dm-pre-reloc;
++};
+-- 
+2.34.1
+

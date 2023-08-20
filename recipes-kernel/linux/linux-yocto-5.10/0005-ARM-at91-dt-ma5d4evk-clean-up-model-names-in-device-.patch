@@ -1,0 +1,109 @@
+From 17facebe70579323465ee5c19c75af6e6ee03333 Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Wed, 26 Aug 2020 09:46:03 +0200
+Subject: [PATCH 05/10] ARM: at91/dt: ma5d4evk: clean up model names in device
+ tree
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ arch/arm/boot/dts/at91-sama5d4_ma5d4.dtsi       | 4 ++--
+ arch/arm/boot/dts/at91-sama5d4_ma5d4emmc.dtsi   | 4 ++--
+ arch/arm/boot/dts/at91-sama5d4_ma5d4emmcevk.dts | 4 ++--
+ arch/arm/boot/dts/at91-sama5d4_ma5d4evk.dts     | 4 ++--
+ arch/arm/boot/dts/at91-sama5d4_ma5d4sf.dtsi     | 4 ++--
+ arch/arm/boot/dts/at91-sama5d4_ma5d4sfevk.dts   | 4 ++--
+ 6 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/arch/arm/boot/dts/at91-sama5d4_ma5d4.dtsi b/arch/arm/boot/dts/at91-sama5d4_ma5d4.dtsi
+index 710cb72bda5a..2a1431e19f2f 100644
+--- a/arch/arm/boot/dts/at91-sama5d4_ma5d4.dtsi
++++ b/arch/arm/boot/dts/at91-sama5d4_ma5d4.dtsi
+@@ -6,8 +6,8 @@
+ #include "sama5d4.dtsi"
+ 
+ / {
+-	model = "Aries/DENX MA5D4";
+-	compatible = "aries,ma5d4", "denx,ma5d4", "atmel,sama5d4", "atmel,sama5";
++	model = "Aries MA5D4";
++	compatible = "aries,ma5d4", "atmel,sama5d4", "atmel,sama5";
+ 
+ 	memory@20000000 {
+ 		reg = <0x20000000 0x10000000>;
+diff --git a/arch/arm/boot/dts/at91-sama5d4_ma5d4emmc.dtsi b/arch/arm/boot/dts/at91-sama5d4_ma5d4emmc.dtsi
+index d44d0f3ea3a0..c1771176bebc 100644
+--- a/arch/arm/boot/dts/at91-sama5d4_ma5d4emmc.dtsi
++++ b/arch/arm/boot/dts/at91-sama5d4_ma5d4emmc.dtsi
+@@ -12,8 +12,8 @@
+ #include "sama5d4.dtsi"
+ 
+ / {
+-	model = "DENX MA5D4";
+-	compatible = "denx,ma5d4", "atmel,sama5d4", "atmel,sama5";
++	model = "Aries MA5D4";
++	compatible = "aries,ma5d4", "atmel,sama5d4", "atmel,sama5";
+ 
+ 	memory {
+ 		reg = <0x20000000 0x10000000>;
+diff --git a/arch/arm/boot/dts/at91-sama5d4_ma5d4emmcevk.dts b/arch/arm/boot/dts/at91-sama5d4_ma5d4emmcevk.dts
+index e0b075a2296d..88a382c19796 100644
+--- a/arch/arm/boot/dts/at91-sama5d4_ma5d4emmcevk.dts
++++ b/arch/arm/boot/dts/at91-sama5d4_ma5d4emmcevk.dts
+@@ -13,8 +13,8 @@
+ #include "at91-sama5d4_ma5d4emmc.dtsi"
+ 
+ / {
+-	model = "DENX MA5D4EVK";
+-	compatible = "denx,ma5d4evk", "atmel,sama5d4", "atmel,sama5";
++	model = "Aries MA5D4EVK";
++	compatible = "aries,ma5d4evk", "atmel,sama5d4", "atmel,sama5";
+ 
+ 	chosen {
+ 		bootargs = "ignore_loglevel earlyprintk";
+diff --git a/arch/arm/boot/dts/at91-sama5d4_ma5d4evk.dts b/arch/arm/boot/dts/at91-sama5d4_ma5d4evk.dts
+index 4d7cee569ff2..15fe916172da 100644
+--- a/arch/arm/boot/dts/at91-sama5d4_ma5d4evk.dts
++++ b/arch/arm/boot/dts/at91-sama5d4_ma5d4evk.dts
+@@ -7,8 +7,8 @@
+ #include "at91-sama5d4_ma5d4.dtsi"
+ 
+ / {
+-	model = "Aries/DENX MA5D4EVK";
+-	compatible = "aries,ma5d4evk", "denx,ma5d4evk", "atmel,sama5d4", "atmel,sama5";
++	model = "Aries MA5D4EVK";
++	compatible = "aries,ma5d4evk", "atmel,sama5d4", "atmel,sama5";
+ 
+ 	chosen {
+ 		stdout-path = "serial3:115200n8";
+diff --git a/arch/arm/boot/dts/at91-sama5d4_ma5d4sf.dtsi b/arch/arm/boot/dts/at91-sama5d4_ma5d4sf.dtsi
+index e3b992aac27f..fc804ee7a414 100644
+--- a/arch/arm/boot/dts/at91-sama5d4_ma5d4sf.dtsi
++++ b/arch/arm/boot/dts/at91-sama5d4_ma5d4sf.dtsi
+@@ -12,8 +12,8 @@
+ #include "sama5d4.dtsi"
+ 
+ / {
+-	model = "DENX MA5D4";
+-	compatible = "denx,ma5d4", "atmel,sama5d4", "atmel,sama5";
++	model = "Aries MA5D4";
++	compatible = "aries,ma5d4", "atmel,sama5d4", "atmel,sama5";
+ 
+ 	memory {
+ 		reg = <0x20000000 0x10000000>;
+diff --git a/arch/arm/boot/dts/at91-sama5d4_ma5d4sfevk.dts b/arch/arm/boot/dts/at91-sama5d4_ma5d4sfevk.dts
+index 5b00cf8cd5b2..80e304f0d207 100644
+--- a/arch/arm/boot/dts/at91-sama5d4_ma5d4sfevk.dts
++++ b/arch/arm/boot/dts/at91-sama5d4_ma5d4sfevk.dts
+@@ -13,8 +13,8 @@
+ #include "at91-sama5d4_ma5d4sf.dtsi"
+ 
+ / {
+-	model = "DENX MA5D4EVK";
+-	compatible = "denx,ma5d4evk", "atmel,sama5d4", "atmel,sama5";
++	model = "Aries MA5D4EVK";
++	compatible = "aries,ma5d4evk", "atmel,sama5d4", "atmel,sama5";
+ 
+ 	chosen {
+ 		bootargs = "ignore_loglevel earlyprintk";
+-- 
+2.34.1
+

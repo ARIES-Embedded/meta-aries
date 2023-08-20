@@ -1,0 +1,29 @@
+From abc47c8acbe3444d806e4a4fcb8dc28819bbaa4b Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Thu, 22 Apr 2021 09:31:36 +0200
+Subject: [PATCH 4/8] configs: socfpga: enable preboot command for the mcvevk
+ board
+
+The default preboot command is "run try_bootscript".
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ configs/socfpga_mcvevk_defconfig | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/configs/socfpga_mcvevk_defconfig b/configs/socfpga_mcvevk_defconfig
+index 12817e5cd9..b400992a78 100644
+--- a/configs/socfpga_mcvevk_defconfig
++++ b/configs/socfpga_mcvevk_defconfig
+@@ -12,6 +12,8 @@ CONFIG_FIT=y
+ CONFIG_USE_BOOTARGS=y
+ CONFIG_BOOTARGS="console=ttyS0,115200"
+ # CONFIG_USE_BOOTCOMMAND is not set
++CONFIG_USE_PREBOOT=y
++CONFIG_PREBOOT="run try_bootscript"
+ CONFIG_SYS_CONSOLE_IS_IN_ENV=y
+ CONFIG_SYS_CONSOLE_OVERWRITE_ROUTINE=y
+ CONFIG_SYS_CONSOLE_ENV_OVERWRITE=y
+-- 
+2.34.1
+

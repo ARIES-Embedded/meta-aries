@@ -1,7 +1,7 @@
-From ae3399ea29706718a37efd2627eadf475b9f031c Mon Sep 17 00:00:00 2001
+From ed63ca9e315c8e4278d5df33cbaa8abaca6be23d Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Mon, 26 Nov 2018 21:15:49 +0100
-Subject: [PATCH 07/11] ma5d4evk: #undef a few options before redefining them
+Subject: [PATCH 07/13] ma5d4evk: #undef a few options before redefining them
 
 The options are already pre-defined in the common header file. To avoid
 compiler warnings, we #undef them before redefining.
@@ -12,7 +12,7 @@ Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
  1 file changed, 3 insertions(+)
 
 diff --git a/include/configs/ma5d4evk.h b/include/configs/ma5d4evk.h
-index b9d70a0..ebe38f7 100644
+index b9d70a0ccf..ebe38f7cbb 100644
 --- a/include/configs/ma5d4evk.h
 +++ b/include/configs/ma5d4evk.h
 @@ -34,8 +34,10 @@
@@ -35,5 +35,5 @@ index b9d70a0..ebe38f7 100644
  #define CONFIG_SYS_LOAD_ADDR	CONFIG_LOADADDR
  
 -- 
-1.9.1
+2.34.1
 

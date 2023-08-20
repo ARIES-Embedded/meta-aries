@@ -1,0 +1,176 @@
+From 7448179c904a4251c63c444ef48271f04857e470 Mon Sep 17 00:00:00 2001
+From: Wolfgang Grandegger <wg@aries-embedded.de>
+Date: Tue, 22 Oct 2019 10:27:05 +0200
+Subject: [PATCH 2/5] socfpga: mcvevk: framebuffer support for the Altera VIP
+ FB II 2 IP core
+
+Aries Embedded provides an IP core to realize a frame buffer device in the
+FPGA of the MCV module and a display with a capacitive touch sensor for
+the MCVEVP rev. 2 Board.
+
+For the IP core from Aries Embedded we use 24 bpp and add the DTS file
+"socfpga_cyclone5_mcvevp_rev2_fb.dts".
+
+Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
+---
+ arch/arm/boot/dts/Makefile                    |   1 +
+ .../dts/socfpga_cyclone5_mcvevp_rev2_fb.dts   | 121 ++++++++++++++++++
+ drivers/video/fbdev/altvipfb2.h               |   2 +-
+ 3 files changed, 123 insertions(+), 1 deletion(-)
+ create mode 100644 arch/arm/boot/dts/socfpga_cyclone5_mcvevp_rev2_fb.dts
+
+diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
+index 7e8151681597..80833cbb72fb 100644
+--- a/arch/arm/boot/dts/Makefile
++++ b/arch/arm/boot/dts/Makefile
+@@ -1029,6 +1029,7 @@ dtb-$(CONFIG_ARCH_SOCFPGA) += \
+ 	socfpga_arria10_socdk_sdmmc.dtb \
+ 	socfpga_cyclone5_chameleon96.dtb \
+ 	socfpga_cyclone5_mcvevk.dtb \
++	socfpga_cyclone5_mcvevp_rev2_fb.dtb \
+ 	socfpga_cyclone5_socdk.dtb \
+ 	socfpga_cyclone5_de0_nano_soc.dtb \
+ 	socfpga_cyclone5_sockit.dtb \
+diff --git a/arch/arm/boot/dts/socfpga_cyclone5_mcvevp_rev2_fb.dts b/arch/arm/boot/dts/socfpga_cyclone5_mcvevp_rev2_fb.dts
+new file mode 100644
+index 000000000000..1a4d7f0ac6b6
+--- /dev/null
++++ b/arch/arm/boot/dts/socfpga_cyclone5_mcvevp_rev2_fb.dts
+@@ -0,0 +1,121 @@
++/*
++ * Copyright (C) 2015 Marek Vasut <marex@denx.de>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
++ */
++
++#include <dt-bindings/interrupt-controller/irq.h>
++#include "socfpga_cyclone5_mcv.dtsi"
++
++/ {
++	model = "Aries/DENX MCV EVK";
++	compatible = "denx,mcvevk", "altr,socfpga-cyclone5", "altr,socfpga";
++
++	soc {
++		clkmgr@ffd04000 {
++			clocks {
++				clk_50: clk_50 {
++					compatible = "fixed-clock";
++					#clock-cells = <0>;
++					clock-frequency = <50000000>;
++				};
++			};
++		};
++
++		hps_0_bridges: bridge@0xc0000000 {
++			compatible = "altr,bridge-18.1", "simple-bus";
++			reg = <0xc0000000 0x20000000>,
++				<0xff200000 0x00200000>;
++			reg-names = "axi_h2f", "axi_h2f_lw";
++			clocks = <&clk_50 &clk_50 &clk_50>;
++			clock-names = "h2f_axi_clock", "h2f_lw_axi_clock", "f2h_sdram0_clock";
++			#address-cells = <2>;
++			#size-cells = <1>;
++			ranges = <0x00000000 0x00000000 0xc0000000 0x00010000>,
++				<0x00000001 0x00080200 0xff280200 0x00000040>;
++
++			alt_vip_cl_vfb_0: vip@0x100080200 {
++				compatible = "altr,vip-18.1", "altr,vip-frame-buffer-2.0";
++				reg = <0x00000001 0x00080200 0x00000040>;
++				interrupt-parent = <&intc>;
++				interrupts = <0 40 4>;
++				clocks = <&clk_50>;
++				/* embeddedsw.dts.params.altr,bits-per-symbol type NUMBER */
++				altr,bits-per-symbol = <8>;
++				/* embeddedsw.dts.params.altr,max-height type NUMBER */
++				altr,max-height = <480>;
++				/* embeddedsw.dts.params.altr,max-width type NUMBER */
++				altr,max-width = <800>;
++				/* embeddedsw.dts.params.altr,mem-port-width type NUMBER */
++				altr,mem-port-width = <64>;
++			}; //end vip@0x100080200 (alt_vip_cl_vfb_0)
++		};
++	};
++
++	aliases {
++		ethernet0 = &gmac0;
++		ft5426-i2c0 = &ft5426;
++	};
++
++	chosen {
++		stdout-path = "serial0:115200n8";
++	};
++};
++
++&can0 {
++	status = "okay";
++};
++
++&can1 {
++	status = "okay";
++};
++
++&gmac0 {
++	phy-mode = "rgmii";
++	status = "okay";
++};
++
++&gpio0 {	/* GPIO  0 ... 28 */
++	status = "okay";
++};
++
++&gpio1 {	/* GPIO 29 ... 57 */
++	status = "okay";
++};
++
++&gpio2 {	/* GPIO 58..66 (HLGPI 0..13 at offset 13) */
++	status = "okay";
++};
++
++&i2c0 {
++	status = "okay";
++	clock-frequency = <100000>;
++
++	ft5426: ft5426@38 {
++		compatible = "edt,edt-ft5506";
++		reg = <0x38>;
++		interrupt-parent = <&portb>;
++		interrupts = <28 IRQ_TYPE_EDGE_FALLING>;
++		touchscreen-size-x = <800>;
++		touchscreen-size-y = <480>;
++	};
++};
++
++&uart0 {
++	status = "okay";
++};
++
++&usb1 {
++	status = "okay";
++};
+diff --git a/drivers/video/fbdev/altvipfb2.h b/drivers/video/fbdev/altvipfb2.h
+index ac6145304c9c..0b46025964ab 100644
+--- a/drivers/video/fbdev/altvipfb2.h
++++ b/drivers/video/fbdev/altvipfb2.h
+@@ -23,7 +23,7 @@
+ 
+ #define DRIVER_NAME	"altvipfb2"
+ #define PALETTE_SIZE	256
+-#define BYTES_PER_PIXEL		4
++#define BYTES_PER_PIXEL		3
+ 
+ /* control registers */
+ #define ALTVIPFB2_CONTROL		0
+-- 
+2.34.1
+

@@ -15,6 +15,7 @@ IMAGE_INSTALL = "\
     can-utils \
     strace \
     htop \
+    devmem2 \
     "
 
 inherit core-image

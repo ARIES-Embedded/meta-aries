@@ -10,20 +10,19 @@ PE = "1"
 # repo during parse
 SRCREV = "0b0c6af38738f2c132cfd41a240889acaa031c8f"
 
-SRC_URI = "git://git.denx.de/u-boot.git \
-	  "
+SRC_URI = "git://git.denx.de/u-boot.git;protocol=https;branch=master"
 
 S = "${WORKDIR}/git"
 
-FILESEXTRAPATHS_prepend := "${THISDIR}/u-boot-2020.01:"
+FILESEXTRAPATHS:prepend := "${THISDIR}/u-boot-2020.01:"
 
 # M28EVK
-SRC_URI_append_m28evk = " \
+SRC_URI:append:m28evk = " \
 	file://0001-arm-mxs-Re-add-support-for-Aries-M28-SoM-and-M28EVK-.patch \
 	"
 
 # MCVEVK
-SRC_URI_append_mcvevk = " \
+SRC_URI:append:mcvevk = " \
 	file://0002-socfpga-mcvevk-clean-up-model-names-in-device-tree-f.patch \
 	file://0003-mcvevk-add-env-commands-to-permit-booting-Linux-with.patch \
 	file://0004-Revert-ARM-socfpga-Remove-socfpga_sdram_apply_static.patch \

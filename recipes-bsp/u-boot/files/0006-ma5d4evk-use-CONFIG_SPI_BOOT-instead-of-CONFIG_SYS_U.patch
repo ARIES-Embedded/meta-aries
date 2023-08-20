@@ -1,7 +1,7 @@
-From 7814ddf48f0a66d81b18dc481cc3a1d7c61b214a Mon Sep 17 00:00:00 2001
+From 2a788e0d0ccfa5af78e9c81c481694c8ef29c42a Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Mon, 26 Nov 2018 20:55:39 +0100
-Subject: [PATCH 06/11] ma5d4evk: use CONFIG_SPI_BOOT instead of
+Subject: [PATCH 06/13] ma5d4evk: use CONFIG_SPI_BOOT instead of
  CONFIG_SYS_USE_SERIALFLASH
 
 Defining the option CONFIG_SYS_USE_SERIALFLASH in the board's header
@@ -15,7 +15,7 @@ Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.com>
  2 files changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/configs/ma5d4evk_defconfig b/configs/ma5d4evk_defconfig
-index 312191b..05e57c4 100644
+index 312191b6e3..05e57c49bc 100644
 --- a/configs/ma5d4evk_defconfig
 +++ b/configs/ma5d4evk_defconfig
 @@ -12,6 +12,7 @@ CONFIG_SPL_SPI_SUPPORT=y
@@ -27,7 +27,7 @@ index 312191b..05e57c4 100644
  CONFIG_USE_BOOTARGS=y
  CONFIG_BOOTARGS="console=ttyS3,115200"
 diff --git a/include/configs/ma5d4evk.h b/include/configs/ma5d4evk.h
-index 5e3d6e8..b9d70a0 100644
+index 5e3d6e80a8..b9d70a0ccf 100644
 --- a/include/configs/ma5d4evk.h
 +++ b/include/configs/ma5d4evk.h
 @@ -10,7 +10,6 @@
@@ -39,5 +39,5 @@ index 5e3d6e8..b9d70a0 100644
  
  /* Timer */
 -- 
-1.9.1
+2.34.1
 

@@ -1,7 +1,7 @@
-From de3c40f3d7526c5039f519fb98e38792f10e200d Mon Sep 17 00:00:00 2001
+From d24a9c8d206a3b0a3e55f023f5afe31f7cbcb076 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Mon, 26 Nov 2018 21:20:27 +0100
-Subject: [PATCH 08/11] ma5d4evk: remove CONFIG_NR_DRAM_BANKS fron board's
+Subject: [PATCH 08/13] ma5d4evk: remove CONFIG_NR_DRAM_BANKS fron board's
  header file
 
 The option CONFIG_NR_DRAM_BANKS in the board's header file did overwrite
@@ -15,7 +15,7 @@ Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
  2 files changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/configs/ma5d4evk_defconfig b/configs/ma5d4evk_defconfig
-index 05e57c4..9450f77 100644
+index 05e57c49bc..9450f77507 100644
 --- a/configs/ma5d4evk_defconfig
 +++ b/configs/ma5d4evk_defconfig
 @@ -11,6 +11,7 @@ CONFIG_SPL_SPI_FLASH_SUPPORT=y
@@ -27,7 +27,7 @@ index 05e57c4..9450f77 100644
  CONFIG_SPI_BOOT=y
  CONFIG_BOOTDELAY=3
 diff --git a/include/configs/ma5d4evk.h b/include/configs/ma5d4evk.h
-index ebe38f7..31f01b5 100644
+index ebe38f7cbb..31f01b519c 100644
 --- a/include/configs/ma5d4evk.h
 +++ b/include/configs/ma5d4evk.h
 @@ -18,7 +18,6 @@
@@ -39,5 +39,5 @@ index ebe38f7..31f01b5 100644
  #define CONFIG_SYS_SDRAM_SIZE		0x10000000
  
 -- 
-1.9.1
+2.34.1
 
