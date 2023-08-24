@@ -1,4 +1,4 @@
-From 008861afc78871447667c8aed195aaf991989e02 Mon Sep 17 00:00:00 2001
+From 8d2228916065e1e0e2e8610ae6761773fbb40055 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Fri, 28 Apr 2023 15:47:55 +0200
 Subject: [PATCH 8/8] board: aries: mcvevk: support the Renesas 5P35023 clock
@@ -10,9 +10,9 @@ address 0x68. Old modules are still supported; no I2C device will
 be found at that address.
 
 Because the clock starts late, the phy address strapping does not
-work properly. After power-on, the PHY is found at MII address 0x3
-instead of 0x0. If we press the reset botton on the MCVEVP, which
-resets the PHY, it shows up at the expected adress 0x0.
+work properly. After power-on, the PHY is found at a different MII
+address than 0x0. If we press the reset botton on the MCVEVP,
+which resets the PHY, it shows up at the expected adress 0x0.
 Unfortunately, Linux will not recognize the PHY after power-on,
 because it expects it at address 0x0, as specified in the device
 tree. As work-around we fix the device tree node for the PHY in
@@ -20,15 +20,15 @@ U-Boot before Linux boots.
 
 Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
 ---
- board/aries/mcvevk/socfpga.c     | 129 +++++++++++++++++++++++++++++++
+ board/aries/mcvevk/socfpga.c     | 143 +++++++++++++++++++++++++++++++
  configs/socfpga_mcvevk_defconfig |   2 +
- 2 files changed, 131 insertions(+)
+ 2 files changed, 145 insertions(+)
 
 diff --git a/board/aries/mcvevk/socfpga.c b/board/aries/mcvevk/socfpga.c
-index f173bf84ac..3c4a8d399d 100644
+index f173bf84ac..119db9aeb3 100644
 --- a/board/aries/mcvevk/socfpga.c
 +++ b/board/aries/mcvevk/socfpga.c
-@@ -3,3 +3,132 @@
+@@ -3,3 +3,146 @@
   * Copyright (C) 2015 Marek Vasut <marex@denx.de>
   */
  #include <common.h>
@@ -38,7 +38,9 @@ index f173bf84ac..3c4a8d399d 100644
 +
 +#define SOCFPGA_GMAC0_PHY_NAME	"ethernet@ff700000"
 +#define SOCFPGA_GMAC0_PHY_PATH	"/soc/ethernet@ff700000"
-+#define MCVEVK_PHY_ADDR_ALT 0x3
++#define MCVEVK_PHY_ADDR_MIN 0x0
++#define MCVEVK_PHY_ADDR_MAX 0x1f
++#define MCVEVK_PHY_ADDR_OK 0x0
 +
 +#define MCVEVK_SP35023_I2C_BUS	0
 +#define MCVEVK_SP35023_I2C_ADDR 0x68
@@ -111,6 +113,7 @@ index f173bf84ac..3c4a8d399d 100644
 +	int node, ret, len;
 +	const u32 *val;
 +	unsigned short tmp;
++	int i, addr = -1;
 +
 +	if (!mcv_rev_4_1)
 +		return 0;
@@ -119,11 +122,22 @@ index f173bf84ac..3c4a8d399d 100644
 +	mii_init ();
 +#endif
 +
-+	ret = miiphy_read(SOCFPGA_GMAC0_PHY_NAME,
-+			  MCVEVK_PHY_ADDR_ALT, MII_PHYSID2, &tmp);
-+	if (ret || tmp == 0xffff) {
-+		return 0;	/* bail out, no fixup necessary */
++	for (i = MCVEVK_PHY_ADDR_MIN; i <= MCVEVK_PHY_ADDR_MAX; i++) {
++		ret = miiphy_read(SOCFPGA_GMAC0_PHY_NAME,
++				  i, MII_PHYSID2, &tmp);
++		if (ret)
++			return ret; /* bail out on error */
++		if (tmp != 0xffff) {
++			if (i == MCVEVK_PHY_ADDR_OK) {
++				/* bail out, no fixup necessary */
++				return 0;
++			}
++			addr = i;
++			break;
++		}
 +	}
++	if (addr < 0)
++		return -ENODEV;  /* no phy found */
 +
 +	ret = fdt_check_header(blob);
 +	if (ret < 0) {
@@ -148,13 +162,13 @@ index f173bf84ac..3c4a8d399d 100644
 +			poffset = fdt_node_offset_by_phandle(blob, phandle);
 +			if (poffset >= 0) {
 +				ret = fdt_setprop_u32(blob, poffset, "reg",
-+						      MCVEVK_PHY_ADDR_ALT);
++						      addr);
 +				if (ret < 0)
 +					printf("Couldn't fixup GMAC0 "
 +					       "PHY address");
 +				else
 +					printf("GMAC0 PHY address fixed to "
-+					       "%#x\n", MCVEVK_PHY_ADDR_ALT);
++					       "%#x\n", addr);
 +			}
 +		}
 +	}
