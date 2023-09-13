@@ -1,4 +1,4 @@
-From 8d2228916065e1e0e2e8610ae6761773fbb40055 Mon Sep 17 00:00:00 2001
+From 0951d99a31bbb29f739278ff59ebe5d82655f5c8 Mon Sep 17 00:00:00 2001
 From: Wolfgang Grandegger <wg@aries-embedded.de>
 Date: Fri, 28 Apr 2023 15:47:55 +0200
 Subject: [PATCH 8/8] board: aries: mcvevk: support the Renesas 5P35023 clock
@@ -6,41 +6,73 @@ Subject: [PATCH 8/8] board: aries: mcvevk: support the Renesas 5P35023 clock
 
 The new MCV modules with hw rev. 4.1 use the Renesas 5P35023 clock
 generator, which needs to be initialized at startup via I2C bus at
-address 0x68. Old modules are still supported; no I2C device will
+address 0x68. Old modules are still supported. No I2C device will
 be found at that address.
 
 Because the clock starts late, the phy address strapping does not
 work properly. After power-on, the PHY is found at a different MII
 address than 0x0. If we press the reset botton on the MCVEVP,
 which resets the PHY, it shows up at the expected adress 0x0.
-Unfortunately, Linux will not recognize the PHY after power-on,
-because it expects it at address 0x0, as specified in the device
-tree. As work-around we fix the device tree node for the PHY in
-U-Boot before Linux boots.
+To work around that issue, we initialize the clock chip once in
+the SPL and perform a warm reset to make the phy work properly.
 
 Signed-off-by: Wolfgang Grandegger <wg@aries-embedded.de>
 ---
- board/aries/mcvevk/socfpga.c     | 143 +++++++++++++++++++++++++++++++
- configs/socfpga_mcvevk_defconfig |   2 +
- 2 files changed, 145 insertions(+)
+ .../dts/socfpga_cyclone5_mcvevk-u-boot.dtsi   |  8 ++
+ board/aries/mcvevk/Makefile                   |  4 +
+ board/aries/mcvevk/spl.c                      | 73 +++++++++++++++++++
+ configs/socfpga_mcvevk_defconfig              |  2 +
+ 4 files changed, 87 insertions(+)
+ create mode 100644 board/aries/mcvevk/spl.c
 
-diff --git a/board/aries/mcvevk/socfpga.c b/board/aries/mcvevk/socfpga.c
-index f173bf84ac..119db9aeb3 100644
---- a/board/aries/mcvevk/socfpga.c
-+++ b/board/aries/mcvevk/socfpga.c
-@@ -3,3 +3,146 @@
-  * Copyright (C) 2015 Marek Vasut <marex@denx.de>
-  */
- #include <common.h>
-+#include <i2c.h>
-+#include <fdt_support.h>
-+#include <miiphy.h>
+diff --git a/arch/arm/dts/socfpga_cyclone5_mcvevk-u-boot.dtsi b/arch/arm/dts/socfpga_cyclone5_mcvevk-u-boot.dtsi
+index eea453b8ad..4680337b05 100644
+--- a/arch/arm/dts/socfpga_cyclone5_mcvevk-u-boot.dtsi
++++ b/arch/arm/dts/socfpga_cyclone5_mcvevk-u-boot.dtsi
+@@ -12,6 +12,10 @@
+ 	status = "disabled";
+ };
+ 
++&i2c0 {
++	u-boot,dm-pre-reloc;
++};
 +
-+#define SOCFPGA_GMAC0_PHY_NAME	"ethernet@ff700000"
-+#define SOCFPGA_GMAC0_PHY_PATH	"/soc/ethernet@ff700000"
-+#define MCVEVK_PHY_ADDR_MIN 0x0
-+#define MCVEVK_PHY_ADDR_MAX 0x1f
-+#define MCVEVK_PHY_ADDR_OK 0x0
+ &mmc {
+ 	u-boot,dm-pre-reloc;
+ };
+@@ -32,3 +36,7 @@
+ &portc {
+ 	bank-name = "portc";
+ };
++
++&rst {
++	u-boot,dm-pre-reloc;
++};
+diff --git a/board/aries/mcvevk/Makefile b/board/aries/mcvevk/Makefile
+index e1c8a6b3c7..964bcc8c20 100644
+--- a/board/aries/mcvevk/Makefile
++++ b/board/aries/mcvevk/Makefile
+@@ -5,3 +5,7 @@
+ # (C) Copyright 2010, Thomas Chou <thomas@wytron.com.tw>
+ 
+ obj-y	:= socfpga.o
++
++ifdef CONFIG_SPL_BUILD
++obj-y += spl.o
++endif
+diff --git a/board/aries/mcvevk/spl.c b/board/aries/mcvevk/spl.c
+new file mode 100644
+index 0000000000..2ac0463082
+--- /dev/null
++++ b/board/aries/mcvevk/spl.c
+@@ -0,0 +1,73 @@
++#include <common.h>
++#include <spl.h>
++#include <i2c.h>
++#include <asm/io.h>
++#include <asm/arch/reset_manager.h>
++
++DECLARE_GLOBAL_DATA_PTR;
 +
 +#define MCVEVK_SP35023_I2C_BUS	0
 +#define MCVEVK_SP35023_I2C_ADDR 0x68
@@ -63,13 +95,13 @@ index f173bf84ac..119db9aeb3 100644
 +	{MCVEVK_SP35023_CLK_ENABLE_REG, MCVEVK_SP35023_CLK_ENABLE_VAL},
 +};
 +
-+static int mcv_rev_4_1 = 0;
-+
-+int misc_init_r(void)
++void spl_board_init(void)
 +{
 +	struct udevice *sp35023 = NULL;
 +	int i, err;
 +	uint8_t val;
++	volatile unsigned int *reset_mgr_ctrl =
++		(volatile unsigned int *)0xffd05004;
 +
 +	/*
 +	 * Configure the Renesas 5P35023 Clock Generator available
@@ -78,21 +110,21 @@ index f173bf84ac..119db9aeb3 100644
 +	err = i2c_get_chip_for_busnum(MCVEVK_SP35023_I2C_BUS,
 +				      MCVEVK_SP35023_I2C_ADDR, 1, &sp35023);
 +	if (err)
-+		return 0;
-+
-+	/* This must be a rev 4.1 module, at least */
-+	mcv_rev_4_1 = 1;
++		return;
 +
 +	err = dm_i2c_read(sp35023, MCVEVK_SP35023_CLK_ENABLE_REG,
 +			  &val, sizeof(val));
 +	if (err) {
 +		printf("Couldn't read sp35023 clock enable reg\n");
-+		return 0;
++		return;
 +	}
-+	if (val == MCVEVK_SP35023_CLK_ENABLE_VAL)
-+		return 0;	/* Clock is already running */
++	if (val == MCVEVK_SP35023_CLK_ENABLE_VAL) {
++		return;	/* Clock is already running */
++	}
++
 +
 +	/* Initialize and start clock generator */
++	puts("Initializing PLL...\n");
 +	for (i = 0; i < ARRAY_SIZE(mcvevk_sp35023_regs); i++) {
 +		unsigned char addr = mcvevk_sp35023_regs[i].addr;
 +		unsigned char val = mcvevk_sp35023_regs[i].val;
@@ -101,97 +133,22 @@ index f173bf84ac..119db9aeb3 100644
 +		if (err) {
 +			printf("Couldn't write %#x to sp35023 reg at %#x\n",
 +			       val, addr);
-+			return -1;
++			return;
 +		}
 +	}
-+
-+	return 0;
-+}
-+
-+int ft_board_setup(void *blob, struct bd_info *bd)
-+{
-+	int node, ret, len;
-+	const u32 *val;
-+	unsigned short tmp;
-+	int i, addr = -1;
-+
-+	if (!mcv_rev_4_1)
-+		return 0;
-+
-+#if defined(CONFIG_MII_INIT)
-+	mii_init ();
-+#endif
-+
-+	for (i = MCVEVK_PHY_ADDR_MIN; i <= MCVEVK_PHY_ADDR_MAX; i++) {
-+		ret = miiphy_read(SOCFPGA_GMAC0_PHY_NAME,
-+				  i, MII_PHYSID2, &tmp);
-+		if (ret)
-+			return ret; /* bail out on error */
-+		if (tmp != 0xffff) {
-+			if (i == MCVEVK_PHY_ADDR_OK) {
-+				/* bail out, no fixup necessary */
-+				return 0;
-+			}
-+			addr = i;
-+			break;
-+		}
-+	}
-+	if (addr < 0)
-+		return -ENODEV;  /* no phy found */
-+
-+	ret = fdt_check_header(blob);
-+	if (ret < 0) {
-+		printf("Invalid FDT blob: %s\n", fdt_strerror(ret));
-+		return ret;
-+	}
-+
-+	node = fdt_path_offset(blob, SOCFPGA_GMAC0_PHY_PATH);
-+	if (node < 0) {
-+		printf("Couldn't get FDT PHY path %s\n", fdt_strerror(ret));
-+		return node;
-+	}
-+	val = fdt_getprop(blob, node, "phy-handle", &len);
-+	if (val) {
-+		int poffset;
-+		int phandle = fdt32_to_cpu(*val);
-+
-+		if (!phandle) {
-+			printf("FDT PHY handle not valid\n");
-+		} else {
-+
-+			poffset = fdt_node_offset_by_phandle(blob, phandle);
-+			if (poffset >= 0) {
-+				ret = fdt_setprop_u32(blob, poffset, "reg",
-+						      addr);
-+				if (ret < 0)
-+					printf("Couldn't fixup GMAC0 "
-+					       "PHY address");
-+				else
-+					printf("GMAC0 PHY address fixed to "
-+					       "%#x\n", addr);
-+			}
-+		}
-+	}
-+
-+	return 0;
++	puts("Warm reset...\n");
++	*reset_mgr_ctrl = BIT(RSTMGR_CTRL_SWWARMRSTREQ_LSB);
 +}
 diff --git a/configs/socfpga_mcvevk_defconfig b/configs/socfpga_mcvevk_defconfig
-index 3c76cfa9c3..4ee3513c1b 100644
+index 3c76cfa9c3..25705aa38c 100644
 --- a/configs/socfpga_mcvevk_defconfig
 +++ b/configs/socfpga_mcvevk_defconfig
-@@ -9,6 +9,7 @@ CONFIG_SPL_TEXT_BASE=0xFFFF0000
- CONFIG_TARGET_SOCFPGA_ARIES_MCVEVK=y
- CONFIG_DISTRO_DEFAULTS=y
- CONFIG_FIT=y
-+CONFIG_OF_BOARD_SETUP=y
- CONFIG_USE_BOOTARGS=y
- CONFIG_BOOTARGS="console=ttyS0,115200"
- # CONFIG_USE_BOOTCOMMAND is not set
-@@ -19,6 +20,7 @@ CONFIG_SYS_CONSOLE_OVERWRITE_ROUTINE=y
+@@ -19,6 +19,8 @@ CONFIG_SYS_CONSOLE_OVERWRITE_ROUTINE=y
  CONFIG_SYS_CONSOLE_ENV_OVERWRITE=y
  # CONFIG_DISPLAY_BOARDINFO is not set
  CONFIG_DISPLAY_BOARDINFO_LATE=y
-+CONFIG_MISC_INIT_R=y
++CONFIG_SPL_BOARD_INIT=y
++CONFIG_SPL_I2C=y
  CONFIG_SPL_SPI_LOAD=y
  CONFIG_SYS_SPI_U_BOOT_OFFS=0x40000
  CONFIG_CMD_ASKENV=y
